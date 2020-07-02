@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "helpdesk.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "helpdesk.name" . }}
+    helm.sh/chart: {{ include "helpdesk.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: {{ include "helpdesk.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "helpdesk.fullname" . }}-frontend
+  labels:
+    app.kubernetes.io/name: {{ include "helpdesk.name" . }}-frontend
+    helm.sh/chart: {{ include "helpdesk.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}-frontend
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: {{ include "helpdesk.name" . }}-frontend
+    app.kubernetes.io/instance: {{ .Release.Name }}-frontend
