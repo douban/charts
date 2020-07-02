@@ -8,7 +8,7 @@ Douban charts
 
 * [nginx](https://github.com/douban/charts/charts/nginx) for general web service
 * [helpdesk](https://github.com/douban/charts/charts/helpdesk), [@douban/helpdesk](https://github.com/douban/helpdesk) Yet another helpdesk based on multiple providers
-* [overflow](https://github.com/douban/charts/charts/overflow), [@bilibili/overload](https://github.com/bilibili/overlord)
+* [overload](https://github.com/douban/charts/charts/overload), [@bilibili/overload](https://github.com/bilibili/overlord)
 
 
 ## Thanks to 
