@@ -7,7 +7,7 @@ replicaCount: 2
 
 image:
   repository: douz/helpdesk
-  tag: lastest
+  tag: latest
   pullPolicy: IfNotPresent
 
 frontend:
