@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "overlord.fullname" . }}-apiserver
+  labels:
+    app.kubernetes.io/name: {{ include "overlord.name" . }}
+    app.kubernetes.io/instance: apiserver
+    helm.sh/chart: {{ include "overlord.chart" . }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: {{ include "overlord.name" . }}
+    app.kubernetes.io/instance: apiserver
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "overlord.fullname" . }}-web
+  labels:
+    app.kubernetes.io/name: {{ include "overlord.name" . }}
+    app.kubernetes.io/instance: web
+    helm.sh/chart: {{ include "overlord.chart" . }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: {{ include "overlord.name" . }}
+    app.kubernetes.io/instance: web
