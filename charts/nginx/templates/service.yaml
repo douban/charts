@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "example.fullname" . }}
+  name: {{ include "nginx.fullname" . }}
   labels:
-{{ include "example.labels" . | indent 4 }}
+    {{- include "nginx.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -12,5 +12,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app.kubernetes.io/name: {{ include "example.name" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "nginx.selectorLabels" . | nindent 4 }}

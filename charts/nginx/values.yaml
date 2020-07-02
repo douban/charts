@@ -1,4 +1,4 @@
-# Default values for example.
+# Default values for nginx.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -6,7 +6,6 @@ replicaCount: 1
 
 image:
   repository: nginx
-  tag: stable
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -43,7 +42,6 @@ ingress:
   hosts:
     - host: chart-example.local
       paths: []
-
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
