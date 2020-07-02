@@ -16,9 +16,10 @@ sources:
 - https://github.com/douban/helpdesk
 
 maintainers:
-- name: Douban Sysadmin
+- name: douban
   email: sysadmin@douban.com
-
+- name: everpcpc
+- name: LeoQuote
 # A chart can be either an 'application' or a 'library' chart.
 #
 # Application charts are a collection of templates that can be packaged into versioned archives
