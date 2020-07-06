@@ -4,6 +4,15 @@
 
 Douban charts
 
+## How to use
+1. Install helm
+2. Add douban repo `helm repo add douban https://douban.github.io/charts/`
+3. List charts using `helm search repo douban`
+4. Install chart using `helm install my-app douban/<chart-name>`, eg. `helm install my-helpdesk douban/helpdesk`
+
+Read more on the charts readme pages.
+
+
 ## Chart List
 
 * [nginx](https://github.com/douban/charts/charts/nginx) for general web service
