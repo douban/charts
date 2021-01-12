@@ -13,7 +13,7 @@ image:
 
 envConfigs:
   - name: APP_ID
-    value: 7 # provided by ghe or github.com
+    value: 7  # provided by ghe or github.com
   - name: GHE_HOST
     value: your_ghe.com
   - name: LOG_LEVEL
