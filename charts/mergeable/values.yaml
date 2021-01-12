@@ -10,7 +10,7 @@ image:
   pullPolicy: IfNotPresent
   tag: "latest"
 
-ContainerEnvs: {}
+ContainerEnvs: []
 #   - name: APP_ID
 #     value: 7  # provided by ghe or github.com
 #   - name: GHE_HOST
