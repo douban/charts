@@ -51,6 +51,20 @@ entries:
     urls:
     - https://github.com/douban/charts/releases/download/helpdesk-0.2.0/helpdesk-0.2.0.tgz
     version: 0.2.0
+  mergeable:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2021-01-12T10:44:50.80096705Z"
+    description: A Helm chart for Kubernetes
+    digest: 49927349c20f907def151990e1cae6a8a944ba49e392a9eb3e539c4e1bd13be4
+    home: https://github.com/mergeability/mergeable
+    maintainers:
+    - name: LeoQuote
+    name: mergeable
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/mergeable-0.1.0/mergeable-0.1.0.tgz
+    version: 0.1.0
   overlord:
   - apiVersion: v2
     appVersion: 1.16.0
