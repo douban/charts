@@ -3,75 +3,63 @@ kind: Deployment
 metadata:
   name: {{ include "mergeable.fullname" . }}
   labels:
-    {{- include "mergeable.labels" . | nindent 4 }}
+{{ include "mergeable.labels" . | indent 4 }}
 spec:
-{{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
-{{- end }}
   selector:
     matchLabels:
-      {{- include "mergeable.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/name: {{ include "mergeable.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
-    {{- with .Values.podAnnotations }}
-      annotations:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}
       labels:
-        {{- include "mergeable.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/name: {{ include "mergeable.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
-      {{- with .Values.imagePullSecrets }}
+    {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
-      {{- end }}
-      serviceAccountName: {{ include "mergeable.serviceAccountName" . }}
-      securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+    {{- end }}
       containers:
         - name: {{ .Chart.Name }}
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          env:
-            {{- range $envName, $envValue := .Values.ContainerEnvs }}
-          - name: {{ $envName }}
-            {{- if eq (printf "%T" $envValue) "map[string]interface {}" }}
-            valueFrom:
-              {{ $envValue.type }}:
-                {{- if $envValue.prefixFullName }}
-                name: {{ template "<CHARTNAME>.fullname" $ }}{{ $envValue.name }}
-                {{- else }}
-                name: {{ $envValue.name }}
-                {{- end }}
-                key: {{ $envValue.key }}
-            {{- else }}
-            value: {{ $envValue | quote }}
-            {{- end }}
-          {{- end }}
+          volumeMounts:
+          - name: pem
+            mountPath: /app/.data
+          - name: app-env
+            mountPath: /app/.env
+            subPath: ".env"
           ports:
             - name: http
-              containerPort: {{ .Values.ContainerPort}}
+              containerPort: 3000
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /probot
+              path: /
               port: http
           readinessProbe:
             httpGet:
-              path: /probot
+              path: /
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+      - name: pem
+        secret: 
+          secretName: {{ .Values.pemSecretName }}
+      - name: app-env
+        configMap:
+          name: {{ include "mergeable.fullname" . }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.affinity }}
+    {{- with .Values.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
+    {{- end }}
+    {{- with .Values.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
-      {{- end }}
+    {{- end }}

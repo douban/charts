@@ -4,18 +4,28 @@
 
 replicaCount: 1
 
-namespace:
-  enabled: true
-  annotations: {}
-  labels: {}
 
 image:
-  repository: "DOCKER_REPO/mergeable"
+  repository: "ghcr.io/leoquote/mergeable"
   pullPolicy: IfNotPresent
-  tag: ""
+  tag: "latest"
 
-ContainerPort: 3000
-ContainerEnvs: {}
+
+envConfigs:
+  - name: APP_ID
+    value: 7 # provided by ghe or github.com
+  - name: GHE_HOST
+    value: your_ghe.com
+  - name: LOG_LEVEL
+    value: info
+  - name: WEBHOOK_SECRET
+    value: real_mergeable
+  # - name: SENTRY_DSN
+  #   value: xxx
+
+# in the same namespace
+pemSecretName: mergeable
+
 
 imagePullSecrets: []
 nameOverride: ""
@@ -23,7 +33,7 @@ fullnameOverride: ""
 
 serviceAccount:
   # Specifies whether a service account should be created
-  create: true
+  create: false
   # Annotations to add to the service account
   annotations: {}
   # The name of the service account to use.
