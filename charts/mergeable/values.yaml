@@ -10,18 +10,15 @@ image:
   pullPolicy: IfNotPresent
   tag: "latest"
 
-
-envConfigs:
-  - name: APP_ID
-    value: 7  # provided by ghe or github.com
-  - name: GHE_HOST
-    value: your_ghe.com
-  - name: LOG_LEVEL
-    value: info
-  - name: WEBHOOK_SECRET
-    value: real_mergeable
-  # - name: SENTRY_DSN
-  #   value: xxx
+ContainerEnvs: {}
+#   - name: APP_ID
+#     value: 7  # provided by ghe or github.com
+#   - name: GHE_HOST
+#     value: your_ghe.com
+#   - name: LOG_LEVEL
+#     value: info
+#   - name: WEBHOOK_SECRET
+#     value: real_mergeable
 
 # in the same namespace
 pemSecretName: mergeable

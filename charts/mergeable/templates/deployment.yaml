@@ -24,33 +24,29 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            {{- toYaml .Values.ContainerEnvs | nindent 12 }}
           volumeMounts:
-          - name: pem
-            mountPath: /app/.data
-          - name: app-env
-            mountPath: /app/.env
-            subPath: ".env"
+            - name: pem
+              mountPath: /app/.data
           ports:
             - name: http
               containerPort: 3000
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
+              path: /probot
               port: http
           readinessProbe:
             httpGet:
-              path: /
+              path: /probot
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
-      - name: pem
-        secret: 
-          secretName: {{ .Values.pemSecretName }}
-      - name: app-env
-        configMap:
-          name: {{ include "mergeable.fullname" . }}
+        - name: pem
+          secret: 
+            secretName: {{ .Values.pemSecretName }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
