@@ -65,6 +65,17 @@ entries:
     urls:
     - https://github.com/douban/charts/releases/download/mergeable-0.1.0/mergeable-0.1.0.tgz
     version: 0.1.0
+  nginx:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2021-02-05T07:09:50.559761973Z"
+    description: A Helm chart for Kubernetes
+    digest: ff6365a1e25c3f4f49ce79ffecfaf10f2e0058ef9feed18ea2e9d669df64c592
+    name: nginx
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/nginx-0.1.1/nginx-0.1.1.tgz
+    version: 0.1.1
   overlord:
   - apiVersion: v2
     appVersion: 1.16.0
