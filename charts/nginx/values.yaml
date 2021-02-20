@@ -6,6 +6,7 @@ replicaCount: 1
 
 image:
   repository: nginx
+  tag: 0.16.0
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
