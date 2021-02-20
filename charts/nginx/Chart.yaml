@@ -1,7 +1,9 @@
 apiVersion: v2
 name: nginx
+home: https://nginx.org/
 description: A Helm chart for Kubernetes
-
+maintainers:
+- name: douban
 # A chart can be either an 'application' or a 'library' chart.
 #
 # Application charts are a collection of templates that can be packaged into versioned archives
@@ -14,8 +16,7 @@ type: application
 
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
-version: 0.1.1
+version: 0.1.2
 
-# This is the version number of the application being deployed. This version number should be
-# incremented each time you make changes to the application.
-appVersion: 1.16.0
+# This is actually not used.
+appVersion: 0.16.0
