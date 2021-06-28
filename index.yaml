@@ -51,6 +51,27 @@ entries:
     urls:
     - https://github.com/douban/charts/releases/download/helpdesk-0.2.0/helpdesk-0.2.0.tgz
     version: 0.2.0
+  karma:
+  - apiVersion: v2
+    appVersion: "0.85"
+    created: "2021-06-28T08:12:48.563638194Z"
+    description: A Helm chart for Karma - an UI for Prometheus Alertmanager
+    digest: fa76ba35f004f3953ced440ef69624e70f771feddcaa0e395405babef7dc8893
+    home: https://github.com/prymitive/karma
+    maintainers:
+    - email: cdesaintmartin@wiremind.io
+      name: desaintmartin
+    - email: amrini@wiremind.io
+      name: machine424
+    - email: fminaud@wiremind.io
+      name: francoisminaud
+    name: karma
+    sources:
+    - https://github.com/wiremind/wiremind-helm-charts/tree/main/charts/karma
+    - https://github.com/prymitive/karma
+    urls:
+    - https://github.com/douban/charts/releases/download/karma-1.8.1/karma-1.8.1.tgz
+    version: 1.8.1
   mergeable:
   - apiVersion: v2
     appVersion: 1.16.0
