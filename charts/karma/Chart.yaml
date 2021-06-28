@@ -1,0 +1,16 @@
+apiVersion: v2
+description: A Helm chart for Karma - an UI for Prometheus Alertmanager
+name: karma
+home: https://github.com/prymitive/karma
+sources:
+  - https://github.com/wiremind/wiremind-helm-charts/tree/main/charts/karma
+  - https://github.com/prymitive/karma
+version: 1.8.1
+appVersion: "0.85"
+maintainers:
+  - name: desaintmartin
+    email: cdesaintmartin@wiremind.io
+  - name: machine424
+    email: amrini@wiremind.io
+  - name: francoisminaud
+    email: fminaud@wiremind.io
