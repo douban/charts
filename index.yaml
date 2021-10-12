@@ -126,4 +126,18 @@ entries:
     urls:
     - https://github.com/douban/charts/releases/download/overlord-0.1.0/overlord-0.1.0.tgz
     version: 0.1.0
+  tinyproxy-exporter:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2021-10-12T05:00:18.47822919Z"
+    description: A Helm chart for Kubernetes
+    digest: 8c0dcc9abf6df2d8db69ba5c98ec6c1dbc62b8b593b62ddfb69e558ac78c3085
+    home: https://github.com/igzivkov/tinyproxy_exporter
+    maintainers:
+    - name: LeoQuote
+    name: tinyproxy-exporter
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/tinyproxy-exporter-0.1.0/tinyproxy-exporter-0.1.0.tgz
+    version: 0.1.0
 generated: "2020-07-02T06:35:27.003478545Z"
