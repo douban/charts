@@ -126,6 +126,20 @@ entries:
     urls:
     - https://github.com/douban/charts/releases/download/overlord-0.1.0/overlord-0.1.0.tgz
     version: 0.1.0
+  probot:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2021-11-09T05:43:16.366031808Z"
+    description: A Helm chart for Kubernetes
+    digest: c563a29a76a506e8f4b204ab5ca91eef5dca7acc2483e0e85e398d824c4abace
+    home: https://github.com/douban/charts
+    maintainers:
+    - name: LeoQuote
+    name: probot
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/probot-0.1.0/probot-0.1.0.tgz
+    version: 0.1.0
   tinyproxy-exporter:
   - apiVersion: v2
     appVersion: 1.16.0
