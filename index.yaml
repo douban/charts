@@ -3,6 +3,31 @@ entries:
   helpdesk:
   - apiVersion: v2
     appVersion: 0.2.0
+    created: "2021-12-02T10:41:01.303647607Z"
+    description: A Helm chart for Douban Helpdesk
+    digest: b3a60a691285c716b4914e81a9b99f34d84a2ec7106abcf7962bada7821f449e
+    home: https://github.com/douban/helpdesk
+    keywords:
+    - douban
+    - helpdesk
+    - self-service
+    - stackstorm
+    - airflow
+    - spincyle
+    maintainers:
+    - email: sysadmin@douban.com
+      name: douban
+    - name: everpcpc
+    - name: LeoQuote
+    name: helpdesk
+    sources:
+    - https://github.com/douban/helpdesk
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/helpdesk-0.3.0/helpdesk-0.3.0.tgz
+    version: 0.3.0
+  - apiVersion: v2
+    appVersion: 0.2.0
     created: "2020-07-02T07:21:32.155312497Z"
     description: A Helm chart for Douban Helpdesk
     digest: 0b2a73716c78968cc8747b00261897c320e9c0f43ebe54fc462529dfb9bd4fa9
@@ -54,6 +79,26 @@ entries:
   karma:
   - apiVersion: v2
     appVersion: "0.85"
+    created: "2021-12-02T10:41:01.557395168Z"
+    description: A Helm chart for Karma - an UI for Prometheus Alertmanager
+    digest: 82eb3979501a2fda0debb9ff35001e3da85860eb7844cb318907fe02dcac5913
+    home: https://github.com/prymitive/karma
+    maintainers:
+    - email: cdesaintmartin@wiremind.io
+      name: desaintmartin
+    - email: amrini@wiremind.io
+      name: machine424
+    - email: fminaud@wiremind.io
+      name: francoisminaud
+    name: karma
+    sources:
+    - https://github.com/wiremind/wiremind-helm-charts/tree/main/charts/karma
+    - https://github.com/prymitive/karma
+    urls:
+    - https://github.com/douban/charts/releases/download/karma-1.9.0/karma-1.9.0.tgz
+    version: 1.9.0
+  - apiVersion: v2
+    appVersion: "0.85"
     created: "2021-06-28T08:12:48.563638194Z"
     description: A Helm chart for Karma - an UI for Prometheus Alertmanager
     digest: fa76ba35f004f3953ced440ef69624e70f771feddcaa0e395405babef7dc8893
@@ -75,6 +120,19 @@ entries:
   mergeable:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2021-12-02T10:41:01.837799156Z"
+    description: A Helm chart for Kubernetes
+    digest: 673ec878174e070037e6b889ce0e3b9ae5c4007f4fbf6bef8a7e8e93ddc67bb9
+    home: https://github.com/mergeability/mergeable
+    maintainers:
+    - name: LeoQuote
+    name: mergeable
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/mergeable-0.2.0/mergeable-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2021-01-12T10:44:50.80096705Z"
     description: A Helm chart for Kubernetes
     digest: 49927349c20f907def151990e1cae6a8a944ba49e392a9eb3e539c4e1bd13be4
@@ -87,6 +145,19 @@ entries:
     - https://github.com/douban/charts/releases/download/mergeable-0.1.0/mergeable-0.1.0.tgz
     version: 0.1.0
   nginx:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2021-12-02T10:41:02.0756149Z"
+    description: A Helm chart for Kubernetes
+    digest: 4cdc8365cbdbf3a3eef0100d6b8d8a6aa4215574e0814edabb2e069e0aea4e3f
+    home: https://nginx.org/
+    maintainers:
+    - name: douban
+    name: nginx
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/nginx-0.2.0/nginx-0.2.0.tgz
+    version: 0.2.0
   - apiVersion: v2
     appVersion: 0.16.0
     created: "2021-02-20T10:41:26.780113317Z"
@@ -111,6 +182,21 @@ entries:
     - https://github.com/douban/charts/releases/download/nginx-0.1.1/nginx-0.1.1.tgz
     version: 0.1.1
   overlord:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2021-12-02T10:41:02.342719375Z"
+    description: A Helm chart for Kubernetes
+    digest: 07cf4076dbaf7e7d4707d9962a08a66bb1e3f5f86339a9668268291e250d75fa
+    home: https://github.com/bilibili/overlord
+    maintainers:
+    - email: sysadmin@douban.com
+      name: douban
+    - name: everpcpc
+    name: overlord
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/overlord-0.2.0/overlord-0.2.0.tgz
+    version: 0.2.0
   - apiVersion: v2
     appVersion: 1.16.0
     created: "2020-07-02T06:35:27.236758334Z"
