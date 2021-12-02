@@ -1,6 +1,9 @@
 apiVersion: v2
 name: nginx
+home: https://nginx.org/
 description: A Helm chart for Kubernetes
+maintainers:
+- name: douban
 
 # A chart can be either an 'application' or a 'library' chart.
 #
