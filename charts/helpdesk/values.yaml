@@ -46,15 +46,14 @@ service:
   port: 80
 
 ingress:
-  enabled: true
-  annotations:
-    kubernetes.io/ingress.class: nginx
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-
   hosts:
-    - host: helpdesk.example.com
-      paths:
-      - /
+    - host: "chart-example.local"
+      pathType: ImplementationSpecific
   tls: []
   #  - secretName: helpldesk-example-tls
   #    hosts:
