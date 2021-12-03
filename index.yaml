@@ -1,5 +1,19 @@
 apiVersion: v1
 entries:
+  channels:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2021-12-03T07:59:02.395720735Z"
+    description: A Helm chart for Kubernetes
+    digest: e49fed3df4b557bfba926a7ebd711a642be293290335caafa9e075bf14c8c23f
+    home: https://github.com/everpcpc/channels
+    maintainers:
+    - name: LeoQuote
+    name: channels
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/channels-1.1.0/channels-1.1.0.tgz
+    version: 1.1.0
   helpdesk:
   - apiVersion: v2
     appVersion: 0.2.0
@@ -226,6 +240,26 @@ entries:
     urls:
     - https://github.com/douban/charts/releases/download/probot-0.1.0/probot-0.1.0.tgz
     version: 0.1.0
+  selenium:
+  - apiVersion: v2
+    appVersion: 3.141.59
+    created: "2021-12-03T07:59:02.552472779Z"
+    description: Chart for selenium grid
+    digest: a9a2a11ee97869dd7d52e667f2ee5b29f5a37efecc57d3f8c81a43a88f34490d
+    home: http://www.seleniumhq.org/
+    icon: http://docs.seleniumhq.org/images/big-logo.png
+    keywords:
+    - qa
+    maintainers:
+    - name: LeoQuote
+    name: selenium
+    sources:
+    - https://github.com/SeleniumHQ/docker-selenium
+    - https://github.com/douban/charts
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/selenium-1.3.0/selenium-1.3.0.tgz
+    version: 1.3.0
   tinyproxy-exporter:
   - apiVersion: v2
     appVersion: 1.16.0
