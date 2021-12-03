@@ -1,0 +1,60 @@
+{{- if .Values.slack.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "channels.fullname" . }}-slack
+  labels:
+    app.kubernetes.io/name: {{ include "channels.name" . }}-slack
+    app.kubernetes.io/instance: {{ .Release.Name }}-slack
+    helm.sh/chart: {{ include "channels.chart" . }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/part-of: {{ include "channels.name" . }}
+spec:
+  replicas: {{ .Values.slack.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "channels.name" . }}-slack
+      app.kubernetes.io/instance: {{ .Release.Name }}-slack
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "channels.name" . }}-slack
+        app.kubernetes.io/instance: {{ .Release.Name }}-slack
+        app.kubernetes.io/part-of: {{ include "channels.name" . }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "channels.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}-slack
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - slack
+          volumeMounts:
+            {{- toYaml .Values.volumeMounts | nindent 12 }}
+          resources:
+            {{- toYaml .Values.slack.resources | nindent 12 }}
+      volumes:
+        {{- toYaml .Values.volumes | nindent 8 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}
+
+# vi: ft=goyaml

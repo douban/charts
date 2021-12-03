@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "channels.fullname" . }}-web
+  labels:
+    app.kubernetes.io/name: {{ include "channels.name" . }}-web
+    helm.sh/chart: {{ include "channels.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}-web
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/part-of: {{ include "channels.name" . }}
+  {{- with .Values.web.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.web.service.type }}
+  ports:
+    - port: {{ .Values.web.service.port }}
+      targetPort: {{ .Values.web.port }}
+      protocol: TCP
+      name: web
+  selector:
+    app.kubernetes.io/name: {{ include "channels.name" . }}-web
+    app.kubernetes.io/instance: {{ .Release.Name }}-web
+
+# vi: ft=goyaml
