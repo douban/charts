@@ -1,0 +1,28 @@
+{{- if .Values.irc.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "channels.fullname" . }}-irc
+  labels:
+    app.kubernetes.io/name: {{ include "channels.name" . }}-irc
+    helm.sh/chart: {{ include "channels.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}-irc
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/part-of: {{ include "channels.name" . }}
+  {{- with .Values.irc.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.irc.service.type }}
+  ports:
+    - port: {{ .Values.irc.service.port }}
+      targetPort: {{ .Values.irc.port }}
+      protocol: TCP
+      name: irc
+  selector:
+    app.kubernetes.io/name: {{ include "channels.name" . }}-irc
+    app.kubernetes.io/instance: {{ .Release.Name }}-irc
+{{- end }}
+
+# vi: ft=goyaml

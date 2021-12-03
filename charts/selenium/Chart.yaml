@@ -1,0 +1,13 @@
+apiVersion: v2
+name: selenium
+version: 1.3.0
+appVersion: 3.141.59
+description: Chart for selenium grid
+type: application
+keywords:
+- qa
+home: http://www.seleniumhq.org/
+icon: http://docs.seleniumhq.org/images/big-logo.png
+sources:
+- https://github.com/SeleniumHQ/docker-selenium
+- https://github.com/douban/charts
