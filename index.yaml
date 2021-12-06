@@ -240,6 +240,20 @@ entries:
     urls:
     - https://github.com/douban/charts/releases/download/probot-0.1.0/probot-0.1.0.tgz
     version: 0.1.0
+  prometheus-beanstalkd-exporter:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2021-12-06T10:20:33.788888882Z"
+    description: A Helm chart for Kubernetes
+    digest: c67750693305cf992b4374cf62bf42f937733c40f344bd8b15dd50d8654af258
+    home: https://github.com/messagebird/beanstalkd_exporter
+    maintainers:
+    - name: LeoQuote
+    name: prometheus-beanstalkd-exporter
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/prometheus-beanstalkd-exporter-0.1.0/prometheus-beanstalkd-exporter-0.1.0.tgz
+    version: 0.1.0
   selenium:
   - apiVersion: v2
     appVersion: 3.141.59
