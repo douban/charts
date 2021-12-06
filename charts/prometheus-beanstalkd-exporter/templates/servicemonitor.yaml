@@ -13,7 +13,7 @@ metadata:
 {{- end }}
 spec:
   endpoints:
-  - targetPort: {{ .Values.service.port }}
+  - port: http
 {{- if .Values.serviceMonitor.interval }}
     interval: {{ .Values.serviceMonitor.interval }}
 {{- end }}
