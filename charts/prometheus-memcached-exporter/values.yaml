@@ -5,6 +5,17 @@
 memcached:
   address: "mymc:8881"
 
+# fully override arguments of the exporter
+argumentsOverride: []
+
+volumes: []
+# - name: custom-config
+#   hostPath:
+#   path: /etc/
+
+volumeMounts: []
+# - mountPath: /etc
+#   name: custom-config
 
 replicaCount: 1
 
