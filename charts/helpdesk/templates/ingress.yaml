@@ -47,19 +47,22 @@ spec:
             backend:
               service: 
                 name: {{ $fullName }}
-                port: {{ $svcPort }}
+                port:
+                  number: {{ $svcPort }}
           - path: "/auth/"
             pathType: {{ .pathType }}
             backend:
               service: 
                 name: {{ $fullName }}
-                port: {{ $svcPort }}
+                port:
+                  number: {{ $svcPort }}
           - path: /
             pathType: {{ .pathType }}
             backend:
               service: 
                 name: {{ $fullName }}-frontend
-                port: {{ $svcPort }}
+                port:
+                  number: {{ $svcPort }}
           {{- else }}
           - path: "/api/"
             backend:
