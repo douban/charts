@@ -17,6 +17,31 @@ entries:
   helpdesk:
   - apiVersion: v2
     appVersion: 0.2.0
+    created: "2022-01-07T08:26:26.068936101Z"
+    description: A Helm chart for Douban Helpdesk
+    digest: b2ee4a76aa91b22ca04657ce1ca7f92a7b6dd5f0ba2ca271c2ae802b2b2725a1
+    home: https://github.com/douban/helpdesk
+    keywords:
+    - douban
+    - helpdesk
+    - self-service
+    - stackstorm
+    - airflow
+    - spincyle
+    maintainers:
+    - email: sysadmin@douban.com
+      name: douban
+    - name: everpcpc
+    - name: LeoQuote
+    name: helpdesk
+    sources:
+    - https://github.com/douban/helpdesk
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/helpdesk-0.3.1/helpdesk-0.3.1.tgz
+    version: 0.3.1
+  - apiVersion: v2
+    appVersion: 0.2.0
     created: "2021-12-02T10:41:01.303647607Z"
     description: A Helm chart for Douban Helpdesk
     digest: b3a60a691285c716b4914e81a9b99f34d84a2ec7106abcf7962bada7821f449e
