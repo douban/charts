@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: ghcr.io/leoquote/tencentcloud-exporter:master
+  repository: ghcr.io/leoquote/tencentcloud-exporter
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "master"
@@ -47,14 +47,12 @@ extraEnvs: []
 #   value: test
 
 # extra config in exporter , will be mounted as cm and used as config file
-extraConfigs: ""
-# extraConfigs: |
-#   products:
-#   - namespace: QCE/CMONGO             // 产品命名空间
-#     all_metrics: true                 // 导出支持的所有指标
-#     all_instances: true               // 导出region下的所有实例
-#     extra_labels: [InstanceName,Zone] // 将实例的字段作为指标的lables导出
-
+extraConfigs:
+  products:
+  - namespace: QCE/CDB
+    all_metrics: true
+    all_instances: true
+    extra_labels: [InstanceName,Zone]
 
 ingress:
   enabled: false
