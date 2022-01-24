@@ -37,16 +37,12 @@ spec:
           env:
             {{- toYaml . | nindent 12 }}
           {{- end}}
-          {{- if .Values.extraConfigs }}
           args:
           - --config.file
           - /etc/configs/qcloud.yml
-          {{- end }}
-          {{- if .Values.extraConfigs }}
           volumeMounts:
           - name: config-volume
             mountPath: /etc/configs
-          {{- end }}
           ports:
             - name: http
               containerPort: {{ .Values.containerPort }}
@@ -61,12 +57,10 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-      {{ if .Values.extraConfigs }}
       volumes:
       - name: config-volume
         configMap:
           name: "{{ include "tencentcloud-exporter.fullname" . }}-config"
-      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
