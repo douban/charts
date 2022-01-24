@@ -52,7 +52,7 @@ extraConfigs:
   - namespace: QCE/CDB
     all_metrics: true
     all_instances: true
-    extra_labels: [InstanceName,Zone]
+    extra_labels: [InstanceName, Zone]
 
 ingress:
   enabled: false
