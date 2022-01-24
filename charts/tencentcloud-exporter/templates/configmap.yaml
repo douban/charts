@@ -1,0 +1,11 @@
+{{ if .Values.extraConfigs }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    {{- include "tencentcloud-exporter.labels" . | nindent 4 }}
+  name: "{{ include "tencentcloud-exporter.fullname" . }}-config"
+data:
+  qcloud.yml: |
+{{ toYaml .Values.extraConfigs | indent 4 }}
+{{- end }}
