@@ -327,6 +327,20 @@ entries:
     urls:
     - https://github.com/douban/charts/releases/download/tencentcloud-exporter-0.1.0/tencentcloud-exporter-0.1.0.tgz
     version: 0.1.0
+  tencentcloud-info-exporter:
+  - apiVersion: v2
+    appVersion: v2.8.0
+    created: "2022-03-07T10:00:45.948241137Z"
+    description: A Helm chart for Kubernetes
+    digest: 35bc784e0dc76221d63f1aac649ba659077944bfbfe4ec121ff7e77c0ed9b7de
+    home: https://github.com/LeoQuote/tencentcloud-info-exporter
+    maintainers:
+    - name: LeoQuote
+    name: tencentcloud-info-exporter
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/tencentcloud-info-exporter-0.1.0/tencentcloud-info-exporter-0.1.0.tgz
+    version: 0.1.0
   tinyproxy-exporter:
   - apiVersion: v2
     appVersion: 1.16.0
