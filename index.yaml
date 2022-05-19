@@ -330,6 +330,19 @@ entries:
   tencentcloud-info-exporter:
   - apiVersion: v2
     appVersion: v2.8.0
+    created: "2022-05-19T14:53:06.202637538Z"
+    description: A Helm chart for Kubernetes
+    digest: a1286c58607cdec6387fb377f0d0ee6a232276a413586ffc8a8b258dc965a721
+    home: https://github.com/LeoQuote/tencentcloud-info-exporter
+    maintainers:
+    - name: LeoQuote
+    name: tencentcloud-info-exporter
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/tencentcloud-info-exporter-0.1.2/tencentcloud-info-exporter-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: v2.8.0
     created: "2022-05-19T08:43:32.576764168Z"
     description: A Helm chart for Kubernetes
     digest: 0f298bde35e2017f8fa47de48ca6865471451b3f0f8065c99a5442caecc5b53b
