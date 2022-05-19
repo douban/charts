@@ -46,6 +46,7 @@ extraEnvs: []
 # - name: test
 #   value: test
 
+enableMetrics: ['metrics.es', 'metrics.cbs']
 
 ingress:
   enabled: false
