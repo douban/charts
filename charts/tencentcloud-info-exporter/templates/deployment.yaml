@@ -37,6 +37,9 @@ spec:
           env:
             {{- toYaml . | nindent 12 }}
           {{- end}}
+          args:
+            - {{ .Values.args.enableEs }}
+            - {{ .Values.args.enableCbs }}
           ports:
             - name: http
               containerPort: {{ .Values.containerPort }}
