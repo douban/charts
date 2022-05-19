@@ -37,7 +37,7 @@ spec:
           env:
             {{- toYaml . | nindent 12 }}
           {{- end}}
-          {{- with .Values.enableMetrics }}
+          {{- with .Values.args }}
           args:
             {{- toYaml . | nindent 12 }}
           {{- end}}
