@@ -42,9 +42,17 @@ service:
   type: ClusterIP
   port: 9150
 
-extraEnvs: []
-# - name: test
-#   value: test
+extraEnvs:
+- name: TENCENTCLOUD_SECRET_ID
+  valueFrom:
+    secretKeyRef:
+      name: tencent-monitor-api-keys
+      key: TENCENTCLOUD_SECRET_ID
+- name: TENCENTCLOUD_SECRET_KEY
+  valueFrom:
+    secretKeyRef:
+      name: tencent-monitor-api-keys
+      key: TENCENTCLOUD_SECRET_KEY
 
 args: ["--metrics.cbs"]
 
