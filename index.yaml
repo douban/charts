@@ -282,6 +282,24 @@ entries:
   prometheus-memcached-exporter:
   - apiVersion: v2
     appVersion: 0.9.0
+    created: "2022-05-23T06:06:26.419020533Z"
+    description: A Helm chart for Kubernetes
+    digest: c22d3674460fd7f746b2992fd24553d89f5e9a1bc5adb193b07149cb471c167c
+    home: https://github.com/douban/charts
+    keywords:
+    - prometheus
+    - memcached
+    maintainers:
+    - name: LeoQuote
+    name: prometheus-memcached-exporter
+    sources:
+    - https://github.com/prometheus/memcached_exporter
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/prometheus-memcached-exporter-0.1.1/prometheus-memcached-exporter-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 0.9.0
     created: "2021-12-14T06:37:54.254879918Z"
     description: A Helm chart for Kubernetes
     digest: d5dad784091b4c57f30f1398eba7030ccb04f35e3f010e15bfcf7682b4e86a31
