@@ -2,5 +2,8 @@
 remote: origin
 chart-dirs:
   - charts
-chart-repos: []
+chart-repos:
+  - stable=https://charts.helm.sh/stable
+  - douban=https://douban.github.io/charts/
+  - bitnami=https://charts.bitnami.com/bitnami
 helm-extra-args: --timeout 600s
