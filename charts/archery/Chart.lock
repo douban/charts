@@ -8,5 +8,5 @@ dependencies:
 - name: goinception
   repository: https://douban.github.io/charts/
   version: ~0.1.0
-digest: sha256:102424a1c58ad9d72e32a8d2dec9f74173dd10f55ba665a90022ebf1cd6b06c4
-generated: "2022-05-27T14:12:37.1079148+08:00"
+digest: sha256:217229538c4a4fea25d1c549727cee83b4301ddc8f727b21fc860bd87fdd2eab
+generated: "2022-05-27T14:25:09.4114255+08:00"
