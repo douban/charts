@@ -199,7 +199,7 @@ configMap:
   # admin password
   superuser:
     username: admin
-    password: archery # 请尽快修改
+    password: archery  # 请尽快修改
     email: "archery@example.com"
   data:
     local_settings.py: |-
