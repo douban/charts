@@ -8,8 +8,8 @@ sources:
   - https://github.com/hhyo/Archery
 
 maintainers:
-  - name: AceRyuunosuke
-    email: aozakiaoko@outlook.com
+  - name: AceAttorney 
+  - name: LeoQuote
 
 dependencies:
   - name: redis
