@@ -8,7 +8,7 @@ sources:
   - https://github.com/hhyo/Archery
 
 maintainers:
-  - name: AceAttorney 
+  - name: AceAttorney
   - name: LeoQuote
 
 dependencies:
