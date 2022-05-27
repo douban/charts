@@ -57,9 +57,9 @@ redis:
 # subcharts mysql
 mysql:
   embedded: true
-  url: "mysql://root:@127.0.0.1:3306/archery"
-  urlSecret: ""
-  urlSecretKey: "DATABASE_URL"
+  # url: "mysql://root:@127.0.0.1:3306/archery"
+  # urlSecret: ""
+  # urlSecretKey: "DATABASE_URL"
   # embedded 为 false时, 会使用外部的 mysql, 下方的 mysql 配置不会生效
   architecture: standalone
   auth:
