@@ -21,6 +21,6 @@ dependencies:
     repository: https://charts.bitnami.com/bitnami
     condition: mysql.embedded
   - name: goinception
-    version: 0.1.0
+    version: ~0.1.0
     repository: https://douban.github.io/charts/
     condition: goinception.embedded
