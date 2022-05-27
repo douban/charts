@@ -14,6 +14,20 @@ entries:
     urls:
     - https://github.com/douban/charts/releases/download/channels-1.1.0/channels-1.1.0.tgz
     version: 1.1.0
+  goinception:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2022-05-27T06:06:23.222067534Z"
+    description: A Helm chart for Kubernetes
+    digest: 1a5db5ab1404b7bd723da160693ac6b1922b6a643d7a39b036ba64043a417034
+    home: https://github.com/hanchuanchuan/goInception
+    maintainers:
+    - name: LeoQuote
+    - name: AceAttorney
+    name: goinception
+    urls:
+    - https://github.com/douban/charts/releases/download/goinception-0.1.0/goinception-0.1.0.tgz
+    version: 0.1.0
   helpdesk:
   - apiVersion: v2
     appVersion: 0.2.0
