@@ -1,0 +1,9 @@
+apiVersion: v1
+appVersion: "1.0"
+description: A Helm chart for Kubernetes
+name: goinception
+version: 0.1.0
+home: https://github.com/hanchuanchuan/goInception
+maintainers:
+  - name: LeoQuote
+  - name: AceAttorney
