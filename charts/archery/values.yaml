@@ -1,0 +1,292 @@
+# Default values for archery.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: hhyo/archery
+  tag: v1.8.5
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: ClusterIP
+  port: 9123
+  targetPort: 9123
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  paths:
+    - /
+  servicePort: 9123
+
+  hosts:
+    - dba.archery.local
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+  
+
+# subcharts redis
+redis:
+  embedded: true
+  # url: "redis://127.0.0.1:6379/0"
+  # urlSecret: ""
+  # urlSecretKey: "CACHE_URL"
+  # dingdingUrl: "redis://127.0.0.1:6379/1"
+  # dingdingUrlSecret: ""
+  # dingdingUrlSecretKey: "DINGDING_CACHE_URL"
+  # embedded 为 false, 会使用外部的 redis, 下方的 redis 就不会生效
+  architecture: standalone
+  auth:
+    password: "REDIS_PASSWORD"
+  master:
+    persistence:
+      enabled: false
+      size: 8Gi
+      # storageClass: ""
+
+# subcharts mysql
+mysql:
+  embedded: true
+  url: "mysql://root:@127.0.0.1:3306/archery"
+  urlSecret: ""
+  urlSecretKey: "DATABASE_URL"
+  # embedded 为 false时, 会使用外部的 mysql, 下方的 mysql 配置不会生效
+  architecture: standalone
+  auth:
+    database: archery
+    rootPassword: "MYSQL_ROOT_PASSWORD"	
+  primary:
+    configuration: |-
+      [mysqld]
+      default_authentication_plugin=mysql_native_password
+      skip-name-resolve
+      explicit_defaults_for_timestamp
+      basedir=/opt/bitnami/mysql
+      plugin_dir=/opt/bitnami/mysql/lib/plugin
+      socket=/opt/bitnami/mysql/tmp/mysql.sock
+      datadir=/bitnami/mysql/data
+      tmpdir=/opt/bitnami/mysql/tmp
+      bind-address=0.0.0.0
+      pid-file=/opt/bitnami/mysql/tmp/mysqld.pid
+      log-error=/opt/bitnami/mysql/logs/mysqld.log
+      port            = 3306
+      skip-external-locking
+      lower_case_table_names=1
+      default-time_zone = '+8:00'
+      innodb_buffer_pool_size = 512M
+      server-id              = 100
+      log_bin                        = mysql-bin.log
+      expire_logs_days        = 1
+      max_binlog_size         = 500M
+      character-set-server = utf8mb4
+      collation-server = utf8mb4_general_ci
+      slow_query_log_file = mysql-slow.log
+      slow_query_log      = 1
+      long_query_time = 1
+      [client]
+      default-character-set=utf8mb4
+      socket=/opt/bitnami/mysql/tmp/mysql.sock
+      plugin_dir=/opt/bitnami/mysql/lib/plugin
+      [mysqldump]
+      quick
+      quote-names
+      max_allowed_packet      = 1024M
+      [manager]
+      port=3306
+      socket=/opt/bitnami/mysql/tmp/mysql.sock
+      pid-file=/opt/bitnami/mysql/tmp/mysqld.pid
+
+    persistence:
+      enabled: true
+      accessModes:
+        - ReadWriteOnce
+      size: 20Gi
+      ## Persistent Volume Storage Class
+      ## If defined, storageClassName: <storageClass>
+      ## If set to "-", storageClassName: "", which disables dynamic provisioning
+      ## If undefined (the default) or set to null, no storageClassName spec is
+      ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+      ##   GKE, AWS & OpenStack)
+      ##
+      # storageClass: "-"
+
+      # storageClass: ""
+
+goinception:
+  embedded: true
+  image:
+    repository: hanchuanchuan/goinception
+    tag: latest
+    pullPolicy: IfNotPresent
+
+  nameOverride: ""
+  fullnameOverride: ""
+
+  service:
+    type: ClusterIP
+    port: 4000
+    targetPort: 4000
+
+  initEnv:
+    - name: BACKUP_PASSWORD
+      value: "my-password"
+  # you can override more options , please see goinception chart readme and values
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  # requests:
+  #  cpu: 100m
+  #  memory: 128Mi
+envs: []
+  # - name: value
+  #  value: xxx
+
+volumeMounts:
+  - name: archery-settings
+    subPath: local_settings.py
+    mountPath: /opt/archery/local_settings.py
+  - name: archery-settings
+    subPath: soar.yaml
+    mountPath: /etc/soar.yaml
+  - name: archery-settings
+    subPath: analysis_slow_query.sh
+    mountPath: /opt/archery/src/script/analysis_slow_query.sh
+  - name: archery-settings
+    subPath: startup.sh
+    mountPath: /opt/archery/src/docker/startup.sh
+  - name: archery-settings
+    subPath: init-archery.sh
+    mountPath: /opt/archery/src/docker/init-archery.sh
+  - name: archery-settings
+    subPath: createsuperuser.py
+    mountPath: /opt/archery/src/docker/createsuperuser.py
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+volumes:
+  - name: archery-settings
+    configMap:
+      name: archery-config
+      defaultMode: 420
+  - name: archery-download
+    hostPath:
+      path: /data/archery/downloads
+  - name: archery-script
+    hostPath:
+      path: /data/archery/scripts
+
+configMap:
+  enabled: true
+  # admin password
+  superuser:
+    username: admin
+    password: archery # 请尽快修改
+    email: "archery@example.com"
+  data:
+    local_settings.py: |-
+        # -*- coding: UTF-8 -*-
+        # override your configs here
+    soar.yaml: |-
+        # 是否允许测试环境与线上环境配置相同
+        allow-online-as-test: false
+        # 是否清理测试时产生的临时文件
+        drop-test-temporary: true
+        # 语法检查小工具
+        only-syntax-check: false
+        sampling-data-factor: 100
+        sampling: false
+        sampling-statistic-target: 100
+        profiling: false
+        trace: false
+        # 日志级别，[0:Emergency, 1:Alert, 2:Critical, 3:Error, 4:Warning, 5:Notice, 6:Informational, 7:Debug]
+        log-level: 3
+        log-output: /opt/archery/logs/soar.log
+        # 优化建议输出格式
+        report-type: markdown
+        ignore-rules:
+        - ""
+        # 启发式算法相关配置
+        max-join-table-count: 5
+        max-group-by-cols-count: 5
+        max-distinct-count: 5
+        max-index-cols-count: 5
+        max-total-rows: 9999999
+        spaghetti-query-length: 2048
+        allow-drop-index: false
+        # EXPLAIN相关配置
+        explain-sql-report-type: pretty
+        explain-type: extended
+        explain-format: traditional
+        explain-warn-select-type:
+        - ""
+        explain-warn-access-type:
+        - ALL
+        explain-max-keys: 3
+        explain-min-keys: 0
+        explain-max-rows: 10000
+        explain-warn-extra:
+        - ""
+        explain-max-filtered: 100
+        explain-warn-scalability:
+        - O(n)
+        query: ""
+        list-heuristic-rules: false
+        list-test-sqls: false
+        verbose: true
+    analysis_slow_query.sh: |-
+        #!/bin/bash
+        DIR="$( cd "$( dirname "$0"  )" && pwd  )"
+        cd $DIR
+        
+        #配置archery数据库的连接地址
+        monitor_db_host="archery-mysql"
+        monitor_db_port=3306
+        monitor_db_user="root"
+        monitor_db_password="MYSQL_ROOT_PASSWORD"
+        monitor_db_database="archery"
+        
+        #实例慢日志位置
+        slowquery_file="/home/mysql/log_slow.log"
+        pt_query_digest="/usr/bin/pt-query-digest"
+        
+        #实例连接信息
+        hostname="mysql_host:mysql_port" # 和archery实例配置内容保持一致，用于archery做筛选
+        
+        #获取上次分析时间，初始化时请删除last_analysis_time_$hostname文件，可分析全部日志数据
+        if [ -s last_analysis_time_$hostname ]; then
+            last_analysis_time=`cat last_analysis_time_$hostname`
+        else
+            last_analysis_time='1000-01-01 00:00:00'
+        fi
+        
+        #收集日志
+        #RDS需要增加--no-version-check选项
+        $pt_query_digest \
+        --user=$monitor_db_user --password=$monitor_db_password --port=$monitor_db_port \
+        --review h=$monitor_db_host,D=$monitor_db_database,t=mysql_slow_query_review  \
+        --history h=$monitor_db_host,D=$monitor_db_database,t=mysql_slow_query_review_history  \
+        --no-report --limit=100% --charset=utf8 \
+        --since "$last_analysis_time" \
+        --filter="\$event->{Bytes} = length(\$event->{arg}) and \$event->{hostname}=\"$hostname\"  and \$event->{client}=\$event->{ip} " \
+        $slowquery_file > /tmp/analysis_slow_query.log
+        
+        echo `date +"%Y-%m-%d %H:%M:%S"`>last_analysis_time_$hostname
