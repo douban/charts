@@ -7,6 +7,13 @@ metadata:
     helm.sh/chart: {{ include "archery.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
+    {{- range $key, $val := .Values.deployment.labels }}
+    {{ $key }}: {{ $val | quote }}
+    {{- end}}
+  {{- with .Values.deployment.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:

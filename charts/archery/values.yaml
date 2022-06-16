@@ -17,6 +17,10 @@ service:
   port: 9123
   targetPort: 9123
 
+deployment:
+  labels: {}
+  annotations: {}
+
 ingress:
   enabled: true
   className: "nginx"
