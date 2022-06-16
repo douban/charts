@@ -17,6 +17,10 @@ service:
   port: 4000
   targetPort: 4000
 
+deployment:
+  labels: {}
+  annotations: {}
+
 initEnv:
   - name: BACKUP_PASSWORD
     value: "my-password"
