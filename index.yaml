@@ -423,6 +423,20 @@ entries:
     urls:
     - https://github.com/douban/charts/releases/download/prometheus-memcached-exporter-0.1.0/prometheus-memcached-exporter-0.1.0.tgz
     version: 0.1.0
+  redirect:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2022-06-27T10:42:04.085686245Z"
+    description: Using ingress to redirect
+    digest: e38c05db873caa8f88b4e6607f4d7f01fa132666c5ae49717068e5bfdf0951f3
+    home: https://github.com/douban/charts
+    maintainers:
+    - name: LeoQuote
+    name: redirect
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/redirect-0.1.0/redirect-0.1.0.tgz
+    version: 0.1.0
   selenium:
   - apiVersion: v2
     appVersion: 3.141.59
