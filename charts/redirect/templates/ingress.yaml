@@ -1,0 +1,36 @@
+{{- range .Values.websites }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: redirect-{{ .name }}
+  labels:
+    {{- with $.Values.globalConfigs.ingressCommonLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- include "redirect.labels" $ | nindent 4 }}
+  annotations:
+    {{- with $.Values.globalConfigs.ingressCommonAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      return 302 {{ .destination }};
+spec:
+  ingressClassName: {{ $.Values.globalConfigs.ingressClassName }}
+  rules:
+  - host: {{ .source }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: does-not-exist
+            port:
+              number: 80
+        path: /
+        pathType: ImplementationSpecific
+  tls:
+  - hosts:
+    - {{ .source }}
+    secretName: redirect-{{ .source }}-tls-cert
+
+{{- end }}
