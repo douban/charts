@@ -1,0 +1,17 @@
+# Default values for redirect.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+nameOverride: ""
+fullnameOverride: ""
+
+globalConfigs:
+  ingressClassName: "nginx"
+  ingressCommonLabels: {}
+  ingressCommonAnnotations: {}
+    # cert-manager.io/cluster-issuer: your-issuer
+
+websites:
+- name: test
+  source: foo.example.douban
+  destination: https://bar.example.com
