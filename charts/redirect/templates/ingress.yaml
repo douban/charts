@@ -13,8 +13,12 @@ metadata:
     {{- with $.Values.globalConfigs.ingressCommonAnnotations }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
+{{- if .include_path }}
+    nginx.ingress.kubernetes.io/rewrite-target: {{ .destination }}/$1
+{{- else }}
     nginx.ingress.kubernetes.io/configuration-snippet: |
       return 302 {{ .destination }};
+{{- end }}
 spec:
   ingressClassName: {{ $.Values.globalConfigs.ingressClassName }}
   rules:
@@ -26,7 +30,11 @@ spec:
             name: does-not-exist
             port:
               number: 80
+{{- if .include_path }}
+        path: "/(.*)$"
+{{- else }}
         path: /
+{{- end }}
         pathType: ImplementationSpecific
   tls:
   - hosts:

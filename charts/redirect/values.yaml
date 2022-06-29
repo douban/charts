@@ -13,5 +13,11 @@ globalConfigs:
 
 websites:
 - name: test
-  source: foo.example.douban
+  source: foo.example.com
   destination: https://bar.example.com
+# if include_path is enabled , redirect with path in original url
+# foo.example.com/123 will be redirect to https://bar.example.com/123
+# - name: test
+#   source: foo.example.com
+#   destination: https://bar.example.com
+#   include_path: true
