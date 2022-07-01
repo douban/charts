@@ -80,6 +80,7 @@ spec:
           {{- with .Values.volumeMounts }}
           volumeMounts:
           {{- toYaml . | nindent 12 }}
+          {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -143,7 +144,7 @@ spec:
           {{- with .Values.volumeMounts }}
           volumeMounts:
           {{- toYaml . | nindent 12 }}
-         {{- end }}
+          {{- end }}
      {{- with .Values.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
