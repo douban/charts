@@ -77,21 +77,9 @@ spec:
           {{- with .Values.envs }}
             {{ toYaml . | nindent 12 }}
           {{- end}}
+          {{- with .Values.volumeMounts }}
           volumeMounts:
-          - name: archery-settings
-            subPath: local_settings.py
-            mountPath: /opt/archery/local_settings.py
-          - name: archery-settings
-            subPath: init-archery.sh
-            mountPath: /opt/archery/src/docker/init-archery.sh
-          - name: archery-settings
-            subPath: createsuperuser.py
-            mountPath: /opt/archery/src/docker/createsuperuser.py
-          - mountPath: /opt/archery/downloads
-            name: archery-download
-          - mountPath: /opt/archery/src/script
-            name: archery-script
-          command: ['/bin/bash','/opt/archery/src/docker/init-archery.sh']
+          {{- toYaml . | nindent 12 }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
