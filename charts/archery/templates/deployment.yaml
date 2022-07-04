@@ -27,7 +27,7 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       initContainers:
-        {{- if .Values.redis.embedded }}
+        {{- if .Values.mysql.embedded }}
         - image: busybox
           name: init-mysql
           imagePullPolicy: IfNotPresent
@@ -77,6 +77,7 @@ spec:
           {{- with .Values.envs }}
             {{ toYaml . | nindent 12 }}
           {{- end}}
+          command: ['/bin/bash','/opt/archery/src/docker/init-archery.sh']
           {{- with .Values.volumeMounts }}
           volumeMounts:
           {{- toYaml . | nindent 12 }}
