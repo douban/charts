@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "aliyun-exporter.fullname" . }}
+  name: exporter-deployment
+  labels:
+    {{- include "aliyun-exporter.labels" . | nindent 4 }}
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      {{- include "aliyun-exporter.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "aliyun-exporter.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: registry.cn-hangzhou.aliyuncs.com/childgod/ali:1
+        envFrom:
+        - secretRef:
+            name: mysecret
+        ports:
+        - containerPort: 9180
