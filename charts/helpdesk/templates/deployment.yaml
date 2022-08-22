@@ -28,6 +28,10 @@ spec:
               mountPath: /app/local_config.py
               subPath: local_config.py
               readOnly: true
+            - name: bridge
+              mountPath: /app/bridge.py
+              subPath: bridge.py
+              readOnly: true
             {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
@@ -65,6 +69,9 @@ spec:
         - name: local-config
           secret:
             secretName: {{ .Values.secretName }}
+        - name: bridge
+          configMap:
+            name: {{ .Value.configMapName }}
         {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}
         {{- end }}

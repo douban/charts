@@ -86,3 +86,4 @@ affinity: {}
 secretName: helpdesk
 existingSecret: false
 config: ""
+configMapName: helpdesk
