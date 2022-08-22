@@ -71,7 +71,7 @@ spec:
             secretName: {{ .Values.secretName }}
         - name: bridge
           configMap:
-            name: {{ .Value.configMapName }}
+            name: {{ .Values.configMapName }}
         {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
