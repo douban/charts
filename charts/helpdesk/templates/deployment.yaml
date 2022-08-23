@@ -25,12 +25,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:
             - name: local-config
-              mountPath: /app/local_config.py
-              subPath: local_config.py
-              readOnly: true
-            - name: bridge
-              mountPath: /app/bridge.py
-              subPath: bridge.py
+              mountPath: /app
               readOnly: true
             {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
@@ -69,9 +64,11 @@ spec:
         - name: local-config
           secret:
             secretName: {{ .Values.secretName }}
-        - name: bridge
-          configMap:
-            name: {{ .Values.configMapName }}
+            items:
+            - key: local-config
+              path: local-config.py
+            - key: bridge
+              path: bridge.py
         {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
