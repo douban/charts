@@ -1,5 +1,19 @@
 apiVersion: v1
 entries:
+  aliyun-exporter:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2022-08-31T04:27:45.479864315Z"
+    description: A Helm chart for Kubernetes
+    digest: 24ae297cff3604e1c88dad224c7516ab17124d353e6e0cc95964955c5513149f
+    home: https://github.com/douban/aliyun-exporter
+    maintainers:
+    - name: douban
+    name: aliyun-exporter
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/aliyun-exporter-0.1.0/aliyun-exporter-0.1.0.tgz
+    version: 0.1.0
   archery:
   - apiVersion: v2
     appVersion: "1.0"
