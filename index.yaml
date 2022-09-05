@@ -608,4 +608,18 @@ entries:
     urls:
     - https://github.com/douban/charts/releases/download/tinyproxy-exporter-0.1.0/tinyproxy-exporter-0.1.0.tgz
     version: 0.1.0
+  ucloud-exporter:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2022-09-05T06:52:35.775136074Z"
+    description: A Helm chart for Kubernetes
+    digest: 23bcc384c0f5c30ec2a553d1317c9bb8172245867e25927ce1c60cf8d66d6745
+    home: https://github.com/douban/ucloud-exporter
+    maintainers:
+    - name: douban
+    name: ucloud-exporter
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/ucloud-exporter-0.1.0/ucloud-exporter-0.1.0.tgz
+    version: 0.1.0
 generated: "2020-07-02T06:35:27.003478545Z"
