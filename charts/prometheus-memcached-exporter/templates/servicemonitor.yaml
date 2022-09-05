@@ -32,10 +32,8 @@ spec:
 {{ toYaml .Values.serviceMonitor.relabelings | indent 4 }}
 {{- end }}
     params:
-{{- if .Values.serviceMonitor.target }}
       target:
-{{ toYaml .Values.serviceMonitor.target | indent 6 }}
-{{- end }}
+      - "{{ .values.serviceMonitor.target }}"
   jobLabel: {{ template "prometheus-memcached-exporter.fullname" . }}
   namespaceSelector:
     matchNames:
