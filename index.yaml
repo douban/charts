@@ -611,6 +611,19 @@ entries:
   ucloud-exporter:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2022-09-12T23:47:16.753358484Z"
+    description: A Helm chart for Kubernetes
+    digest: 736622a2cca93dbc7a50dd4ac172b0897c0ae2215b34b095513cf9decfffa2cf
+    home: https://github.com/douban/ucloud-exporter
+    maintainers:
+    - name: douban
+    name: ucloud-exporter
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/ucloud-exporter-0.1.1/ucloud-exporter-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2022-09-05T06:52:35.775136074Z"
     description: A Helm chart for Kubernetes
     digest: 23bcc384c0f5c30ec2a553d1317c9bb8172245867e25927ce1c60cf8d66d6745
