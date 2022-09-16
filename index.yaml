@@ -635,4 +635,18 @@ entries:
     urls:
     - https://github.com/douban/charts/releases/download/ucloud-exporter-0.1.0/ucloud-exporter-0.1.0.tgz
     version: 0.1.0
+  upyun-exporter:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2022-09-16T08:09:07.57892177Z"
+    description: A Helm chart for Kubernetes
+    digest: 9cfdbda12c765e08df39f517159e88511f6115218b04d24d9c69b2d2af133d6d
+    home: https://github.com/douban/upyun-exporter
+    maintainers:
+    - name: douban
+    name: upyun-exporter
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/upyun-exporter-0.1.0/upyun-exporter-0.1.0.tgz
+    version: 0.1.0
 generated: "2020-07-02T06:35:27.003478545Z"
