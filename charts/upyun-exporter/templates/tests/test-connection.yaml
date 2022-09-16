@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "upyun-exporter.fullname" . }}-test-connection"
+  labels:
+    {{- include "upyun-exporter.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "upyun-exporter.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
