@@ -493,6 +493,20 @@ entries:
     urls:
     - https://github.com/douban/charts/releases/download/prometheus-memcached-exporter-0.1.0/prometheus-memcached-exporter-0.1.0.tgz
     version: 0.1.0
+  qiniu-exporter:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2022-09-28T07:11:11.683451915Z"
+    description: A Helm chart for Kubernetes
+    digest: 870988fa7f1a3166db35baba8e3251986b3aebbd12f110a699202f3bab3b9eb5
+    home: https://github.com/douban/qiniu-exporter
+    maintainers:
+    - name: douban
+    name: qiniu-exporter
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/qiniu-exporter-0.1.0/qiniu-exporter-0.1.0.tgz
+    version: 0.1.0
   redirect:
   - apiVersion: v2
     appVersion: 1.16.0
