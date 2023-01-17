@@ -16,6 +16,33 @@ entries:
     version: 0.1.0
   archery:
   - apiVersion: v2
+    created: "2023-01-17T09:42:58.005050161Z"
+    dependencies:
+    - condition: redis.embedded
+      name: redis
+      repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+      version: ~15.7.1
+    - condition: mysql.embedded
+      name: mysql
+      repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+      version: ~8.8.20
+    - condition: goinception.embedded
+      name: goinception
+      repository: https://douban.github.io/charts/
+      version: ~0.2.0
+    description: Archery Helm chart for Kubernetes
+    digest: 7422d12fe180912a6860b985b473a13ce96a4e9171311121dd271723a6c52531
+    home: https://archerydms.com/
+    maintainers:
+    - name: AceAttorney
+    - name: LeoQuote
+    name: archery
+    sources:
+    - https://github.com/hhyo/Archery
+    urls:
+    - https://github.com/douban/charts/releases/download/archery-0.3.0/archery-0.3.0.tgz
+    version: 0.3.0
+  - apiVersion: v2
     appVersion: "1.0"
     created: "2022-07-04T04:13:30.547730954Z"
     dependencies:
