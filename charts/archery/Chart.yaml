@@ -13,11 +13,11 @@ maintainers:
 dependencies:
   - name: redis
     version: ~15.7.1
-    repository: https://charts.bitnami.com/bitnami
+    repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
     condition: redis.embedded
   - name: mysql
     version: ~8.8.20
-    repository: https://charts.bitnami.com/bitnami
+    repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
     condition: mysql.embedded
   - name: goinception
     version: ~0.2.0
