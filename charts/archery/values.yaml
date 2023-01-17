@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: hhyo/archery
-  tag: v1.8.5
+  tag: v1.9.1
   pullPolicy: IfNotPresent
 
 nameOverride: ""
@@ -144,7 +144,8 @@ goinception:
   initEnv:
     - name: BACKUP_PASSWORD
       value: "my-password"
-  # you can override more options , please see goinception chart readme and values
+  # you can override more options , please see goinception chart readme and values 
+  # https://github.com/douban/charts/blob/master/charts/goinception/values.yaml
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -162,6 +163,8 @@ envs: []
   #  value: xxx
 
 volumeMounts:
+  # 请慎重更改以下值, 如需更改建议复制粘贴然后按需求增加键值对
+  # 更改后可能会造成部分其他配置失效
   - name: archery-settings
     subPath: local_settings.py
     mountPath: /opt/archery/local_settings.py
@@ -187,6 +190,8 @@ tolerations: []
 affinity: {}
 
 volumes:
+  # 请慎重更改以下值, 如需更改建议复制粘贴然后按需求增加键值对
+  # 更改后可能会造成部分其他配置失效
   - name: archery-settings
     configMap:
       name: archery-config
