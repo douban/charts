@@ -144,7 +144,7 @@ goinception:
   initEnv:
     - name: BACKUP_PASSWORD
       value: "my-password"
-  # you can override more options , please see goinception chart readme and values 
+  # you can override more options , please see goinception chart readme and values
   # https://github.com/douban/charts/blob/master/charts/goinception/values.yaml
 
 resources: {}
