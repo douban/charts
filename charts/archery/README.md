@@ -1,33 +1,80 @@
 # Archery Kubernetes Helm 部署文档 
 
-helm repo add douban 
+## 最低版本要求
 
-## 2. 替换mysql、redis、archery登录密码
+* Kubernetes 1.16+
+* Helm 3+
 
-### 2.1 mysql
-执行以下命令，执行前将${your mysql password}替换为想要设置的mysql密码。
-`grep -rn "MYSQL_ROOT_PASSWORD" *|awk -F: '{print $1}'|uniq|xargs sed -i s/MYSQL_ROOT_PASSWORD/${your mysql password}/g`
+## 新增 douban repo
+```
+helm repo add douban https://douban.github.io/charts/
+helm repo update
+```
 
-### 2.2 redis
-执行以下命令，执行前将${your redis password}替换为想要设置的redis密码。
-`grep -rn "REDIS_PASSWORD" *|awk -F: '{print $1}'|uniq|xargs sed -i s/REDIS_PASSWORD/${your redis password}/g`
+## 安装 helm chart
+```
+helm install [RELEASE_NAME] douban/archery
+```
 
-### 2.3 archery默认admin登录密码
-执行以下命令，执行前将${your archery password}替换为想要设置的archery密码。
-`grep -rn "ARCHERY_ADMIN_PASSWORD" *|awk -F: '{print $1}'|uniq|xargs sed -i s/ARCHERY_ADMIN_PASSWORD/${your archery password}/g`
+参考下方的 [配置详解](#配置详解)
 
-## 3. 更改mysql持久化配置
+## 删除 helm chart
+```
+helm uninstall [RELEASE_NAME]
+```
 
-mysql的存储持久化，请查看values.yaml的方法进行配置。
+## 升级 helm chart
+helm chart 中, 只有 yaml 的相关修改, 升级时一般不会有 breaking change, 可以直接升级
 
-## 4. LDAP设置
+但要注意如果升级了镜像版本, 请参照 archery 的 release note 进行升级操作, 如改表, 更改配置等.
 
-如需启用LDAP，修改value.yaml里comfigmap下settings.py 内相关内容。
 
-## 5. 访问方式
+## 配置详解
+此处的配置详解只会介绍重点配置, 全部配置请直接看 values.yaml , 或者使用 `helm show values douban/archery` 查看values 说明
 
-5.1 本机访问 kubectl port-forward pods/archery-xxxxxx 9123:9123 
-5.2 集群外访问 将svc配置为nodePort或loadBalance，或开启ingress
+### 最小配置
+```
+image:
+  tag: v1.9.1 # 指定 archery 版本, archery 版本变动较快, 建议手动指定
+ingress:
+  enabled: true
+  className: nginx
+  paths:
+    - /
+  servicePort: 9123
 
-默认用户名: admin
-密码为2.3中设置的密码
+  hosts:
+    - archery.my-domain.com # 指定访问域名, 需提前设置好 nginx ingress
+```
+
+## 配置说明
+在 helm chart 中有若干层配置, 请按需要设置, 优先级从低到高依次为: 
+1. archery 依赖的 redis , mysql 组件的配置, 可以在 values.yaml 中的 redis 和 mysql 下进行配置 (默认使用内置的 mysql 和 redis) , 如果需要, 也可以自己制定 redis 或者 mysql 的连接串, 详见 values 文件
+2. archery 容器的环境变量, 可以在 envs 下进行配置, 这里的 envs 和 k8s pod env 完全一致, 你可以自定义, 如:
+```
+envs:
+  - name: SECRET_KEY
+    valueFrom:
+      secretKeyRef:
+        name: archery
+        key: SECRET_KEY
+  - name: ENABLE_LDAP
+    value: "true"
+```
+3. 容器内自定义的 local_settins.py, 可以在 configmap 下进行配置, 这里的配置会覆盖 archery 容器内的 local_settings.py, 你可以自定义, 如:
+```
+configMap:
+  enabled: true
+  # admin password
+  superuser:
+    username: admin
+    password: archery # 请尽快修改
+    email: "archery@example.com"
+  data:
+    local_settings.py: |-
+      # -*- coding: UTF-8 -*-
+      # 重新设置某些配置
+      SECRET_KEY = "my-secret-key"
+```
+
+helm chart 只是提供配置的方法, 你可以根据自己的需求进行配置, 如果配置出现不符合预期的, 首先确认渲染出的 yaml 是否符合预期, 如果 yaml 符合预期, 说明是 archery 的问题, 请前往 archery 项目提交 issue.
