@@ -23,12 +23,6 @@ sitenameOverride: ""
 #  for postgres password, email host password, superuser email, superuser password
 existingSecret: false
 
-#configure SMTP host
-# email:
-#   host:
-#   port: 1025
-#   user: test
-
 # pass more environment variables, more details below
 #https://github.com/healthchecks/healthchecks#configuration
 # extraenvs:
@@ -70,8 +64,8 @@ postgresql:
     enabled: true
   postgresqlDatabase: healthchecks
   postgresqlUsername: healthchecks
-  postgresqlPassword: healthchecks #pragma: allowlist secret
-# existingSecret: healthchecks-secret
+  postgresqlPassword: healthchecks  # pragma: allowlist secret
+  # existingSecret: healthchecks-secret
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
