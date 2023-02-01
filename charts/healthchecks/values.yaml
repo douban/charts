@@ -22,7 +22,7 @@ sitenameOverride: ""
 
 #  for postgres password, email host password, superuser email, superuser password
 # healthchecks-secret
-existingSecret: "" #pragma: allowlist secret
+existingSecret: ""  # pragma: allowlist secret
 
 # pass more environment variables, more details below
 # https://github.com/healthchecks/healthchecks#configuration
@@ -77,7 +77,7 @@ postgresql:
     enabled: true
   postgresqlDatabase: healthchecks
   postgresqlUsername: healthchecks
-  postgresqlPassword: healthchecks # pragma: allowlist secret
+  postgresqlPassword: healthchecks  # pragma: allowlist secret
   # existingSecret: healthchecks-secret
 
 resources: {}
