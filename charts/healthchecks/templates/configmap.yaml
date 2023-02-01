@@ -1,0 +1,72 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "healthchecks.fullname" . }}
+  labels:
+    {{- include "healthchecks.labels" . | nindent 4 }}
+data:
+  {{- if .Values.postgresql.enabled }}
+  DB: "postgres"
+  DB_HOST: "{{ .Release.Name }}-postgresql.{{ .Release.Namespace }}.svc.cluster.local"
+  DB_PORT: {{ default "5432" .Values.postgresql.service.port | quote }}
+  DB_NAME: {{ default "healthckecks" .Values.postgresql.postgresqlDatabase | quote }}
+  DB_USER: {{ default "healthckecks" .Values.postgresql.postgresqlUsername | quote }}
+  {{- end }}
+  {{- if .Values.siterootOverride }}
+  SITE_ROOT: {{ .Values.siterootOverride | quote }}
+  {{- else if .Values.ingress.enabled }}
+  {{- range $host := .Values.ingress.hosts }}
+    {{- range .paths }}
+  SITE_ROOT: "http{{ if $.Values.ingress.tls }}s{{ end }}://{{ $host.host }}{{ trimSuffix "/" . }}"
+    {{- end }}
+  {{- end }}
+  {{- else }}
+  SITE_ROOT: "http://localhost:8000"
+  {{- end }}
+  {{- if .Values.sitenameOverride }}
+  SITE_NAME: {{ .Values.sitenameOverride | quote }}
+  {{- else }}
+  SITE_NAME: "localhost"
+  {{- end }}
+  {{- range $key, $val := .Values.extraConfigs  }}
+  {{ $key }}: {{ $val | quote }}
+  {{- end }}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "healthchecks.fullname" . }}-docker-folder
+  labels:
+    {{- include "healthchecks.labels" . | nindent 4 }}
+data:
+  # override healthcheck default uwsgi config
+  uwsgi.ini: |
+    [uwsgi]
+    master
+    die-on-term
+    http-socket = :8000
+    harakiri = 10
+    post-buffering = 4096
+    processes = 4
+    enable-threads
+    threads = 1
+    chdir = /opt/healthchecks
+    module = hc.wsgi:application
+    thunder-lock
+    disable-write-exception
+
+    # workaround for https://github.com/unbit/uwsgi/issues/2299
+    max-fd = 10000
+
+    hook-pre-app = exec:./manage.py migrate
+    if-env = HEALTHCHECK_UWSGI_SENDALERTS
+    attach-daemon = ./manage.py sendalerts
+    endif =
+    if-env = HEALTHCHECK_UWSGI_SENDREPORTS
+    attach-daemon = ./manage.py sendreports --loop
+    endif =
+    if-env = HEALTHCHECK_UWSGI_SMTPD
+    attach-daemon = ./manage.py smtpd
+    endif =
+
