@@ -1,0 +1,136 @@
+# Default values for healthchecks.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: healthchecks/healthchecks
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+# override site root url (SITE_ROOT env) see below for more details
+# https://github.com/healthchecks/healthchecks
+siterootOverride: ""
+# override site name (SITE_NAME env) see below for more details
+sitenameOverride: ""
+
+#  for postgres password, email host password, superuser email, superuser password
+# healthchecks-secret
+# 
+existingSecret: "" #pragma: allowlist secret
+
+# pass more environment variables, more details below
+#https://github.com/healthchecks/healthchecks#configuration
+# These environments varibles will be stored in configmap and then passed to container environtment
+extraConfigs:
+  EMAIL_USE_TLS: "False"
+
+# These environment will be directly passed to container
+extraEnvs: []
+# - name: DB_PASSWORD
+#   value: "healthchecks"
+# - name: EMAIL_HOST_PASSWORD
+#   value: "healthchecks"
+# - name: foo
+#   value: bar
+
+probs:
+  livenessProbe:
+    httpGet:
+      path: /
+      port: http
+    initialDelaySeconds: 50
+  readinessProbe:
+    httpGet:
+      path: /
+      port: http
+    initialDelaySeconds: 50
+
+service:
+  type: ClusterIP
+  port: 8000
+
+ingress:
+  enabled: false
+  className: nginx
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  paths:
+    - /
+  hosts:
+    - host: chart-example.local
+      paths: []
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+postgresql:
+  enabled: true
+  persistence:
+    enabled: true
+  postgresqlDatabase: healthchecks
+  postgresqlUsername: healthchecks
+  postgresqlPassword: healthchecks #pragma: allowlist secret
+# existingSecret: healthchecks-secret
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+deployment:
+  annotations: {}
+
+podAnnotations: {}
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+networkpolicy:
+  enabled: false
+  apiVersion: networking.k8s.io/v1
+  ingress: []
+  # allow oauth-proxy ingress if you want
+  # if network policy is enabled , and ingress rule is not set ,all ingress traffic will be dropped
+  # - from:
+  #   - namespaceSelector:
+  #       matchLabels:
+  #         kubernetes.io/metadata.name: my-namespace
+  #     podSelector:
+  #       matchLabels:
+  #         foo: bar

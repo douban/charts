@@ -1,0 +1,111 @@
+# Default values for healthchecks.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: linuxserver/healthchecks
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "amd64-version-v1.16.0"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+# override site root url (SITE_ROOT env) see below for more details
+# https://github.com/healthchecks/healthchecks
+siterootOverride: ""
+# override site name (SITE_NAME env) see below for more details
+sitenameOverride: ""
+
+#  for postgres password, email host password, superuser email, superuser password
+existingSecret: false
+
+#configure SMTP host
+# email:
+#   host:
+#   port: 1025
+#   user: test
+
+# pass more environment variables, more details below
+#https://github.com/healthchecks/healthchecks#configuration
+# extraenvs:
+#   EMAIL_USE_TLS: "False"
+
+probs:
+  livenessProbe:
+    httpGet:
+      path: /
+      port: http
+    initialDelaySeconds: 50
+
+  readinessProbe:
+    httpGet:
+      path: /
+      port: http
+    initialDelaySeconds: 50
+
+service:
+  type: ClusterIP
+  port: 8000
+
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths: []
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+postgresql:
+  enabled: false
+  persistence:
+    enabled: true
+  postgresqlDatabase: healthchecks
+  postgresqlUsername: healthchecks
+  postgresqlPassword: healthchecks #pragma: allowlist secret
+# existingSecret: healthchecks-secret
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+podAnnotations: {}
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

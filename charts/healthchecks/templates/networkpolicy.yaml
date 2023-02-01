@@ -1,0 +1,18 @@
+{{- if .Values.networkpolicy.enabled }}
+kind: NetworkPolicy
+apiVersion: {{ .Values.networkpolicy.apiVersion }}
+metadata:
+  name: {{ include "healthchecks.fullname" . }}
+  labels:
+    {{- include "healthchecks.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "healthchecks.selectorLabels" . | nindent 6 }}
+  policyTypes:
+  - Ingress
+  {{- with .Values.networkpolicy.ingress }}
+  ingress:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
