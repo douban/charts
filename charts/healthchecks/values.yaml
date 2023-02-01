@@ -22,11 +22,10 @@ sitenameOverride: ""
 
 #  for postgres password, email host password, superuser email, superuser password
 # healthchecks-secret
-# 
 existingSecret: "" #pragma: allowlist secret
 
 # pass more environment variables, more details below
-#https://github.com/healthchecks/healthchecks#configuration
+# https://github.com/healthchecks/healthchecks#configuration
 # These environments varibles will be stored in configmap and then passed to container environtment
 extraConfigs:
   EMAIL_USE_TLS: "False"
@@ -78,8 +77,8 @@ postgresql:
     enabled: true
   postgresqlDatabase: healthchecks
   postgresqlUsername: healthchecks
-  postgresqlPassword: healthchecks #pragma: allowlist secret
-# existingSecret: healthchecks-secret
+  postgresqlPassword: healthchecks # pragma: allowlist secret
+  # existingSecret: healthchecks-secret
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
