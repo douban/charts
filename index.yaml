@@ -223,6 +223,27 @@ entries:
     urls:
     - https://github.com/douban/charts/releases/download/goinception-0.1.0/goinception-0.1.0.tgz
     version: 0.1.0
+  healthchecks:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2023-02-01T08:04:05.736196788Z"
+    dependencies:
+    - condition: postgresql.enabled,global.postgresql.enabled
+      name: postgresql
+      repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+      version: 10.14.3
+    description: A Helm chart for Kubernetes
+    digest: 6dc55652b9a05f0ef0a8c2c960d6b9a4ed5e3f15ecee55a71aa08632ee911f9a
+    maintainers:
+    - email: rakshit@improwised.com
+      name: rakshit
+    name: healthchecks
+    sources:
+    - https://github.com/healthchecks/healthchecks
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/healthchecks-1.0.6/healthchecks-1.0.6.tgz
+    version: 1.0.6
   helpdesk:
   - apiVersion: v2
     appVersion: 0.2.0
