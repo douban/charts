@@ -24,7 +24,7 @@ sitenameOverride: ""
 existingSecret: false
 
 # pass more environment variables, more details below
-#https://github.com/healthchecks/healthchecks#configuration
+# https://github.com/healthchecks/healthchecks#configuration
 # extraenvs:
 #   EMAIL_USE_TLS: "False"
 
