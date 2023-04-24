@@ -24,3 +24,5 @@ version: 0.1.0
 appVersion: "1.16.0"
 sources:
   - https://github.com/cloudflare/pint
+maintainers:
+  - name: douban
