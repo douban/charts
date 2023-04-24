@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "pint-exporter.fullname" . }}-config
+  labels:
+    app: {{ template "pint-exporter.name" . }}
+    chart: {{ template "pint-exporter.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+{{ toYaml .Values.configMap.data | indent 2 }}
