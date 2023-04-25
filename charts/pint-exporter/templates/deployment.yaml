@@ -27,11 +27,14 @@ spec:
       serviceAccountName: {{ include "pint-exporter.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- $watchConfig := .Values.watchConfig -}}
+      {{- with .Values.volumes }}
       volumes:
         - name: prometheus-rulefiles
           configMap:
-            name: {{ .Values.watchConfig }}
-        {{- toYaml .Values.volumes | nindent 8 }}
+            name: {{ $watchConfig }}
+        {{- toYaml . | nindent 8 }}
+      {{- end}}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -51,10 +54,12 @@ spec:
             {{- toYaml . | nindent 12 }}
             - /etc/prometheus/rules/
           {{- end}}
+          {{- with .Values.volumeMounts }}
           volumeMounts:
             - mountPath: /etc/prometheus/rules
               name: prometheus-rulefiles
-            {{- toYaml .Values.volumeMounts | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end}}
           ports:
             - name: http
               containerPort: {{ .Values.containerPort }}
