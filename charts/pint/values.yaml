@@ -38,7 +38,7 @@ securityContext: {}
 
 containerPort: 8008
 
-extraArgs: 
+extraArgs:
 - /etc/prometheus/rules/..data/
 
 extraVolumes: []
