@@ -94,6 +94,8 @@ tolerations: []
 
 affinity: {}
 
+# pint watch prometheus rules configMap name
+watchConfig: prometheus-rulefiles
 
 serviceMonitor:
   # When set true then use a ServiceMonitor to configure scraping
