@@ -56,7 +56,6 @@ spec:
           {{- with .Values.extraArgs }}
             {{- toYaml . | nindent 12 }}
           {{- end}}
-            - /etc/prometheus/rules/
           volumeMounts:
             - mountPath: /etc/prometheus/rules
               name: prometheus-rulefiles
