@@ -1,4 +1,4 @@
-# Default values for pint-exporter.
+# Default values for pint.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -38,9 +38,13 @@ securityContext: {}
 
 containerPort: 8008
 
-volumeMounts: []
+extraArgs: []
 
-volumes: []
+extraVolumes: []
+
+extraMounts: []
+
+extraEnvs: []
 
 configMap:
   data:

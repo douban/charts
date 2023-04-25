@@ -8,7 +8,7 @@ metadata:
   labels:
 {{ toYaml .Values.serviceMonitor.labels | indent 4}}
 {{- end }}
-  name: {{ template "pint-exporter.fullname" . }}
+  name: {{ template "pint.fullname" . }}
 {{- if .Values.serviceMonitor.namespace }}
   namespace: {{ .Values.serviceMonitor.namespace }}
 {{- end }}
@@ -32,13 +32,13 @@ spec:
     relabelings:
 {{ toYaml .Values.serviceMonitor.relabelings | indent 4 }}
 {{- end }}
-  jobLabel: {{ template "pint-exporter.fullname" . }}
+  jobLabel: {{ template "pint.fullname" . }}
   namespaceSelector:
     matchNames:
     - {{ .Release.Namespace }}
   selector:
     matchLabels:
-{{- include "pint-exporter.selectorLabels" . | nindent 6 }}
+{{- include "pint.selectorLabels" . | nindent 6 }}
 {{- if .Values.serviceMonitor.targetLabels }}
   targetLabels:
 {{- range .Values.serviceMonitor.targetLabels }}
