@@ -484,6 +484,20 @@ entries:
   pint:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2023-04-26T03:50:52.827253438Z"
+    description: A Helm chart for Kubernetes
+    digest: 92bcffd9206d8e449881b92b9e09e35402750396168c19cc05055dbed02c365b
+    maintainers:
+    - name: douban
+    name: pint
+    sources:
+    - https://github.com/cloudflare/pint
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/pint-0.1.1/pint-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2023-04-25T06:16:10.204903894Z"
     description: A Helm chart for Kubernetes
     digest: 2e02a7f7eee2b882684207696f6891d7d9a443ad82c81db64edbb31f0ae08982
