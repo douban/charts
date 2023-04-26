@@ -50,17 +50,17 @@ spec:
           command:
             - pint
           args:
-            - --config=/etc/pint/config/pint.hcl
+            - --config=/config/pint.hcl
             - watch
             - --listen=:8008
           {{- with .Values.extraArgs }}
             {{- toYaml . | nindent 12 }}
           {{- end}}
-            - /etc/prometheus/rules/*.yaml
+            - /rules/*.yaml
           volumeMounts:
-            - mountPath: /etc/prometheus/rules
+            - mountPath: /rules
               name: prometheus-rulefiles
-            - mountPath: /etc/pint/config
+            - mountPath: /config
               name: pint-config
           {{- with .Values.extraMounts }}
             {{- toYaml . | nindent 12 }}
