@@ -57,7 +57,7 @@ postUpgrade:
       pullPolicy: IfNotPresent
       pullSecrets: []
     extraNamespaces: []
-    podSecurity: 
+    podSecurity:
     - "pod-security.kubernetes.io/audit=restricted"
     - "pod-security.kubernetes.io/audit-version=latest"
     - "pod-security.kubernetes.io/warn=restricted"
