@@ -9,3 +9,5 @@ name: gatekeeper
 sources:
 - https://github.com/open-policy-agent/gatekeeper.git
 version: 3.12.0
+maintainers:
+- name: LeoQuote
