@@ -196,6 +196,24 @@ entries:
     urls:
     - https://github.com/douban/charts/releases/download/channels-1.1.0/channels-1.1.0.tgz
     version: 1.1.0
+  gatekeeper:
+  - apiVersion: v2
+    appVersion: v3.12.0
+    created: "2023-05-08T11:15:29.414476087Z"
+    description: A Helm chart for Gatekeeper
+    digest: b0fe714d933837af61918eb54a3c290a92bdc5030fefa8c2f33fb48aad7b1bd9
+    home: https://github.com/open-policy-agent/gatekeeper
+    icon: https://open-policy-agent.github.io/gatekeeper/website/img/logo.svg
+    keywords:
+    - open policy agent
+    maintainers:
+    - name: LeoQuote
+    name: gatekeeper
+    sources:
+    - https://github.com/open-policy-agent/gatekeeper.git
+    urls:
+    - https://github.com/douban/charts/releases/download/gatekeeper-3.12.0/gatekeeper-3.12.0.tgz
+    version: 3.12.0
   goinception:
   - apiVersion: v2
     appVersion: "1.0"
