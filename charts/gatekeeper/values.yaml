@@ -57,12 +57,13 @@ postUpgrade:
       pullPolicy: IfNotPresent
       pullSecrets: []
     extraNamespaces: []
-    podSecurity: ["pod-security.kubernetes.io/audit=restricted",
-      "pod-security.kubernetes.io/audit-version=latest",
-      "pod-security.kubernetes.io/warn=restricted",
-      "pod-security.kubernetes.io/warn-version=latest",
-      "pod-security.kubernetes.io/enforce=restricted",
-      "pod-security.kubernetes.io/enforce-version=v1.24"]
+    podSecurity: 
+    - "pod-security.kubernetes.io/audit=restricted"
+    - "pod-security.kubernetes.io/audit-version=latest"
+    - "pod-security.kubernetes.io/warn=restricted"
+    - "pod-security.kubernetes.io/warn-version=latest"
+    - "pod-security.kubernetes.io/enforce=restricted"
+    - "pod-security.kubernetes.io/enforce-version=v1.24"
     extraAnnotations: {}
   affinity: {}
   tolerations: []
@@ -87,12 +88,13 @@ postInstall:
       pullPolicy: IfNotPresent
       pullSecrets: []
     extraNamespaces: []
-    podSecurity: ["pod-security.kubernetes.io/audit=restricted",
-      "pod-security.kubernetes.io/audit-version=latest",
-      "pod-security.kubernetes.io/warn=restricted",
-      "pod-security.kubernetes.io/warn-version=latest",
-      "pod-security.kubernetes.io/enforce=restricted",
-      "pod-security.kubernetes.io/enforce-version=v1.24"]
+    podSecurity:
+    - "pod-security.kubernetes.io/audit=restricted"
+    - "pod-security.kubernetes.io/audit-version=latest"
+    - "pod-security.kubernetes.io/warn=restricted"
+    - "pod-security.kubernetes.io/warn-version=latest"
+    - "pod-security.kubernetes.io/enforce=restricted"
+    - "pod-security.kubernetes.io/enforce-version=v1.24"
     extraAnnotations: {}
   probeWebhook:
     enabled: true
@@ -194,7 +196,7 @@ controllerManager:
   extraRules: []
   networkPolicy:
     enabled: false
-    ingress: { }
+    ingress: {}
       # - from:
       #   - ipBlock:
       #       cidr: 0.0.0.0/0
