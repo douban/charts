@@ -40,6 +40,14 @@ service:
   type: ClusterIP
   port: 80
 
+containerPort: 80
+
+volumes: []
+
+volumeMounts: []
+
+env: []
+
 ingress:
   enabled: false
   className: ""
@@ -80,3 +88,15 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+
+serviceMonitor:
+  enabled: false
+
+
+prometheusRule:
+  enabled: false
+  # namespace: monitoring
+  # additionalLabels: {}
+  #   release: prometheus-operator
+  # rules: []
