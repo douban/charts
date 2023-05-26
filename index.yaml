@@ -434,6 +434,19 @@ entries:
   nginx:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2023-05-26T06:55:49.564439441Z"
+    description: A Helm chart for Kubernetes
+    digest: 8d7aaf7d9b1ffedbcfe8d56c9b48b97ccc8555a7eab80b08e1a2bf161694add1
+    home: https://nginx.org/
+    maintainers:
+    - name: douban
+    name: nginx
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/nginx-0.3.0/nginx-0.3.0.tgz
+    version: 0.3.0
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2021-12-02T10:41:02.0756149Z"
     description: A Helm chart for Kubernetes
     digest: 4cdc8365cbdbf3a3eef0100d6b8d8a6aa4215574e0814edabb2e069e0aea4e3f
