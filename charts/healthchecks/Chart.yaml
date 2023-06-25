@@ -1,4 +1,4 @@
-version: 1.0.7
+version: 1.0.8
 apiVersion: v2
 name: healthchecks
 description: A Helm chart for Kubernetes
