@@ -133,3 +133,14 @@ networkpolicy:
   #     podSelector:
   #       matchLabels:
   #         foo: bar
+
+
+extraVolumes: []
+# - hostPath:
+#     path: /etc/ssl/certs
+#   name: ca-certs
+
+extraVolumeMounts: []
+# - mountPath: /etc/ssl/certs
+#   name: ca-certs
+#   readOnly: true
