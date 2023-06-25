@@ -244,6 +244,26 @@ entries:
   healthchecks:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2023-06-25T07:05:09.978996647Z"
+    dependencies:
+    - condition: postgresql.enabled,global.postgresql.enabled
+      name: postgresql
+      repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+      version: 10.14.3
+    description: A Helm chart for Kubernetes
+    digest: ec45dcf5caa70a82ad34f09e45efed379e428d060eba928f231a4162d315e3a4
+    maintainers:
+    - email: rakshit@improwised.com
+      name: rakshit
+    name: healthchecks
+    sources:
+    - https://github.com/healthchecks/healthchecks
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/healthchecks-1.0.8/healthchecks-1.0.8.tgz
+    version: 1.0.8
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2023-06-25T06:44:52.370916178Z"
     dependencies:
     - condition: postgresql.enabled,global.postgresql.enabled
