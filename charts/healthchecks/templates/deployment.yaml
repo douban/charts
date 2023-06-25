@@ -72,8 +72,8 @@ spec:
           volumeMounts:
           - name: docker-folder
             mountPath: /opt/healthchecks/docker
-          {{- with .Values.extraVolumeMounts }}
-            {{ toYaml . | nindent 12 }}
+          {{- if .Values.extraVolumeMounts }}
+{{ toYaml .Values.extraVolumeMounts | nindent 10 }}
           {{- end}}
           ports:
             - name: http
@@ -88,8 +88,8 @@ spec:
         - name: docker-folder
           configMap:
             name: {{ include "healthchecks.fullname" . }}-docker-folder
-        {{- with .Values.extraVolumes }}
-          {{ toYaml . | nindent 10 }}
+        {{- if .Values.extraVolumes }}
+{{ toYaml .Values.extraVolumes | indent 8 }}
         {{- end}}
       {{- with .Values.nodeSelector }}
       nodeSelector:
