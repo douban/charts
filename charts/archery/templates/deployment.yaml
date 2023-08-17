@@ -85,8 +85,6 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-            - name: NGINX_PORT
-              value: "9123"
           {{- if .Values.mysql.embedded }}
             - name: DATABASE_URL
               value: mysql://root:{{ .Values.mysql.auth.rootPassword }}@{{ include "archery.fullname" . }}-mysql/{{ .Values.mysql.auth.database }}
