@@ -45,6 +45,9 @@ ingress:
 
   hosts:
     - archery.my-domain.com # 指定访问域名, 需提前设置好 nginx ingress
+envs:
+  - name: CSRF_TRUSTED_ORIGINS
+    value: "https://archery.my-domain.com,http://archery.my-domain.com" # 不指定的情况下, 会403
 ```
 
 ## 配置说明
