@@ -1,0 +1,15 @@
+dependencies:
+- name: redis
+  repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+  version: 17.15.6
+- name: postgresql
+  repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+  version: 12.8.5
+- name: timescaledb-single
+  repository: https://charts.timescale.com/
+  version: 0.33.1
+- name: minio
+  repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+  version: 12.7.0
+digest: sha256:2ee6c23dfc7a9c7058db5bddee4c2481712385b48a77b56acc218d426433775e
+generated: "2023-08-23T15:26:45.8571405+08:00"
