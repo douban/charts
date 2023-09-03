@@ -1,0 +1,58 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  # codecov-api would confict with codecov-api program
+  # use another name
+  name: {{ include "codecov.fullname" . }}-api-svc
+  labels:
+    {{- include "codecov.labels" . | nindent 4 }}
+    app.kubernetes.io/component: api
+spec:
+  type: {{ .Values.api.service.type }}
+  ports:
+    - port: {{ .Values.api.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "codecov.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: api
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "codecov.fullname" . }}-gateway
+  labels:
+    {{- include "codecov.labels" . | nindent 4 }}
+    app.kubernetes.io/component: gateway
+spec:
+  type: {{ .Values.gateway.service.type }}
+  ports:
+    - port: {{ .Values.gateway.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "codecov.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: gateway
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "codecov.fullname" . }}-frontend
+  labels:
+    {{- include "codecov.labels" . | nindent 4 }}
+    app.kubernetes.io/component: frontend
+spec:
+  type: {{ .Values.frontend.service.type }}
+  ports:
+    - port: {{ .Values.frontend.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "codecov.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: frontend

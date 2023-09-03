@@ -1,0 +1,12 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ include "codecov.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "codecov.name" . }}
+    helm.sh/chart: {{ include "codecov.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:
+  codecov.yml: |
+{{ .Values.codecov_config | indent 4 }}

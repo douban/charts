@@ -6,4 +6,5 @@ chart-repos:
   - stable=https://charts.helm.sh/stable/
   - douban=https://douban.github.io/charts/
   - bitnami=https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+  - timescale=https://charts.timescale.com/
 helm-extra-args: --timeout 600s
