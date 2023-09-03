@@ -310,6 +310,8 @@ spec:
             value: {{ .Values.codecov_host }}
           - name: CODECOV_SCHEME
             value: {{ .Values.codecov_scheme }}
+          - name: ENV
+            value: enterprise
           ports:
             - name: http
               containerPort: {{ .Values.frontend.containerPort }}
