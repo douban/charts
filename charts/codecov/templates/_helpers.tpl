@@ -77,14 +77,21 @@ codecov dependency settings
 {{- end }}
 {{- if .Values.timescaledb.enabled }}
 - name: services__timeseries_database_url
-  value: postgres://postgres:{{ .Values.timescaledb.secrets.credentials.PATRONI_SUPERUSER_PASSWORD }}@{{ .Values.timescaledb.fullnameOverride }}:5432/postgres
+  value: postgres://postgres:{{ .Values.timescaledb.secrets.credentials.PATRONI_SUPERUSER_PASSWORD }}@{{ .Values.timescaledb.fullnameOverride }}:5432/postgres?sslmode=require
 {{- end }}
 {{- if .Values.minio.embedded }}
 - name: services__minio__host
   value: {{ include "codecov.fullname" . }}-minio
+- name: services__minio__port
+  value: {{ .Values.minio.service.ports.api | quote }}
 - name: services__minio__access_key_id
   value: {{ .Values.minio.auth.rootUser }}
 - name: services__minio__secret_access_key
   value: {{ .Values.minio.auth.rootPassword }}
+{{- else }}
+- name: services__minio__host
+  value: {{ .Values.minio.externalHost | quote }}
+- name: services__minio__port
+  value: {{ .Values.minio.externalPort | quote }}
 {{- end }}
 {{- end }}

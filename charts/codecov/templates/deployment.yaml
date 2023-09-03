@@ -17,10 +17,11 @@ spec:
       app.kubernetes.io/component: api
   template:
     metadata:
-      {{- with .Values.api.podAnnotations }}
       annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        checksum/config: {{ .Values.codecov_config | sha256sum }}
+        {{- if .Values.api.podAnnotations }}
+{{ tpl (toYaml .Values.api.podAnnotations | indent 8) . }}
+        {{- end }}
       labels:
         {{- include "codecov.selectorLabels" . | nindent 8 }}
         app.kubernetes.io/component: api
@@ -105,6 +106,11 @@ spec:
       app.kubernetes.io/component: worker
   template:
     metadata:
+      annotations:
+        checksum/config: {{ .Values.codecov_config | sha256sum }}
+        {{- if .Values.worker.podAnnotations }}
+{{ tpl (toYaml .Values.worker.podAnnotations | indent 8) . }}
+        {{- end }}
       {{- with .Values.worker.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
@@ -129,8 +135,8 @@ spec:
           args:
           - worker
           env:
-            - name: placeholder
-              value: "1"
+            - name: RUN_ENV
+              value: "ENTERPRISE"
             {{- include "codecov.commonEnvs" . | nindent 12 }}
             {{- with .Values.extraEnvs }}
             {{- toYaml . | nindent 12 }}
@@ -222,6 +228,11 @@ spec:
             value: {{ include "codecov.fullname" . }}-minio
           - name: CODECOV_MINIO_PORT
             value: {{ .Values.minio.service.ports.api | quote }}
+          {{- else }}
+          - name: CODECOV_MINIO_HOST
+            value: {{ .Values.minio.externalHost | quote }}
+          - name: CODECOV_MINIO_PORT
+            value: {{ .Values.minio.externalPort | quote }}
           {{- end }}
           ports:
             - name: http

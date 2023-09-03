@@ -31,6 +31,11 @@ codecov_config: |
     timeseries:
       # timeseries are disabled by default as the timescaledb helm chart is not working
       enabled: false
+  # global coverage.yml config
+  site:
+    comment:
+      # default layout is wierd with duplicated reach
+      layout: "reach,diff,flags,tree"
   github:
     client_id: "Iv1.42f4f7d056e37182"
     client_secret: "secretxxx"
@@ -344,7 +349,7 @@ postgresql:
       enabled: false
 
 timescaledb:
-  enabled: false
+  enabled: true
   # timescaledb is not enabled by default, it is actually not working, pr are welcome
   # it is recommended to use external timescaledb as the helm chart using proviode timescaledb with tls support
   # which is currently not supported by codecov
@@ -356,10 +361,6 @@ timescaledb:
   # urlSecretKey: "CACHE_URL"
   fullnameOverride: "timescale-codecov"
   image:
-  # Image was built from
-  # https://github.com/timescale/timescaledb-docker-ha
-    repository: timescale/timescaledb-ha
-    tag: pg14.6-ts2.8.1-patroni-static-primary-latest
     pullPolicy: IfNotPresent
   secrets:
     # This map should contain environment variables that influence Patroni,
@@ -368,21 +369,6 @@ timescaledb:
     credentials:
       PATRONI_SUPERUSER_PASSWORD: "testpassword"
   # disable ssl as codecov does not support it
-  patroni:
-    bootstrap:
-      dcs:
-        postgresql:
-          parameters:
-            ssl: 'off'
-
-      pg_hba:
-        - local     all             postgres                              peer
-        - local     all             all                                   md5
-        - hostnossl all,replication all                all                md5 # reject
-        - hostssl   all             all                127.0.0.1/32       md5
-        - hostssl   all             all                ::1/128            md5
-        - hostssl   replication     standby            all                md5
-        - hostssl   all             all                all                md5
   persistentVolumes:
     data:
       enabled: false
@@ -391,7 +377,13 @@ timescaledb:
 
 
 minio:
-  embedded: true
+  embedded: false
+  # externalHost: "minio.example.com"
+  # externalPort: "443"
+  # embedded minio is not supported
+  # codecov needs a external available minio
+  # please use external minio
+  # pr are welcomed
   # embedded: false
   # externalMinio:
 # If using external storage. Comment above and uncomment below

@@ -40,8 +40,9 @@ postgresql:
 helm repo add douban https://douban.github.io/charts/
 helm upgrade codecov douban/codecov -f values.yaml --install --debug
 ```
+## known issues
 
-## known issues(pr are welcomed)
+### must use external minio/s3
+I setup minio chart to use , but codecov requires a external available s3 service, it is adviced to use external cloud service instead.
 
-### timeseries not enabled
-codecov does not support tls connection to timescaledb, while the timescaledb provided in [timescaledb helm chart](https://github.com/timescale/helm-charts/tree/main/charts/timescaledb-single) comes with a default ssl verify and I dont know how to turn it off
+pr are welcomed.
