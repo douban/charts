@@ -250,6 +250,38 @@ entries:
     urls:
     - https://github.com/douban/charts/releases/download/channels-1.1.0/channels-1.1.0.tgz
     version: 1.1.0
+  codecov:
+  - apiVersion: v2
+    appVersion: v5.0.1
+    created: "2023-09-03T15:52:28.7126499Z"
+    dependencies:
+    - condition: redis.embedded
+      name: redis
+      repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+      version: ~17.15.6
+    - condition: postgresql.embedded
+      name: postgresql
+      repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+      version: ~12.8.5
+    - alias: timescaledb
+      condition: timescaledb.enabled
+      name: timescaledb-single
+      repository: https://charts.timescale.com/
+      version: 0.33.*
+    - condition: minio.embedded
+      name: minio
+      repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+      version: ~12.7.0
+    description: A Helm chart for Kubernetes
+    digest: 6f9ff7815efd89c55c5edadc2dc89d25b920f4442ed002d54e3e523a2b917171
+    home: https://github.com/codecov/self-hosted
+    maintainers:
+    - name: douban
+    name: codecov
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/codecov-0.1.0/codecov-0.1.0.tgz
+    version: 0.1.0
   gatekeeper:
   - apiVersion: v2
     appVersion: v3.12.0
