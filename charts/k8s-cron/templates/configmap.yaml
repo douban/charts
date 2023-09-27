@@ -1,0 +1,9 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ include "k8s-cron.fullname" . }}
+  labels:
+    {{- include "k8s-cron.labels" . | nindent 4 }}
+data:
+  run.sh: |
+{{ .Values.script | indent 4 }}

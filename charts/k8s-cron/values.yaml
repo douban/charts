@@ -1,0 +1,94 @@
+# Default values for k8s-cron.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  repository: alpine/k8s
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "1.28.2"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+schedule: "*/5 * * * *"
+restartPolicy: Never
+script: |
+  #!/bin/bash# Loop through all Namespaces
+  for namespace in $(kubectl get namespace -o=json |  jq -r '.items[] .metadata.name') ; do
+    echo "Processing namespace ${namespace}"
+
+    # Get the list of Pods, then select the items that have
+    # been evicted, sort by the startTime (ascending), then
+    # select all but the most recent 3.  Then pass just the
+    # names of those Pods to kubectl to be deleted
+    kubectl -n ${namespace} get pod -o=json | jq '[.items[] | select(.status.reason=="Evicted")] | sort_by(.status.startTime) | .[0:-3]' | jq -r '.[] .metadata.name' | xargs --no-run-if-empty kubectl -n ${namespace} delete pod
+  done
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+role:
+  # Specifies whether a ClusterRole should be created
+  create: false
+  # Annotations to add to the ClusterRole
+  annotations: {}
+  # The name of the ClusterRole to use.
+  # If not set and create is true, a name is generated using the fullname template
+  roles:
+    - apiGroups: [""]
+      resources: ["pods"]
+      verbs: ["get", "list", "delete"]
+
+clusterRole:
+  # Specifies whether a ClusterRoleBinding should be created
+  create: true
+  # Annotations to add to the ClusterRoleBinding
+  annotations: {}
+  # The name of the ClusterRoleBinding to use.
+  # If not set and create is true, a name is generated using the fullname template
+  roles:
+    - apiGroups: [""]
+      resources: ["pods"]
+      verbs: ["get", "list", "delete"]
+    - apiGroups: [""]
+      resources: ["namespaces"]
+      verbs: ["get", "list"]
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

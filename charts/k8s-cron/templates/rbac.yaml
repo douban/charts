@@ -1,0 +1,57 @@
+{{- if .Values.role.create -}}
+---
+# role for namespace level
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "k8s-cron.fullname" . }}
+  labels:
+    {{- include "k8s-cron.labels" . | nindent 4 }}
+rules:
+{{- toYaml .Values.role.roles | nindent 2 }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "k8s-cron.fullname" . }}
+  labels:
+    {{- include "k8s-cron.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "k8s-cron.fullname" . }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "k8s-cron.serviceAccountName" . }}
+    namespace: {{ .Release.Namespace }}
+{{- end -}}
+
+{{- if .Values.clusterRole.create -}}
+---
+# clusterrole
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "k8s-cron.fullname" . }}
+  labels:
+    {{- include "k8s-cron.labels" . | nindent 4 }}
+rules:
+{{- toYaml .Values.clusterRole.roles | nindent 2 }}
+---
+# cluterrolebinding
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "k8s-cron.fullname" . }}
+  labels:
+    {{- include "k8s-cron.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "k8s-cron.fullname" . }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "k8s-cron.serviceAccountName" . }}
+    namespace: {{ .Release.Namespace }}
+
+{{- end -}}
