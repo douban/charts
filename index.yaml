@@ -520,6 +520,20 @@ entries:
     urls:
     - https://github.com/douban/charts/releases/download/helpdesk-0.2.0/helpdesk-0.2.0.tgz
     version: 0.2.0
+  k8s-cron:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2023-09-27T09:17:23.976316288Z"
+    description: A Helm chart to install cronjob on k8s cluster
+    digest: c67f11c4858821d5d7354cc06dcc7dffea32037f2715390402adbb65667209ac
+    home: https://github.com/alpine-docker/k8s
+    maintainers:
+    - name: douban
+    name: k8s-cron
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/k8s-cron-0.1.0/k8s-cron-0.1.0.tgz
+    version: 0.1.0
   karma:
   - apiVersion: v2
     appVersion: "0.85"
