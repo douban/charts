@@ -1,6 +1,10 @@
 apiVersion: v2
 name: k8s-cron
-description: A Helm chart for Kubernetes
+description: A Helm chart to install cronjob on k8s cluster
+maintainers:
+  - name: douban
+
+home: https://github.com/alpine-docker/k8s
 
 # A chart can be either an 'application' or a 'library' chart.
 #
