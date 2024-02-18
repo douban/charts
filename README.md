@@ -1,6 +1,6 @@
 # Douban Charts Repo
 
-[![](https://github.com/douban/charts/workflows/Release%20Charts/badge.svg?branch=master)](https://github.com/douban/charts/actions)
+[![Release Charts](https://github.com/douban/charts/actions/workflows/release.yaml/badge.svg)](https://github.com/douban/charts/actions/workflows/release.yaml)
 
 Douban charts
 
