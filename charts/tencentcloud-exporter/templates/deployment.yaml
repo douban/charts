@@ -13,10 +13,11 @@ spec:
       {{- include "tencentcloud-exporter.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
       annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        checksum/config: {{ .Values.extraConfigs | toString| sha256sum  }}
+        {{- if .Values.podAnnotations -}}
+        {{ toYaml .Values.podAnnotations | nindent 8 }}
+        {{- end }}
       labels:
         {{- include "tencentcloud-exporter.selectorLabels" . | nindent 8 }}
     spec:
