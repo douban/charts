@@ -39,7 +39,7 @@ codecov_config: |
     client_secret: "secretxxx"
     # global_upload_token: "<upload-token>"
     webhook_secret: "verysecret"
-    intergration:
+    integration:
       id: 22
       pem: /config/file.pem
 # If using external storage. Comment above and uncomment below
