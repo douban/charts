@@ -1,0 +1,350 @@
+# Default values for dify.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# the following extra configs would be injected into:
+# * api
+# * worker
+extraEnvs: []
+
+volumes: []
+
+volumeMounts: []
+
+nameOverride: ""
+fullnameOverride: ""
+
+ingress:
+  enabled: false
+  className: ""
+  annotations:
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+frontend:
+  replicaCount: 1
+
+  image:
+    repository: langgenius/dify-web
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: ""
+
+  imagePullSecrets: []
+
+  podAnnotations: {}
+
+  podSecurityContext: {}
+    # fsGroup: 2000
+
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+
+  service:
+    type: ClusterIP
+    port: 80
+
+  containerPort: 8080
+
+
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+api:
+  replicaCount: 1
+
+  image:
+    repository: langgenius/dify-api
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: ""
+
+  imagePullSecrets: []
+
+  podAnnotations: {}
+
+  podSecurityContext: {}
+    # fsGroup: 2000
+
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+
+  service:
+    type: ClusterIP
+    port: 80
+
+  containerPort: 8000
+
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+worker:
+  replicaCount: 1
+
+  image:
+    repository: langgenius/dify-api
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: ""
+
+  imagePullSecrets: []
+
+  podAnnotations: {}
+
+  podSecurityContext: {}
+    # fsGroup: 2000
+
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+
+
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+gateway:
+  replicaCount: 1
+
+  image:
+    repository: dify/enterprise-gateway
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: ""
+
+  imagePullSecrets: []
+
+  podAnnotations: {}
+
+  podSecurityContext: {}
+    # fsGroup: 2000
+
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+
+  service:
+    type: ClusterIP
+    port: 80
+
+  containerPort: 8080
+
+
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+
+##### dependencies #####
+
+redis:
+  # using embedded redis
+  # connection info would be set automatically
+  # best to use external redis if you have one
+  embedded: true
+  # embedded: false
+  # url: "redis://127.0.0.1:6379/0"
+  # urlSecret: ""
+  # urlSecretKey: "CACHE_URL"
+  # please consult to chart manual if you want to change it.
+  # https://artifacthub.io/packages/helm/bitnami/redis
+  architecture: standalone
+  auth:
+    password: "REDIS_PASSWORD"
+  master:
+    persistence:
+      enabled: false
+      size: 8Gi
+
+postgresql:
+  # using embedded redis
+  # connection info would be set automatically
+  # best to use external redis if you have one
+  # setting embedded to false and set redis url in envrionment variable
+  embedded: true
+  # embedded: false
+  # url: "postgres://postgres:testpassword@postgres:5432/postgres"
+  # urlSecret: ""
+  # urlSecretKey: "CACHE_URL"
+  architecture: standalone
+  auth:
+    postgresPassword: "testpassword"
+    database: "dify"
+  primary:
+    persistence:
+      enabled: false
+
+timescaledb:
+  enabled: true
+  # timescaledb is not enabled by default, it is actually not working, pr are welcome
+  # it is recommended to use external timescaledb as the helm chart using proviode timescaledb with tls support
+  # which is currently not supported by dify
+  # enable means that the timescaledb would be embedded in the chart
+  # you can set to false and provide your own
+  # enabled: false
+  # url:  "postgres://postgres:testpassword@timescale:5432/postgres"
+  # urlSecret: ""
+  # urlSecretKey: "CACHE_URL"
+  fullnameOverride: "timescale-dify"
+  image:
+    pullPolicy: IfNotPresent
+  secrets:
+    # This map should contain environment variables that influence Patroni,
+    # for example PATRONI_SUPERUSER_PASSWORD or PATRONI_REPLICATION_PASSWORD
+    # https://patroni.readthedocs.io/en/latest/ENVIRONMENT.html#postgresql
+    credentials:
+      PATRONI_SUPERUSER_PASSWORD: "testpassword"
+  # disable ssl as dify does not support it
+  persistentVolumes:
+    data:
+      enabled: false
+    wal:
+      enabled: false
+
+
+minio:
+  embedded: false
+  # externalHost: "minio.example.com"
+  # externalPort: "443"
+  # embedded minio is not supported
+  # dify needs a external available minio
+  # please use external minio
+  # pr are welcomed
+  # embedded: false
+  # externalMinio:
+# If using external storage. Comment above and uncomment below
+#    host: s3.amazonaws.com or storage.googleapis.com if using GCS
+#    bucket: <bucket-name>
+#    region: <bucket-region>
+#    verify_ssl: true
+#    port: 443
+#    access_key_id: <aws-iam-access-key> # or <gcs-hmac-key> if using GCS
+#    secret_access_key: <aws-iam-secret> # or <gcs-hmac-secret> if using GCS
+#    iam_auth: <boolean, default false> # set to true in AWS to attempt to authenticate via Instance role
+  auth:
+    rootUser: minioadmin
+    rootPassword: minioadmin
+  persistence:
+    enabled: false
