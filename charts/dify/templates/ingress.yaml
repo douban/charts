@@ -1,6 +1,5 @@
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "dify.fullname" . -}}
-{{- $svcPort := .Values.gateway.service.port -}}
 {{- if and .Values.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
   {{- if not (hasKey .Values.ingress.annotations "kubernetes.io/ingress.class") }}
   {{- $_ := set .Values.ingress.annotations "kubernetes.io/ingress.class" .Values.ingress.className}}
@@ -26,36 +25,74 @@ spec:
   {{- if and .Values.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
   ingressClassName: {{ .Values.ingress.className }}
   {{- end }}
-  {{- if .Values.ingress.tls }}
+  {{- if .Values.global.enableTLS }}
   tls:
-    {{- range .Values.ingress.tls }}
     - hosts:
-        {{- range .hosts }}
-        - {{ . | quote }}
-        {{- end }}
-      secretName: {{ .secretName }}
-    {{- end }}
+      - {{ .Values.global.host }}
+      secretName: {{ .Values.ingress.tlsSecretName }}
   {{- end }}
   rules:
-    {{- range .Values.ingress.hosts }}
-    - host: {{ .host | quote }}
+    - host: {{ .Values.global.host | quote }}
       http:
         paths:
-          {{- range .paths }}
-          - path: {{ .path }}
-            {{- if and .pathType (semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion) }}
-            pathType: {{ .pathType }}
-            {{- end }}
+          - path: /console/api
+            pathType: Prefix
             backend:
-              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+              {{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion }}
               service:
-                name: {{ $fullName }}-gateway
+                name: {{ $fullName }}-api-svc
                 port:
-                  number: {{ $svcPort }}
+                  number: {{ .Values.api.service.port }}
               {{- else }}
-              serviceName: {{ $fullName }}-gateway
-              servicePort: {{ $svcPort }}
+              serviceName: {{ $fullName }}-api-svc
+              servicePort: {{ .Values.api.service.port }}
               {{- end }}
-          {{- end }}
-    {{- end }}
+          - path: /api
+            pathType: Prefix
+            backend:
+              {{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion }}
+              service:
+                name: {{ $fullName }}-api-svc
+                port:
+                  number: {{ .Values.api.service.port }}
+              {{- else }}
+              serviceName: {{ $fullName }}-api-svc
+              servicePort: {{ .Values.api.service.port }}
+              {{- end }}
+          - path: /v1
+            pathType: Prefix
+            backend:
+              {{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion }}
+              service:
+                name: {{ $fullName }}-api-svc
+                port:
+                  number: {{ .Values.api.service.port }}
+              {{- else }}
+              serviceName: {{ $fullName }}-api-svc
+              servicePort: {{ .Values.api.service.port }}
+              {{- end }}
+          - path: /files
+            pathType: Prefix
+            backend:
+              {{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion }}
+              service:
+                name: {{ $fullName }}-api-svc
+                port:
+                  number: {{ .Values.api.service.port }}
+              {{- else }}
+              serviceName: {{ $fullName }}-api-svc
+              servicePort: {{ .Values.api.service.port }}
+              {{- end }}
+          - path: /
+            pathType: Prefix
+            backend:
+              {{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion }}
+              service:
+                name: {{ $fullName }}-frontend
+                port:
+                  number: {{ .Values.frontend.service.port }}
+              {{- else }}
+              serviceName: {{ $fullName }}-frontend
+              servicePort: {{ .Values.frontend.service.port }}
+              {{- end }}
 {{- end }}

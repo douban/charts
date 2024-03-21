@@ -23,25 +23,6 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "dify.fullname" . }}-gateway
-  labels:
-    {{- include "dify.labels" . | nindent 4 }}
-    app.kubernetes.io/component: gateway
-spec:
-  type: {{ .Values.gateway.service.type }}
-  ports:
-    - port: {{ .Values.gateway.service.port }}
-      targetPort: http
-      protocol: TCP
-      name: http
-  selector:
-    {{- include "dify.selectorLabels" . | nindent 4 }}
-    app.kubernetes.io/component: gateway
-
----
-apiVersion: v1
-kind: Service
-metadata:
   name: {{ include "dify.fullname" . }}-frontend
   labels:
     {{- include "dify.labels" . | nindent 4 }}

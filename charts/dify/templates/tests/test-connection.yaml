@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "dify.fullname" . }}-gateway:{{ .Values.gateway.service.port }}']
+      args: ['{{ include "dify.fullname" . }}-api:{{ .Values.api.service.port }}']
   restartPolicy: Never

@@ -61,37 +61,57 @@ Create the name of the service account to use
 {{- end }}
 {{- end }}
 
+{{- define "dify.baseUrl" -}}
+{{ if .Values.global.enableTLS }}https://{{ else }}http://{{ end }}{{.Values.global.host}}
+{{- end }}
+
 {{/*
-dify dependency settings
+dify environments
+commonEnvs are for all containers
+commonBackendEnvs are for api and worker containers 
 */}}
 {{- define "dify.commonEnvs" -}}
-- name: setup__dify_url
-  value: "{{ .Values.dify_scheme }}://{{ .Values.dify_host }}"
+- name: EDITION
+  value: {{ .Values.global.edition }}
+{{- range tuple "CONSOLE_API_URL" "CONSOLE_WEB_URL" "SERVICE_API_URL" "APP_API_URL" "APP_WEB_URL" }}
+- name: {{ . }}
+  value: {{ include "dify.baseUrl" $ }}
+{{- end}}
+{{- end }}
+{{- define "dify.commonBackendEnvs" -}}
 {{- if .Values.redis.embedded }}
-- name: services__redis_url
-  value: redis://:{{ .Values.redis.auth.password }}@{{ include "dify.fullname" . }}-redis-master:6379/0
+- name: CELERY_BROKER_URL
+  value: redis://:{{ .Values.redis.auth.password }}@{{ include "dify.fullname" . }}-redis-master:6379/1
+- name: REDIS_HOST
+  value: {{ include "dify.fullname" . }}-redis-master
+- name: REDIS_DB
+  value: "1"
+- name: REDIS_PASSWORD
+  value: {{ .Values.redis.auth.password }}
 {{- end }}
 {{- if .Values.postgresql.embedded }}
-- name: services__database_url
-  value: postgres://postgres:{{ .Values.postgresql.auth.postgresPassword }}@{{ include "dify.fullname" . }}-postgresql:5432/{{  .Values.postgresql.auth.database }}
+- name: DB_USERNAME
+  value: postgres
+- name: DB_PASSWORD
+  value: "{{ .Values.postgresql.auth.postgresPassword }}"
+- name: DB_HOST
+  value: {{ include "dify.fullname" . }}-postgresql
+- name: DB_PORT
+  value: "5432"
+- name: DB_DATABASE
+  value: {{ .Values.postgresql.auth.database }}
 {{- end }}
-{{- if .Values.timescaledb.enabled }}
-- name: services__timeseries_database_url
-  value: postgres://postgres:{{ .Values.timescaledb.secrets.credentials.PATRONI_SUPERUSER_PASSWORD }}@{{ .Values.timescaledb.fullnameOverride }}:5432/postgres?sslmode=require
-{{- end }}
+- name: STORAGE_TYPE
+  value: "s3"
+
 {{- if .Values.minio.embedded }}
-- name: services__minio__host
-  value: {{ include "dify.fullname" . }}-minio
-- name: services__minio__port
-  value: {{ .Values.minio.service.ports.api | quote }}
-- name: services__minio__access_key_id
+- name: S3_ENDPOINT
+  value: http://{{ include "dify.fullname" . }}-minio:{{ .Values.minio.service.ports.api }}
+- name: S3_BUCKET_NAME
+  value: {{ .Values.minio.defaultBuckets }}
+- name: S3_ACCESS_KEY
   value: {{ .Values.minio.auth.rootUser }}
-- name: services__minio__secret_access_key
+- name: S3_SECRET_KEY
   value: {{ .Values.minio.auth.rootPassword }}
-{{- else }}
-- name: services__minio__host
-  value: {{ .Values.minio.externalHost | quote }}
-- name: services__minio__port
-  value: {{ .Values.minio.externalPort | quote }}
 {{- end }}
 {{- end }}
