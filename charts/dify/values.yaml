@@ -2,13 +2,8 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-# the following extra configs would be injected into:
-# * api
-# * worker
-extraEnvs: []
-# - name: SECRET_KEY
-#   value: xxx
 
+# volume and volumeMounts would be injected to api and worker
 volumes: []
 
 volumeMounts: []
@@ -20,6 +15,18 @@ global:
   host: "chart-example.local"
   enableTLS: false
   edition: "SELF_HOSTED"
+  # the following extra configs would be injected into:
+  # * frontend
+  # * api
+  # * worker
+  extraEnvs: []
+
+  # the following extra configs would be injected into:
+  # * api
+  # * worker
+  extraBackendEnvs: []
+  # - name: SECRET_KEY
+  #   value: xxx
 
 ingress:
   enabled: false
@@ -47,6 +54,7 @@ frontend:
     # Overrides the image tag whose default is the chart appVersion.
     tag: ""
 
+  envs: []
   imagePullSecrets: []
 
   podAnnotations: {}
@@ -221,15 +229,13 @@ redis:
       size: 8Gi
 
 postgresql:
-  # using embedded redis
+  # using embedded postgresql
   # connection info would be set automatically
-  # best to use external redis if you have one
-  # setting embedded to false and set redis url in envrionment variable
+  # best to use external pg if you have one
+  # setting embedded to false and set pg url in envrionment variable
   embedded: true
   # embedded: false
-  # url: "postgres://postgres:testpassword@postgres:5432/postgres"
-  # urlSecret: ""
-  # urlSecretKey: "CACHE_URL"
+  # goto extraBackendEnvs to set pg url
   architecture: standalone
   auth:
     postgresPassword: "testpassword"

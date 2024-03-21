@@ -76,8 +76,10 @@ commonBackendEnvs are for api and worker containers
 {{- range tuple "CONSOLE_API_URL" "CONSOLE_WEB_URL" "SERVICE_API_URL" "APP_API_URL" "APP_WEB_URL" }}
 - name: {{ . }}
   value: {{ include "dify.baseUrl" $ }}
-{{- end}}
 {{- end }}
+{{- end }}
+
+
 {{- define "dify.commonBackendEnvs" -}}
 {{- if .Values.redis.embedded }}
 - name: CELERY_BROKER_URL
