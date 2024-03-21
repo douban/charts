@@ -35,6 +35,13 @@ helm repo add douban https://douban.github.io/charts/
 helm upgrade dify douban/dify -f values.yaml --install --debug
 ```
 
+```
+# run migration
+kubectl exec -it dify-pod-name -- flask db upgrade
+```
+
+always run this command after dify upgrade
+
 ## production use checklist
 The minimal configure provided above is sufficient for experiment, however, you need extra work before put it into production, I advice you do all the checklist before provide services.
 
