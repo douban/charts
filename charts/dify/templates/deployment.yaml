@@ -43,6 +43,9 @@ spec:
               value: "api"
             {{- include "dify.commonEnvs" . | nindent 12 }}
             {{- include "dify.commonBackendEnvs" . | nindent 12 }}
+            {{- with .Values.global.extraEnvs }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
             {{- with .Values.global.extraBackendEnvs }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
@@ -66,7 +69,7 @@ spec:
             {{- toYaml .Values.api.resources | nindent 12 }}
       {{- with .Values.volumes }}
       volumes:
-      {{- toYaml . | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.api.nodeSelector }}
       nodeSelector:
@@ -128,6 +131,9 @@ spec:
               value: "worker"
             {{- include "dify.commonEnvs" . | nindent 12 }}
             {{- include "dify.commonBackendEnvs" . | nindent 12 }}
+            {{- with .Values.global.extraEnvs }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
             {{- with .Values.global.extraBackendEnvs }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
@@ -196,7 +202,12 @@ spec:
           imagePullPolicy: {{ .Values.frontend.image.pullPolicy }}
           env:
           {{- include "dify.commonEnvs" . | nindent 12 }}
-          {{- toYaml .Values.frontend.envs | nindent 12 }}
+          {{- with .Values.global.extraEnvs }}
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.frontend.envs }}
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
           ports:
             - name: http
               containerPort: {{ .Values.frontend.containerPort }}
