@@ -42,10 +42,10 @@ ingress:
 # subcharts redis
 redis:
   embedded: true
-  # url: "redis://127.0.0.1:6379/0"
+  # url: "redis://<authpwd>@<server_addr>:6379/0"
   # urlSecret: ""
   # urlSecretKey: "CACHE_URL"
-  # dingdingUrl: "redis://127.0.0.1:6379/1"
+  # dingdingUrl: "redis://<authpwd>@<server_addr>:6379/1"
   # dingdingUrlSecret: ""
   # dingdingUrlSecretKey: "DINGDING_CACHE_URL"
   # embedded 为 false, 会使用外部的 redis, 下方的 redis 就不会生效
@@ -61,7 +61,7 @@ redis:
 # subcharts mysql
 mysql:
   embedded: true
-  # url: "mysql://root:@127.0.0.1:3306/archery"
+  # url: "mysql://<user>:<passwd>@<server_addr>:3306/archery"
   # urlSecret: ""
   # urlSecretKey: "DATABASE_URL"
   # embedded 为 false时, 会使用外部的 mysql, 下方的 mysql 配置不会生效
@@ -142,8 +142,15 @@ goinception:
     targetPort: 4000
 
   initEnv:
+    - name: BACKUP_HOST
+      value: ""
+    - name: BACKUP_PORT
+      value: ""
+      # mysql superuser 
+    - name: BACKUP_USER
+      value: ""
     - name: BACKUP_PASSWORD
-      value: "my-password"
+      value: ""
   # you can override more options , please see goinception chart readme and values
   # https://github.com/douban/charts/blob/master/charts/goinception/values.yaml
 
