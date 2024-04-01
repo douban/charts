@@ -108,6 +108,22 @@ serviceMonitor:
   # targetLabels: []
   # metricRelabelings: []
 
+scrapeConfig:
+  # Use https://prometheus-operator.dev/docs/user-guides/scrapeconfig/ to congfigure scrapeConfig
+  # It is advbised to use scrapeConfig instead of servicemonitor, as it is more flexible
+  # ServiceMonitor and scrapeConfig can be enabled at the same time, but it is not recommended
+  # When set true then use a ScrapeConfig to configure scraping
+  enabled: false
+  timeout: 10s
+  interval: 1m
+  telemetryPath: /metrics
+  relabelings:
+  - regex: 'container|endpoint|pod|service|instance'
+    action: "labeldrop"
+  metricRelabelings:
+  - regex: 'instance'
+    action: "labeldrop"
+
 ## Custom PrometheusRules to be defined
 ## The value is evaluated as a template, so, for example, the value can depend on .Release or .Chart
 ## ref: https://github.com/coreos/prometheus-operator#customresourcedefinitions

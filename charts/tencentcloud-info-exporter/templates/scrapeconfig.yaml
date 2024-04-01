@@ -1,0 +1,23 @@
+{{- if .Values.scrapeConfig.enabled }}
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  labels:
+{{ include "tencentcloud-info-exporter.labels" . | indent 4 }}
+  name: {{ template "tencentcloud-info-exporter.fullname" . }}
+spec:
+  staticConfigs:
+  - targets:
+    - {{ include "tencentcloud-info-exporter.fullname" . }}.{{ .Release.Namespace }}:{{ .Values.service.port }}
+  metricsPath: {{ .Values.scrapeConfig.telemetryPath }}
+{{- if .Values.scrapeConfig.relabelings }}
+  relabelings:
+{{ toYaml .Values.scrapeConfig.relabelings | indent 4 }}
+{{- end }}
+{{- if .Values.scrapeConfig.metricRelabelings }}
+  metricRelabelings:
+{{ toYaml .Values.scrapeConfig.metricRelabelings | indent 4 }}
+{{- end }}
+  scrapeInterval: {{ .Values.scrapeConfig.interval }}
+  scrapeTimeout: {{ .Values.scrapeConfig.timeout }}
+{{- end }}
