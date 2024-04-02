@@ -93,7 +93,7 @@ frontend:
   replicaCount: 1
 
   image:
-    repository: codecov/enterprise-frontend
+    repository: codecov/self-hosted-frontend
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
     tag: ""
@@ -149,7 +149,7 @@ api:
   replicaCount: 1
 
   image:
-    repository: codecov/enterprise-api
+    repository: codecov/self-hosted-api
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
     tag: ""
@@ -204,7 +204,7 @@ worker:
   replicaCount: 1
 
   image:
-    repository: codecov/enterprise-worker
+    repository: codecov/self-hosted-worker
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
     tag: ""
@@ -254,7 +254,7 @@ gateway:
   replicaCount: 1
 
   image:
-    repository: codecov/enterprise-gateway
+    repository: codecov/self-hosted-gateway
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
     tag: ""
