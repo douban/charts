@@ -132,8 +132,6 @@ spec:
             {{- toYaml .Values.worker.securityContext | nindent 12 }}
           image: "{{ .Values.worker.image.repository }}:{{ .Values.worker.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.worker.image.pullPolicy }}
-          args:
-          - worker
           env:
             - name: RUN_ENV
               value: "ENTERPRISE"
@@ -219,9 +217,9 @@ spec:
             value: {{ include "codecov.fullname" . }}-api-svc
           - name: CODECOV_IA_PORT
             value: {{ .Values.api.service.port | quote }}
-          - name: CODECOV_FRONTEND_HOST
+          - name: CODECOV_DEFAULT_HOST
             value: {{ include "codecov.fullname" . }}-frontend
-          - name: CODECOV_FRONTEND_PORT
+          - name: CODECOV_DEFAULT_PORT
             value: {{ .Values.frontend.service.port | quote }}
           {{- if .Values.minio.embedded }}
           - name: CODECOV_MINIO_HOST
