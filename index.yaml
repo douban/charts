@@ -378,6 +378,32 @@ entries:
   dify:
   - apiVersion: v2
     appVersion: 0.6.0-fix1
+    created: "2024-04-09T13:49:55.447754885Z"
+    dependencies:
+    - condition: redis.embedded
+      name: redis
+      repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+      version: ~17.15.6
+    - condition: postgresql.embedded
+      name: postgresql
+      repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+      version: ~12.8.5
+    - condition: minio.embedded
+      name: minio
+      repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+      version: ~12.7.0
+    description: A Helm chart for Kubernetes
+    digest: 63130f48ba5a480b755dd542be88bb3785a8a538729e755b1345e889b18bf04d
+    home: https://github.com/langgenius/dify
+    maintainers:
+    - name: douban
+    name: dify
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/dify-0.2.0/dify-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: 0.6.0-fix1
     created: "2024-04-09T12:02:14.461207524Z"
     dependencies:
     - condition: redis.embedded
