@@ -49,6 +49,21 @@ spec:
             {{- with .Values.global.extraBackendEnvs }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
+            {{- with .Values.api.envs }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+            - name: CODE_EXECUTION_ENDPOINT
+              value: "http://{{ include "dify.fullname" . }}-sandbox"
+            - name: CODE_EXECUTION_API_KEY
+            {{- if .Values.sandbox.apiKeySecret }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.sandbox.apiKeySecret }}
+                  key: sandbox-api-key
+            {{- else if .Values.sandbox.apiKey }}
+              value: {{ .Values.sandbox.apiKey | quote }}
+            {{- else }}
+            {{- end }}
           {{- with .Values.volumeMounts }}
           volumeMounts:
           {{- toYaml . | nindent 12 }}
@@ -231,6 +246,90 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.frontend.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+
+# sandbox
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "dify.fullname" . }}-sandbox
+  labels:
+    {{- include "dify.labels" . | nindent 4 }}
+    app.kubernetes.io/component: sandbox
+spec:
+  {{- if not .Values.sandbox.autoscaling.enabled }}
+  replicas: {{ .Values.sandbox.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "dify.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: sandbox
+  template:
+    metadata:
+      {{- with .Values.sandbox.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "dify.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: sandbox
+    spec:
+      {{- with .Values.sandbox.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "dify.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.sandbox.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.sandbox.securityContext | nindent 12 }}
+          image: "{{ .Values.sandbox.image.repository }}:{{ .Values.sandbox.image.tag | default "latest" }}"
+          imagePullPolicy: {{ .Values.sandbox.image.pullPolicy }}
+          env:
+          - name: PLACEHOLDER
+            value: "PLACEHOLDER"
+          {{- with .Values.sandbox.envs }}
+          {{- toYaml . | nindent 10 }}
+          {{- end }}
+          - name: API_KEY
+          {{- if .Values.sandbox.apiKeySecret }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.sandbox.apiKeySecret }}
+                key: sandbox-api-key
+          {{- else if .Values.sandbox.apiKey }}
+            value: {{ .Values.sandbox.apiKey | quote }}
+          {{- else }}
+          {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.sandbox.containerPort }}
+              protocol: TCP
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          resources:
+            {{- toYaml .Values.sandbox.resources | nindent 12 }}
+      {{- with .Values.sandbox.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.sandbox.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.sandbox.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
