@@ -19,17 +19,23 @@ global:
   # * frontend
   # * api
   # * worker
-  extraEnvs:
-  # SECRET_KEY is a must, check https://docs.dify.ai/getting-started/install-self-hosted/environments#secret_key for detail
-  - name: SECRET_KEY
-    value: "PleaseReplaceThisToYourSecret"
+  extraEnvs: []
 
   # the following extra configs would be injected into:
   # * api
   # * worker
-  extraBackendEnvs: []
+  extraBackendEnvs:
+  # SECRET_KEY is a must, check https://docs.dify.ai/getting-started/install-self-hosted/environments#secret_key for detail
+  # read more on the readme page for secret ref
+  - name: SECRET_KEY
+    value: "PleaseReplaceThisToYourSecretOrUse"
+  # use secretRef to protect your secret
   # - name: SECRET_KEY
-  #   value: xxx
+  #   valueFrom:
+  #     secretKeyRef:
+  #       name: dify
+  #       key: SECRET_KEY
+  
 
 ingress:
   enabled: false
