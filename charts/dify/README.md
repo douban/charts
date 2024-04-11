@@ -48,6 +48,22 @@ The minimal configure provided above is sufficient for experiment but **without 
 You **must do**  the following extra work before put it into production!!
 
 
+### Protect Sensitive info with secret
+Environment variable like `SECRET_KEY` could be harmful if leaked, it is adviced to protect them using secret or csi volume.
+
+The example of using secret is like 
+```
+global:
+  extraBackendEnvs:
+  - name: SECRET_KEY
+    valueFrom:
+      secretKeyRef:
+        name: dify
+        key: SECRET_KEY
+```
+
+Read more: https://kubernetes.io/docs/concepts/security/secrets-good-practices/
+
 ### External postgresql
 
 1. set the `postgresql.embedded` to `false`
