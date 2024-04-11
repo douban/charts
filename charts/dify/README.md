@@ -34,18 +34,21 @@ minio:
 helm repo add douban https://douban.github.io/charts/
 helm upgrade dify douban/dify -f values.yaml --install --debug
 ```
-
+**Must** run db migration after installation, or the instance would not work.
 ```
 # run migration
 kubectl exec -it dify-pod-name -- flask db upgrade
 ```
 
-always run this command after dify upgrade
+**Always** run this command after dify upgrade.
 
-## production use checklist
-The minimal configure provided above is sufficient for experiment, however, you need extra work before put it into production, I advice you do all the checklist before provide services.
+## Production use checklist
+The minimal configure provided above is sufficient for experiment but **without any persistance**, all your data would be lost if you restarted the postgresql pod or minio pod!!
 
-### external postgresql
+You **must do**  the following extra work before put it into production!!
+
+
+### External postgresql
 
 1. set the `postgresql.embedded` to `false`
 2. inject connection info with `global.extraBackendEnvs`
@@ -69,7 +72,7 @@ global:
     value: dify
 ```
 
-### external redis
+### External redis
 1. set the `redis.embedded` to `false`
 2. inject connection info with `global.extraBackendEnvs`
 ```
@@ -94,7 +97,7 @@ global:
         key: CELERY_BROKER_URL
 ```
 
-### external s3 bucket
+### External s3 bucket
 1. set the `minio.embedded` to `false`
 2. inject connection info with `global.extraBackendEnvs`
 
@@ -118,7 +121,7 @@ global:
         key: S3_SECRET_KEY
 ```
 
-### setup vector db
+### Setup vector db
 
 due to the complexity of vector db, this component is not included, you have to use external vector db, likewise , you can inject environment variable to use it
 
