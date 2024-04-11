@@ -13,7 +13,7 @@ global:
   host: "mydify.example.com"
   enableTLS: false
 
-extraEnvs:
+extraBackendEnvs:
 - name: SECRET_KEY
   value: "generate your own one"
 - name: LOG_LEVEL
