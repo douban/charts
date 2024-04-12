@@ -14,6 +14,8 @@ fullnameOverride: ""
 global:
   host: "chart-example.local"
   enableTLS: false
+  image:
+    tag: ""
   edition: "SELF_HOSTED"
   # the following extra configs would be injected into:
   # * frontend
@@ -35,7 +37,6 @@ global:
   #     secretKeyRef:
   #       name: dify
   #       key: SECRET_KEY
-  
 
 ingress:
   enabled: false

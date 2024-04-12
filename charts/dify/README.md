@@ -13,6 +13,11 @@ global:
   host: "mydify.example.com"
   enableTLS: false
 
+  image:
+    # Set to the latest version of dify
+    # Check the version here: https://github.com/langgenius/dify/releases
+    # If not set, Using the default value in Chart.yaml
+    tag: "0.6.2"
 extraBackendEnvs:
 - name: SECRET_KEY
   value: "generate your own one"
@@ -40,7 +45,24 @@ helm upgrade dify douban/dify -f values.yaml --install --debug
 kubectl exec -it dify-pod-name -- flask db upgrade
 ```
 
-**Always** run this command after dify upgrade.
+## Upgrade
+To upgrade app, change the value of `global.image.tag` to the desired version
+```
+global:
+  image:
+    tag: "0.6.2"
+```
+
+Then upgrade the app with helm command 
+```
+helm upgrade dify douban/dify -f values.yaml --debug
+```
+
+**Must** run db migration after upgrade.
+```
+# run migration
+kubectl exec -it dify-pod-name -- flask db upgrade
+```
 
 ## Production use checklist
 The minimal configure provided above is sufficient for experiment but **without any persistance**, all your data would be lost if you restarted the postgresql pod or minio pod!!

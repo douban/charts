@@ -36,7 +36,7 @@ spec:
         - name: {{ .Chart.Name }}-api
           securityContext:
             {{- toYaml .Values.api.securityContext | nindent 12 }}
-          image: "{{ .Values.api.image.repository }}:{{ .Values.api.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.api.image.repository }}:{{ coalesce .Values.api.image.tag .Values.global.image.tag .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.api.image.pullPolicy }}
           env:
             - name: MODE
@@ -137,7 +137,7 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.worker.securityContext | nindent 12 }}
-          image: "{{ .Values.worker.image.repository }}:{{ .Values.worker.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.worker.image.repository }}:{{ coalesce .Values.worker.image.tag .Values.global.image.tag .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.worker.image.pullPolicy }}
           args:
           - worker
@@ -213,7 +213,7 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.frontend.securityContext | nindent 12 }}
-          image: "{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.frontend.image.repository }}:{{ coalesce .Values.frontend.image.tag .Values.global.image.tag .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.frontend.image.pullPolicy }}
           env:
           {{- include "dify.commonEnvs" . | nindent 12 }}
