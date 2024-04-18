@@ -13,6 +13,8 @@ fullnameOverride: ""
 
 global:
   host: "chart-example.local"
+  # Change this is your ingress is exposed with port other than 443, 80, like 8080 for instance
+  port: ""
   enableTLS: false
   image:
     tag: ""
