@@ -13,6 +13,7 @@ fullnameOverride: ""
 
 global:
   host: "chart-example.local"
+  port: ""
   enableTLS: false
   image:
     tag: ""

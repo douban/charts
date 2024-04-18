@@ -62,7 +62,7 @@ Create the name of the service account to use
 {{- end }}
 
 {{- define "dify.baseUrl" -}}
-{{ if .Values.global.enableTLS }}https://{{ else }}http://{{ end }}{{.Values.global.host}}
+{{ if .Values.global.enableTLS }}https://{{ else }}http://{{ end }}{{.Values.global.host}}{{ if .Values.global.port }}:{{.Values.global.port}}{{ end }}
 {{- end }}
 
 {{/*

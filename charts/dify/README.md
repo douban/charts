@@ -11,6 +11,7 @@ create your own values file , save as `values.yaml`
 ```yaml
 global:
   host: "mydify.example.com"
+  port: ""
   enableTLS: false
 
   image:
@@ -18,13 +19,13 @@ global:
     # Check the version here: https://github.com/langgenius/dify/releases
     # If not set, Using the default value in Chart.yaml
     tag: "0.6.2"
-extraBackendEnvs:
-- name: SECRET_KEY
-  value: "generate your own one"
-- name: LOG_LEVEL
-  value: "DEBUG"
-- name: VECTOR_STORE
-  value: "milvus"
+  extraBackendEnvs:
+  - name: SECRET_KEY
+    value: "generate your own one"
+  - name: LOG_LEVEL
+    value: "DEBUG"
+  - name: VECTOR_STORE
+    value: "milvus"
 
 ingress:
   enabled: true
