@@ -18,7 +18,7 @@ global:
     # Set to the latest version of dify
     # Check the version here: https://github.com/langgenius/dify/releases
     # If not set, Using the default value in Chart.yaml
-    tag: "0.6.2"
+    tag: "0.6.3"
   extraBackendEnvs:
   - name: SECRET_KEY
     value: "generate your own one"
@@ -51,7 +51,7 @@ To upgrade app, change the value of `global.image.tag` to the desired version
 ```
 global:
   image:
-    tag: "0.6.2"
+    tag: "0.6.3"
 ```
 
 Then upgrade the app with helm command 
