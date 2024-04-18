@@ -11,7 +11,6 @@ create your own values file , save as `values.yaml`
 ```yaml
 global:
   host: "mydify.example.com"
-  port: ""
   enableTLS: false
 
   image:
