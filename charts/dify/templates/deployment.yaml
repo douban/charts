@@ -241,6 +241,9 @@ spec:
             httpGet:
               path: /apps
               port: http
+              httpHeaders:
+              - name: accept-language
+                value: en
             initialDelaySeconds: 30
             timeoutSeconds: 5
             periodSeconds: 30
@@ -250,7 +253,10 @@ spec:
             httpGet:
               path: /apps
               port: http
-            initialDelaySeconds: 1
+              httpHeaders:
+              - name: accept-language
+                value: en
+            initialDelaySeconds: 30
             timeoutSeconds: 5
             periodSeconds: 5
             successThreshold: 1
