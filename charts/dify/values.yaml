@@ -113,6 +113,31 @@ frontend:
   tolerations: []
 
   affinity: {}
+  livenessProbe:
+    httpGet:
+      path: /apps
+      port: http
+      httpHeaders:
+      - name: accept-language
+        value: en
+    initialDelaySeconds: 3
+    timeoutSeconds: 5
+    periodSeconds: 30
+    successThreshold: 1
+    failureThreshold: 2
+  readinessProbe:
+    httpGet:
+      path: /apps
+      port: http
+      httpHeaders:
+      - name: accept-language
+        value: en
+    initialDelaySeconds: 3
+    timeoutSeconds: 5
+    periodSeconds: 30
+    successThreshold: 1
+    failureThreshold: 2
+
 
 api:
   replicaCount: 1
@@ -184,6 +209,25 @@ api:
 
   affinity: {}
 
+  livenessProbe:
+    httpGet:
+      path: /health
+      port: http
+    initialDelaySeconds: 30
+    timeoutSeconds: 5
+    periodSeconds: 30
+    successThreshold: 1
+    failureThreshold: 2
+  readinessProbe:
+    httpGet:
+      path: /health
+      port: http
+    initialDelaySeconds: 10
+    timeoutSeconds: 5
+    periodSeconds: 5
+    successThreshold: 1
+    failureThreshold: 10
+
 worker:
   replicaCount: 1
 
@@ -233,6 +277,10 @@ worker:
   tolerations: []
 
   affinity: {}
+
+  # livenessprobe for worker, default no probe
+  livenessProbe: {}
+  readinessProbe: {}
 
 sandbox:
   replicaCount: 1
@@ -297,6 +345,24 @@ sandbox:
   tolerations: []
 
   affinity: {}
+
+
+  readinessProbe:
+    tcpSocket:
+      port: http
+    initialDelaySeconds: 1
+    timeoutSeconds: 5
+    periodSeconds: 5
+    successThreshold: 1
+    failureThreshold: 10
+  livenessProbe:
+    tcpSocket:
+      port: http
+    initialDelaySeconds: 30
+    timeoutSeconds: 5
+    periodSeconds: 30
+    successThreshold: 1
+    failureThreshold: 2
 
 ##### dependencies #####
 

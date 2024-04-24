@@ -72,24 +72,14 @@ spec:
             - name: http
               containerPort: {{ .Values.api.containerPort }}
               protocol: TCP
+          {{- with .Values.api.livenessProbe }}
           livenessProbe:
-            httpGet:
-              path: /health
-              port: http
-            initialDelaySeconds: 30
-            timeoutSeconds: 5
-            periodSeconds: 30
-            successThreshold: 1
-            failureThreshold: 2
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.api.readinessProbe }}
           readinessProbe:
-            httpGet:
-              path: /health
-              port: http
-            initialDelaySeconds: 10
-            timeoutSeconds: 5
-            periodSeconds: 5
-            successThreshold: 1
-            failureThreshold: 10
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           resources:
             {{- toYaml .Values.api.resources | nindent 12 }}
       {{- with .Values.volumes }}
@@ -237,30 +227,14 @@ spec:
             - name: http
               containerPort: {{ .Values.frontend.containerPort }}
               protocol: TCP
+          {{- with .Values.frontend.livenessProbe }}
           livenessProbe:
-            httpGet:
-              path: /apps
-              port: http
-              httpHeaders:
-              - name: accept-language
-                value: en
-            initialDelaySeconds: 30
-            timeoutSeconds: 5
-            periodSeconds: 30
-            successThreshold: 1
-            failureThreshold: 2
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.frontend.readinessProbe}}
           readinessProbe:
-            httpGet:
-              path: /apps
-              port: http
-              httpHeaders:
-              - name: accept-language
-                value: en
-            initialDelaySeconds: 30
-            timeoutSeconds: 5
-            periodSeconds: 5
-            successThreshold: 1
-            failureThreshold: 10
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           resources:
             {{- toYaml .Values.frontend.resources | nindent 12 }}
       {{- with .Values.frontend.nodeSelector }}
@@ -337,22 +311,14 @@ spec:
             - name: http
               containerPort: {{ .Values.sandbox.containerPort }}
               protocol: TCP
+          {{- with .Values.sandbox.livenessProbe }}
           livenessProbe:
-            tcpSocket:
-              port: http
-            initialDelaySeconds: 30
-            timeoutSeconds: 5
-            periodSeconds: 30
-            successThreshold: 1
-            failureThreshold: 2
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.sandbox.readinessProbe}}
           readinessProbe:
-            tcpSocket:
-              port: http
-            initialDelaySeconds: 1
-            timeoutSeconds: 5
-            periodSeconds: 5
-            successThreshold: 1
-            failureThreshold: 10
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           resources:
             {{- toYaml .Values.sandbox.resources | nindent 12 }}
       {{- with .Values.sandbox.nodeSelector }}
