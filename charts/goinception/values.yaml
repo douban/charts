@@ -89,9 +89,6 @@ configMap:
       check_float_double=true
       support_charset="utf8,utf8mb4"
       support_collation="utf8_general_ci,utf8mb4_general_ci"
-      #backup_host="archery-mysql"
-      #backup_port=3306
-      #backup_user="root"
       backup_host="BACKUP_HOST_PLACEHOLDER"
       backup_port=BACKUP_PORT_PLACEHOLDER
       backup_user="BACKUP_USER_PLACEHOLDER"
