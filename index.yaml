@@ -626,6 +626,19 @@ entries:
   goinception:
   - apiVersion: v2
     appVersion: "1.0"
+    created: "2024-05-07T10:33:29.740048658Z"
+    description: 一个集审核、执行、备份及生成回滚语句于一身的MySQL运维工具
+    digest: 9612401cf6195f829d5e5d23fe12f1aaadcfd4ad5e8c9e8369c4d195496c3273
+    home: https://github.com/hanchuanchuan/goInception
+    maintainers:
+    - name: LeoQuote
+    - name: AceAttorney
+    name: goinception
+    urls:
+    - https://github.com/douban/charts/releases/download/goinception-0.3.0/goinception-0.3.0.tgz
+    version: 0.3.0
+  - apiVersion: v2
+    appVersion: "1.0"
     created: "2022-06-16T06:00:17.31703075Z"
     description: A Helm chart for Kubernetes
     digest: 7526cb1a93d3acfbae216bd8d14b5efd621a8825777d209e978f1be987d8887e
