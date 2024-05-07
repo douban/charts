@@ -2,7 +2,7 @@ apiVersion: v2
 home: https://archerydms.com/
 description: Archery Helm chart for Kubernetes
 name: archery
-version: 0.3.2
+version: 0.3.3
 sources:
   - https://github.com/hhyo/Archery
 
@@ -20,6 +20,6 @@ dependencies:
     repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
     condition: mysql.embedded
   - name: goinception
-    version: ~0.2.0
+    version: ~0.3.0
     repository: https://douban.github.io/charts/
     condition: goinception.embedded
