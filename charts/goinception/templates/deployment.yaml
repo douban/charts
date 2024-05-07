@@ -34,7 +34,7 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           command: ['sh', '-c',
-                    'sed "s/BACKUP_PASSWORD_PLACEHOLDER/${BACKUP_PASSWORD}/g" /etc/goinception-template/config.toml.template > /etc/goinception/config.toml']
+                    'sed "s/BACKUP_HOST_PLACEHOLDER/${BACKUP_HOST}/g;s/BACKUP_PORT_PLACEHOLDER/${BACKUP_PORT}/g;s/BACKUP_USER_PLACEHOLDER/${BACKUP_USER}/g;s/BACKUP_PASSWORD_PLACEHOLDER/${BACKUP_PASSWORD}/g" /etc/goinception-template/config.toml.template > /etc/goinception/config.toml; cat /etc/goinception/config.toml']
           volumeMounts:
             - name: goinception-config-volume
               mountPath: /etc/goinception

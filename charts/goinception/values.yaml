@@ -22,10 +22,14 @@ deployment:
   annotations: {}
 
 initEnv:
+  - name: BACKUP_HOST
+    value: ""
+  - name: BACKUP_PORT
+    value: ""
+  - name: BACKUP_USER
+    value: ""
   - name: BACKUP_PASSWORD
-    value: "my-password"
-# - name: xxx
-#   value: xxx
+    value: ""
 
 resources: {}
 
@@ -85,9 +89,9 @@ configMap:
       check_float_double=true
       support_charset="utf8,utf8mb4"
       support_collation="utf8_general_ci,utf8mb4_general_ci"
-      backup_host="archery-mysql"
-      backup_port=3306
-      backup_user="root"
+      backup_host="BACKUP_HOST_PLACEHOLDER"
+      backup_port=BACKUP_PORT_PLACEHOLDER
+      backup_user="BACKUP_USER_PLACEHOLDER"
       backup_password="BACKUP_PASSWORD_PLACEHOLDER"
       #安全更新是否开启.
       #-1表示不做操作,基于远端数据库[默认值]
