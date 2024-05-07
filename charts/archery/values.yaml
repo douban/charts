@@ -146,7 +146,7 @@ goinception:
       value: ""
     - name: BACKUP_PORT
       value: ""
-      # mysql superuser 
+      # mysql superuser
     - name: BACKUP_USER
       value: ""
     - name: BACKUP_PASSWORD
