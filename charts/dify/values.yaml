@@ -292,7 +292,12 @@ sandbox:
     repository: langgenius/dify-sandbox
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: ""
+    tag: "0.2.0"
+  config:
+    # python_requirements: |
+    #   numpy==1.20.3
+    #   scipy==1.6.3
+    python_requirements: ""
 
   envs:
   - name: GIN_MODE
