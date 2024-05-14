@@ -315,6 +315,9 @@ spec:
             value: {{ .Values.sandbox.apiKey | quote }}
           {{- else }}
           {{- end }}
+          volumeMounts:
+            - name: config-volume
+              mountPath: /dependencies
           ports:
             - name: http
               containerPort: {{ .Values.sandbox.containerPort }}
@@ -341,3 +344,7 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ include "dify.fullname" . }}-sandbox-config
