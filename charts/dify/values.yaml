@@ -408,23 +408,10 @@ postgresql:
 
 minio:
   embedded: false
-  # externalHost: "minio.example.com"
-  # externalPort: "443"
-  # embedded minio is not supported
-  # dify needs a external available minio
-  # please use external minio
-  # pr are welcomed
-  # embedded: false
-  # externalMinio:
-# If using external storage. Comment above and uncomment below
-#    host: s3.amazonaws.com or storage.googleapis.com if using GCS
-#    bucket: <bucket-name>
-#    region: <bucket-region>
-#    verify_ssl: true
-#    port: 443
-#    access_key_id: <aws-iam-access-key> # or <gcs-hmac-key> if using GCS
-#    secret_access_key: <aws-iam-secret> # or <gcs-hmac-secret> if using GCS
-#    iam_auth: <boolean, default false> # set to true in AWS to attempt to authenticate via Instance role
+  # using embedded minio
+  # connection info would be set automatically
+  # best to use external s3/minio if you have one
+  # setting embedded to false and set pg url in envrionment variable
   auth:
     rootUser: minioadmin
     rootPassword: minioadmin
