@@ -411,7 +411,7 @@ minio:
   # using embedded minio
   # connection info would be set automatically
   # best to use external s3/minio if you have one
-  # setting embedded to false and set pg url in envrionment variable
+  # setting embedded to false and set minio/s3 url in envrionment variable
   auth:
     rootUser: minioadmin
     rootPassword: minioadmin
