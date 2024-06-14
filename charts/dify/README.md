@@ -34,47 +34,55 @@ minio:
   embedded: true
 ```
 
-```
+```sh
 # install it
 helm repo add douban https://douban.github.io/charts/
 helm upgrade dify douban/dify -f values.yaml --install --debug
 ```
+
 **Must** run db migration after installation, or the instance would not work.
-```
+
+```sh
 # run migration
 kubectl exec -it dify-pod-name -- flask db upgrade
 ```
 
 ## Upgrade
+
 To upgrade app, change the value of `global.image.tag` to the desired version
-```
+
+```yaml
 global:
   image:
     tag: "0.6.3"
 ```
 
 Then upgrade the app with helm command
-```
+
+```sh
 helm upgrade dify douban/dify -f values.yaml --debug
 ```
 
 **Must** run db migration after upgrade.
-```
+
+```sh
 # run migration
 kubectl exec -it dify-pod-name -- flask db upgrade
 ```
 
 ## Production use checklist
+
 The minimal configure provided above is sufficient for experiment but **without any persistance**, all your data would be lost if you restarted the postgresql pod or minio pod!!
 
 You **must do**  the following extra work before put it into production!!
 
-
 ### Protect Sensitive info with secret
+
 Environment variable like `SECRET_KEY` could be harmful if leaked, it is adviced to protect them using secret or csi volume.
 
 The example of using secret is like
-```
+
+```yaml
 global:
   extraBackendEnvs:
   - name: SECRET_KEY
@@ -84,14 +92,14 @@ global:
         key: SECRET_KEY
 ```
 
-Read more: https://kubernetes.io/docs/concepts/security/secrets-good-practices/
+Read more: <https://kubernetes.io/docs/concepts/security/secrets-good-practices/>
 
 ### External postgresql
 
 1. set the `postgresql.embedded` to `false`
 2. inject connection info with `global.extraBackendEnvs`
 
-```
+```yaml
 global:
   extraBackendEnvs:
   - name: DB_USERNAME
@@ -111,9 +119,11 @@ global:
 ```
 
 ### External redis
+
 1. set the `redis.embedded` to `false`
 2. inject connection info with `global.extraBackendEnvs`
-```
+
+```yaml
 global:
   extraBackendEnvs:
   - name: REDIS_HOST
@@ -142,7 +152,7 @@ global:
 1. set the `minio.embedded` to `false`
 2. inject connection info with `global.extraBackendEnvs`
 
-```
+```yaml
 global:
   extraBackendEnvs:
   - name: STORAGE_TYPE
@@ -187,7 +197,7 @@ global:
 
 due to the complexity of vector db, this component is not included, you have to use external vector db, likewise , you can inject environment variable to use it
 
-```
+```yaml
 global:
   extraBackendEnvs:
   - name: VECTOR_STORE
