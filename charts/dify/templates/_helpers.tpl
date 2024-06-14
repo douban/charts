@@ -81,6 +81,8 @@ commonBackendEnvs are for api and worker containers
 
 
 {{- define "dify.commonBackendEnvs" -}}
+- name: STORAGE_TYPE
+  value: {{ .Values.global.storageType }}
 {{- if .Values.redis.embedded }}
 - name: CELERY_BROKER_URL
   value: redis://:{{ .Values.redis.auth.password }}@{{ include "dify.fullname" . }}-redis-master:6379/1

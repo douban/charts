@@ -19,6 +19,7 @@ global:
   image:
     tag: ""
   edition: "SELF_HOSTED"
+  storageType: "s3"
   # the following extra configs would be injected into:
   # * frontend
   # * api
@@ -39,8 +40,6 @@ global:
   #     secretKeyRef:
   #       name: dify
   #       key: SECRET_KEY
-  - name: STORAGE_TYPE
-    value: "s3"
 
 ingress:
   enabled: false
