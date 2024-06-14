@@ -53,7 +53,7 @@ global:
     tag: "0.6.3"
 ```
 
-Then upgrade the app with helm command 
+Then upgrade the app with helm command
 ```
 helm upgrade dify douban/dify -f values.yaml --debug
 ```
@@ -73,7 +73,7 @@ You **must do**  the following extra work before put it into production!!
 ### Protect Sensitive info with secret
 Environment variable like `SECRET_KEY` could be harmful if leaked, it is adviced to protect them using secret or csi volume.
 
-The example of using secret is like 
+The example of using secret is like
 ```
 global:
   extraBackendEnvs:
@@ -135,13 +135,18 @@ global:
         key: CELERY_BROKER_URL
 ```
 
-### External s3 bucket
+### External bucket
+
+#### Amazon S3
+
 1. set the `minio.embedded` to `false`
 2. inject connection info with `global.extraBackendEnvs`
 
 ```
 global:
   extraBackendEnvs:
+  - name: STORAGE_TYPE
+    value: "s3"
   - name: S3_ENDPOINT
     value: "https://my-endpoint.s3.com"
   - name: S3_BUCKET_NAME
@@ -157,6 +162,25 @@ global:
       secretKeyRef:
         name: dify
         key: S3_SECRET_KEY
+```
+
+#### Google Cloud Storage
+
+1. set the `minio.embedded` to `false`
+2. inject connection info with `global.extraBackendEnvs`
+
+```yaml
+global:
+  extraBackendEnvs:
+  - name: STORAGE_TYPE
+    value: "google-storage"
+  - name: GOOGLE_STORAGE_BUCKET_NAME
+    value: "bucket-name"
+  - name: GOOGLE_STORAGE_SERVICE_ACCOUNT_JSON_BASE64
+    valueFrom:
+      secretKeyRef:
+        name: dify-secret
+        key: GOOGLE_STORAGE_SERVICE_ACCOUNT_JSON_BASE64
 ```
 
 ### Setup vector db

@@ -39,6 +39,8 @@ global:
   #     secretKeyRef:
   #       name: dify
   #       key: SECRET_KEY
+  - name: STORAGE_TYPE
+    value: "s3"
 
 ingress:
   enabled: false
