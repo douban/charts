@@ -154,9 +154,8 @@ global:
 
 ```yaml
 global:
+  storageType: "s3"
   extraBackendEnvs:
-  - name: STORAGE_TYPE
-    value: "s3"
   - name: S3_ENDPOINT
     value: "https://my-endpoint.s3.com"
   - name: S3_BUCKET_NAME
@@ -181,9 +180,8 @@ global:
 
 ```yaml
 global:
+  storageType: "google-storage"
   extraBackendEnvs:
-  - name: STORAGE_TYPE
-    value: "google-storage"
   - name: GOOGLE_STORAGE_BUCKET_NAME
     value: "bucket-name"
   - name: GOOGLE_STORAGE_SERVICE_ACCOUNT_JSON_BASE64
