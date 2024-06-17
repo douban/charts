@@ -68,7 +68,7 @@ Create the name of the service account to use
 {{/*
 dify environments
 commonEnvs are for all containers
-commonBackendEnvs are for api and worker containers 
+commonBackendEnvs are for api and worker containers
 */}}
 {{- define "dify.commonEnvs" -}}
 - name: EDITION
@@ -81,6 +81,8 @@ commonBackendEnvs are for api and worker containers
 
 
 {{- define "dify.commonBackendEnvs" -}}
+- name: STORAGE_TYPE
+  value: {{ .Values.global.storageType }}
 {{- if .Values.redis.embedded }}
 - name: CELERY_BROKER_URL
   value: redis://:{{ .Values.redis.auth.password }}@{{ include "dify.fullname" . }}-redis-master:6379/1
@@ -103,8 +105,6 @@ commonBackendEnvs are for api and worker containers
 - name: DB_DATABASE
   value: {{ .Values.postgresql.auth.database }}
 {{- end }}
-- name: STORAGE_TYPE
-  value: "s3"
 
 {{- if .Values.minio.embedded }}
 - name: S3_ENDPOINT

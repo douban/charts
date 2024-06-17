@@ -19,6 +19,7 @@ global:
   image:
     tag: ""
   edition: "SELF_HOSTED"
+  storageType: "s3"
   # the following extra configs would be injected into:
   # * frontend
   # * api
