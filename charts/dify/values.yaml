@@ -40,6 +40,7 @@ global:
   #     secretKeyRef:
   #       name: dify
   #       key: SECRET_KEY
+  labels: {}
 
 ingress:
   enabled: false
