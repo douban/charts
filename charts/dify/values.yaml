@@ -40,6 +40,8 @@ global:
   #     secretKeyRef:
   #       name: dify
   #       key: SECRET_KEY
+
+  # Provide extra labels for all deployments of this chart
   labels: {}
 
 ingress:
