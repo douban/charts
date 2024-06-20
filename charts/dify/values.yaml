@@ -41,7 +41,7 @@ global:
   #       name: dify
   #       key: SECRET_KEY
 
-  # Provide extra labels for all deployments of this chart
+  # Provide extra labels for all deployments and related pods of this chart
   labels: {}
 
 ingress:
