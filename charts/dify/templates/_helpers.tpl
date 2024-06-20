@@ -51,6 +51,15 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
+Global labels
+*/}}
+{{- define "dify.global.labels" -}}
+{{- if .Values.global.labels }}
+{{- toYaml .Values.global.labels }}
+{{- end -}}
+{{- end -}}
+
+{{/*
 Create the name of the service account to use
 */}}
 {{- define "dify.serviceAccountName" -}}
