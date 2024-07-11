@@ -9,7 +9,7 @@ image:
   tag: latest
   pullPolicy: IfNotPresent
 
-override-configs:
+overrideConfigs:
   image:
     repository: busybox
     tag: 1.28
