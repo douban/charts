@@ -9,7 +9,7 @@ image:
   tag: latest
   pullPolicy: IfNotPresent
 
-initContainers:
+override-configs:
   image:
     repository: busybox
     tag: 1.28

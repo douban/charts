@@ -28,8 +28,8 @@ spec:
     spec:
       initContainers:
         - name: override-configs
-          image: "{{ .Values.initContainers.image.repository }}:{{ .Values.initContainers.image.tag }}"
-          imagePullPolicy: {{ .Values.initContainers.image.pullPolicy }}
+          image: "{{ .Values.override-configs.image.repository }}:{{ .Values.override-configs.image.tag }}"
+          imagePullPolicy: {{ .Values.override-configs.image.pullPolicy }}
           {{- with .Values.initEnv }}
           env:
             {{- toYaml . | nindent 12 }}
