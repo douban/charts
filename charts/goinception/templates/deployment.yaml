@@ -28,7 +28,8 @@ spec:
     spec:
       initContainers:
         - name: override-configs
-          image: busybox:1.28
+          image: "{{ .Values.initContainers.image.repository }}:{{ .Values.initContainers.image.tag }}"
+          imagePullPolicy: {{ .Values.initContainers.image.pullPolicy }}
           {{- with .Values.initEnv }}
           env:
             {{- toYaml . | nindent 12 }}
