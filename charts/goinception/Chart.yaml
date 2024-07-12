@@ -1,6 +1,6 @@
 apiVersion: v2
 appVersion: "1.0"
-description: 一个集审核、执行、备份及生成回滚语句于一身的MySQL运维工具 
+description: 一个集审核、执行、备份及生成回滚语句于一身的MySQL运维工具
 name: goinception
 version: 0.3.1
 home: https://github.com/hanchuanchuan/goInception
