@@ -757,6 +757,19 @@ entries:
   goinception:
   - apiVersion: v2
     appVersion: "1.0"
+    created: "2024-07-12T03:37:42.658309562Z"
+    description: 一个集审核、执行、备份及生成回滚语句于一身的MySQL运维工具
+    digest: bb668f909c7e9139dd763755a807b7c05bdf0cc67c2353a9d8fd8da2e1450c0c
+    home: https://github.com/hanchuanchuan/goInception
+    maintainers:
+    - name: LeoQuote
+    - name: AceAttorney
+    name: goinception
+    urls:
+    - https://github.com/douban/charts/releases/download/goinception-0.3.1/goinception-0.3.1.tgz
+    version: 0.3.1
+  - apiVersion: v2
+    appVersion: "1.0"
     created: "2024-05-07T10:33:29.740048658Z"
     description: 一个集审核、执行、备份及生成回滚语句于一身的MySQL运维工具
     digest: 9612401cf6195f829d5e5d23fe12f1aaadcfd4ad5e8c9e8369c4d195496c3273
