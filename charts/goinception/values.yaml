@@ -9,6 +9,12 @@ image:
   tag: latest
   pullPolicy: IfNotPresent
 
+overrideConfigs:
+  image:
+    repository: busybox
+    tag: 1.28
+    pullPolicy: IfNotPresent
+
 nameOverride: ""
 fullnameOverride: ""
 
