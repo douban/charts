@@ -1128,6 +1128,19 @@ entries:
     urls:
     - https://github.com/douban/charts/releases/download/nginx-0.1.1/nginx-0.1.1.tgz
     version: 0.1.1
+  nonebot:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-08-12T07:31:24.569792978Z"
+    description: A Helm chart for Kubernetes
+    digest: 7b2e31fc35aa9898323686ef9eafda19fcd3c0c80452419de8ff5286827d5409
+    maintainers:
+    - name: douban
+    name: nonebot
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/nonebot-0.1.0/nonebot-0.1.0.tgz
+    version: 0.1.0
   overlord:
   - apiVersion: v2
     appVersion: 1.16.0
