@@ -1131,6 +1131,18 @@ entries:
   nonebot:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-08-12T08:43:05.539847123Z"
+    description: A Helm chart for Kubernetes
+    digest: abc8722be2349717a2384a28d33b8c3800fd567cda5d08ab434954caf4eb23b1
+    maintainers:
+    - name: douban
+    name: nonebot
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/nonebot-0.1.1/nonebot-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-08-12T07:31:24.569792978Z"
     description: A Helm chart for Kubernetes
     digest: 7b2e31fc35aa9898323686ef9eafda19fcd3c0c80452419de8ff5286827d5409
