@@ -404,15 +404,11 @@ cilium:
       toPorts:
       - port: "53"
         protocol: "UDP"
-        name: "dns-udp"
       - port: "53"
         protocol: "TCP"
-        name: "dns-tcp"
     backend:
       toPorts:
       - port: "53"
         protocol: "UDP"
-        name: "dns-udp"
       - port: "53"
         protocol: "TCP"
-        name: "dns-tcp"
