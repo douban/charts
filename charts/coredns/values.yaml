@@ -404,11 +404,16 @@ cilium:
       toPorts:
       - port: "53"
         protocol: "UDP"
+        name: "udp-53"
       - port: "53"
         protocol: "TCP"
+        name: "tcp-53"
     backend:
       toPorts:
+      # The names of port should be identical with the container port name in pods
       - port: "53"
         protocol: "UDP"
+        name: "udp-53"
       - port: "53"
         protocol: "TCP"
+        name: "tcp-53"
