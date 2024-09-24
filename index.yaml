@@ -405,6 +405,34 @@ entries:
           description: Upgrade CoreDNS to 1.11.3
     apiVersion: v2
     appVersion: 1.11.3
+    created: "2024-09-24T09:24:34.353545359Z"
+    description: CoreDNS is a DNS server that chains plugins and provides Kubernetes
+      DNS Services
+    digest: a32e3c5bfd760bf183fa8594612a5297de03c5cda6e1ee205f800054296b6f61
+    home: https://coredns.io
+    icon: https://coredns.io/images/CoreDNS_Colour_Horizontal.png
+    keywords:
+    - coredns
+    - dns
+    - kubedns
+    maintainers:
+    - name: mrueg
+    - name: haad
+    - name: hagaibarel
+    - name: shubham-cmyk
+    name: coredns
+    sources:
+    - https://github.com/coredns/coredns
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/coredns-1.34.0/coredns-1.34.0.tgz
+    version: 1.34.0
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: Upgrade CoreDNS to 1.11.3
+    apiVersion: v2
+    appVersion: 1.11.3
     created: "2024-09-13T11:03:09.59773351Z"
     description: CoreDNS is a DNS server that chains plugins and provides Kubernetes
       DNS Services
