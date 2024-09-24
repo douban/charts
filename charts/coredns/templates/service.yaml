@@ -43,7 +43,7 @@ spec:
   externalTrafficPolicy: {{ .Values.service.externalTrafficPolicy }}
   {{- end }}
   {{- if .Values.service.internalTrafficPolicy }}
-  externalTrafficPolicy: {{ .Values.service.internalTrafficPolicy }}
+  internalTrafficPolicy: {{ .Values.service.internalTrafficPolicy }}
   {{- end }}
   {{- if .Values.service.loadBalancerIP }}
   loadBalancerIP: {{ .Values.service.loadBalancerIP }}
