@@ -36,7 +36,9 @@ spec:
       http:
         paths:
           - path: /console/api
+            {{- if semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion }}
             pathType: Prefix
+            {{- end }}
             backend:
               {{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion }}
               service:
@@ -48,7 +50,9 @@ spec:
               servicePort: {{ .Values.api.service.port }}
               {{- end }}
           - path: /api
+            {{- if semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion }}
             pathType: Prefix
+            {{- end }}
             backend:
               {{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion }}
               service:
@@ -60,7 +64,9 @@ spec:
               servicePort: {{ .Values.api.service.port }}
               {{- end }}
           - path: /v1
+            {{- if semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion }}
             pathType: Prefix
+            {{- end }}
             backend:
               {{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion }}
               service:
@@ -72,7 +78,9 @@ spec:
               servicePort: {{ .Values.api.service.port }}
               {{- end }}
           - path: /files
+            {{- if semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion }}
             pathType: Prefix
+            {{- end }}
             backend:
               {{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion }}
               service:
@@ -84,7 +92,9 @@ spec:
               servicePort: {{ .Values.api.service.port }}
               {{- end }}
           - path: /
+            {{- if semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion }}
             pathType: Prefix
+            {{- end }}
             backend:
               {{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion }}
               service:
