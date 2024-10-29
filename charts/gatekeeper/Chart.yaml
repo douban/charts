@@ -1,13 +1,13 @@
 apiVersion: v2
-appVersion: v3.12.0
 description: A Helm chart for Gatekeeper
-home: https://github.com/open-policy-agent/gatekeeper
+name: gatekeeper
 icon: https://open-policy-agent.github.io/gatekeeper/website/img/logo.svg
 keywords:
-- open policy agent
-name: gatekeeper
+  - open policy agent
+version: 3.17.1
+home: https://github.com/open-policy-agent/gatekeeper
 sources:
-- https://github.com/open-policy-agent/gatekeeper.git
-version: 3.12.0
+  - https://github.com/open-policy-agent/gatekeeper.git
+appVersion: v3.17.1
 maintainers:
 - name: LeoQuote

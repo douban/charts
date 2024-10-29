@@ -1,3 +1,5 @@
+---
+{{- if not .Values.disableAudit }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -13,6 +15,7 @@ metadata:
   namespace: '{{ .Release.Namespace }}'
 spec:
   replicas: 1
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
   selector:
     matchLabels:
       app: '{{ template "gatekeeper.name" . }}'
@@ -28,8 +31,13 @@ spec:
         {{- if .Values.podAnnotations }}
         {{- toYaml .Values.podAnnotations | trim | nindent 8 }}
         {{- end }}
+        {{- if .Values.auditPodAnnotations }}
+        {{- toYaml .Values.auditPodAnnotations | trim | nindent 8 }}
+        {{- end }}
       labels:
-{{- include "gatekeeper.podLabels" . }}
+        {{- include "gatekeeper.podLabels" . | nindent 8 }}
+        {{- include "audit.podLabels" . | nindent 8 }}
+        {{- include "gatekeeper.commonLabels" . | nindent 8 }}
         app: '{{ template "gatekeeper.name" . }}'
         chart: '{{ template "gatekeeper.name" . }}'
         control-plane: audit-controller
@@ -60,6 +68,11 @@ spec:
         - --audit-events-involved-namespace={{ .Values.auditEventsInvolvedNamespace }}
         - --operation=audit
         - --operation=status
+        {{ if .Values.audit.enablePubsub}}
+        - --enable-pub-sub={{ .Values.audit.enablePubsub }}
+        - --audit-connection={{ .Values.audit.connection }}
+        - --audit-channel={{ .Values.audit.channel }}
+        {{- end }}
         {{ if not .Values.disableMutation}}- --operation=mutation-status{{- end }}
         - --logtostderr
         - --health-addr=:{{ .Values.audit.healthPort }}
@@ -75,6 +88,16 @@ spec:
         - --log-file={{ .Values.audit.logFile }}
         {{- end }}
         - --disable-cert-rotation={{ or .Values.audit.disableCertRotation .Values.externalCertInjection.enabled }}
+        - --external-data-provider-response-cache-ttl={{ .Values.externaldataProviderResponseCacheTTL }}
+        - --enable-k8s-native-validation={{ .Values.enableK8sNativeValidation }}
+        
+        {{- if hasKey .Values "defaultCreateVAPForTemplates"}}
+        - --default-create-vap-for-templates={{ .Values.defaultCreateVAPForTemplates }}
+        {{- end }}
+        
+        {{- if hasKey .Values "defaultCreateVAPBindingForConstraints"}}
+        - --default-create-vap-binding-for-constraints={{ .Values.defaultCreateVAPBindingForConstraints }}
+        {{- end }}
         command:
         - /manager
         env:
@@ -94,6 +117,8 @@ spec:
               fieldPath: metadata.namespace
         - name: CONTAINER_NAME
           value: manager
+        - name: OTEL_RESOURCE_ATTRIBUTES
+          value: k8s.pod.name=$(POD_NAME),k8s.namespace.name=$(NAMESPACE),k8s.container.name=$(CONTAINER_NAME)
         imagePullPolicy: '{{ .Values.image.pullPolicy }}'
         livenessProbe:
           httpGet:
@@ -138,7 +163,7 @@ spec:
       {{- end }}
       securityContext:
         {{- toYaml .Values.audit.podSecurityContext | nindent 8 }}
-      serviceAccountName: gatekeeper-admin
+      serviceAccountName: {{ .Values.audit.serviceAccount.name }}
       terminationGracePeriodSeconds: 60
       tolerations:
         {{- toYaml .Values.audit.tolerations | nindent 8 }}
@@ -154,3 +179,4 @@ spec:
       - emptyDir: {}
       {{- end }}
         name: tmp-volume
+{{- end }}

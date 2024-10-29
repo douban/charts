@@ -1,3 +1,4 @@
+---
 {{- if not .Values.disableValidatingWebhook }}
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
@@ -15,11 +16,20 @@ webhooks:
   - v1
   - v1beta1
   clientConfig:
+    {{- if .Values.validatingWebhookURL }}
+    url: https://{{ .Values.validatingWebhookURL }}/v1/admit
+    {{- else }}
     service:
       name: gatekeeper-webhook-service
       namespace: '{{ .Release.Namespace }}'
       path: /v1/admit
+    {{- end }}
   failurePolicy: {{ .Values.validatingWebhookFailurePolicy }}
+  {{- if .Values.validatingWebhookMatchConditions }}
+  {{- if ge (int .Capabilities.KubeVersion.Minor) 28 }}
+  matchConditions: {{ toYaml .Values.validatingWebhookMatchConditions | nindent 4 }}
+  {{- end }}
+  {{- end }}
   matchPolicy: Exact
   name: validation.gatekeeper.sh
   namespaceSelector:
@@ -39,7 +49,7 @@ webhooks:
       - {{ . }}
       {{- end }}
     {{- end }}
-  objectSelector: {{ toYaml .Values.validatingWebhookObjectSelector }}
+  objectSelector: {{ toYaml .Values.validatingWebhookObjectSelector | nindent 4 }}
   rules:
   {{- if .Values.validatingWebhookCustomRules }}
   {{- toYaml .Values.validatingWebhookCustomRules | nindent 2 }}
@@ -53,6 +63,9 @@ webhooks:
     - UPDATE
     {{- if .Values.enableDeleteOperations }}
     - DELETE
+    {{- end }}
+    {{- if .Values.enableConnectOperations }}
+    - CONNECT
     {{- end }}
     resources:
     - '*'

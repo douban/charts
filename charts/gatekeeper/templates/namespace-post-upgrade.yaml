@@ -5,11 +5,8 @@ metadata:
   name: gatekeeper-update-namespace-label-post-upgrade
   namespace: {{ .Release.Namespace | quote }}
   labels:
-    app: '{{ template "gatekeeper.name" . }}'
-    chart: '{{ template "gatekeeper.name" . }}'
-    gatekeeper.sh/system: "yes"
-    heritage: '{{ .Release.Service }}'
-    release: '{{ .Release.Name }}'
+    {{- include "gatekeeper.mandatoryLabels" . | nindent 4 }}
+    {{- include "gatekeeper.commonLabels" . | nindent 4 }}
   annotations:
     "helm.sh/hook": post-upgrade
     "helm.sh/hook-weight": "-5"
@@ -21,19 +18,19 @@ spec:
   template:
     metadata:
       labels:
-        {{- include "gatekeeper.podLabels" . }}
-        app: '{{ template "gatekeeper.name" . }}'
-        chart: '{{ template "gatekeeper.name" . }}'
-        gatekeeper.sh/system: "yes"
-        heritage: '{{ .Release.Service }}'
-        release: '{{ .Release.Name }}'
+        {{- include "gatekeeper.podLabels" . | nindent 8 }}
+        {{- include "gatekeeper.mandatoryLabels" . | nindent 8 }}
+        {{- include "gatekeeper.commonLabels" . | nindent 8 }}
     spec:
       restartPolicy: OnFailure
       {{- if .Values.postUpgrade.labelNamespace.image.pullSecrets }}
       imagePullSecrets:
       {{- .Values.postUpgrade.labelNamespace.image.pullSecrets | toYaml | nindent 12 }}
       {{- end }}
-      serviceAccount: gatekeeper-update-namespace-label-post-upgrade
+      serviceAccount: {{ .Values.postUpgrade.labelNamespace.serviceAccount.name }}
+      {{- if .Values.postUpgrade.labelNamespace.priorityClassName }}
+      priorityClassName: {{ .Values.postUpgrade.labelNamespace.priorityClassName }}
+      {{- end }}
       containers:
         - name: kubectl-label
           image: "{{ .Values.postUpgrade.labelNamespace.image.repository }}:{{ .Values.postUpgrade.labelNamespace.image.tag }}"
@@ -85,17 +82,20 @@ spec:
         {{- toYaml .nodeSelector | nindent 8 }}
       {{- end }}
 ---
+{{- if .Values.postUpgrade.labelNamespace.serviceAccount.create }}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: gatekeeper-update-namespace-label-post-upgrade
+  name: {{ .Values.postUpgrade.labelNamespace.serviceAccount.name }}
   labels:
+    {{- include "gatekeeper.commonLabels" . | nindent 4 }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
   annotations:
     "helm.sh/hook": post-upgrade
     "helm.sh/hook-weight": "-5"
     "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
+{{- end }}
 ---
 {{- if .Values.rbac.create }}
 apiVersion: rbac.authorization.k8s.io/v1
@@ -103,6 +103,7 @@ kind: ClusterRole
 metadata:
   name: gatekeeper-update-namespace-label-post-upgrade
   labels:
+    {{- include "gatekeeper.commonLabels" . | nindent 4 }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
   annotations:
@@ -131,6 +132,7 @@ kind: ClusterRoleBinding
 metadata:
   name: gatekeeper-update-namespace-label-post-upgrade
   labels:
+    {{- include "gatekeeper.commonLabels" . | nindent 4 }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
   annotations:
@@ -143,7 +145,7 @@ roleRef:
   name: gatekeeper-update-namespace-label-post-upgrade
 subjects:
   - kind: ServiceAccount
-    name: gatekeeper-update-namespace-label-post-upgrade
+    name: {{ .Values.postUpgrade.labelNamespace.serviceAccount.name }}
     namespace: {{ .Release.Namespace | quote }}
 {{- end }}
 {{- end }}

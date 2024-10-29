@@ -6,21 +6,21 @@ metadata:
     controller-gen.kubebuilder.io/version: v0.14.0
   labels:
     gatekeeper.sh/system: "yes"
-  name: constrainttemplatepodstatuses.status.gatekeeper.sh
+  name: expansiontemplatepodstatuses.status.gatekeeper.sh
 spec:
   group: status.gatekeeper.sh
   names:
-    kind: ConstraintTemplatePodStatus
-    listKind: ConstraintTemplatePodStatusList
-    plural: constrainttemplatepodstatuses
-    singular: constrainttemplatepodstatus
+    kind: ExpansionTemplatePodStatus
+    listKind: ExpansionTemplatePodStatusList
+    plural: expansiontemplatepodstatuses
+    singular: expansiontemplatepodstatus
   preserveUnknownFields: false
   scope: Namespaced
   versions:
   - name: v1beta1
     schema:
       openAPIV3Schema:
-        description: ConstraintTemplatePodStatus is the Schema for the constrainttemplatepodstatuses API.
+        description: ExpansionTemplatePodStatus is the Schema for the expansiontemplatepodstatuses API.
         properties:
           apiVersion:
             description: |-
@@ -40,20 +40,16 @@ spec:
           metadata:
             type: object
           status:
-            description: ConstraintTemplatePodStatusStatus defines the observed state of ConstraintTemplatePodStatus.
+            description: ExpansionTemplatePodStatusStatus defines the observed state of ExpansionTemplatePodStatus.
             properties:
               errors:
                 items:
-                  description: CreateCRDError represents a single error caught during parsing, compiling, etc.
                   properties:
-                    code:
-                      type: string
-                    location:
-                      type: string
                     message:
                       type: string
+                    type:
+                      type: string
                   required:
-                  - code
                   - message
                   type: object
                 type: array

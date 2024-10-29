@@ -5,6 +5,7 @@ kind: ClusterRole
 metadata:
   name: gatekeeper-admin-upgrade-crds
   labels:
+    {{- include "gatekeeper.commonLabels" . | nindent 4 }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
   annotations:
@@ -26,6 +27,7 @@ kind: ClusterRoleBinding
 metadata:
   name: gatekeeper-admin-upgrade-crds
   labels:
+    {{- include "gatekeeper.commonLabels" . | nindent 4 }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
   annotations:
@@ -34,7 +36,7 @@ metadata:
     helm.sh/hook-weight: "1"
 subjects:
   - kind: ServiceAccount
-    name: gatekeeper-admin-upgrade-crds
+    name: {{ .Values.upgradeCRDs.serviceAccount.name }}
     namespace: {{ .Release.Namespace }}
 roleRef:
   kind: ClusterRole
@@ -42,18 +44,21 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 {{- end }}
 ---
+{{- if .Values.upgradeCRDs.serviceAccount.create }}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   labels:
+    {{- include "gatekeeper.commonLabels" . | nindent 4 }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-  name: gatekeeper-admin-upgrade-crds
+  name: {{ .Values.upgradeCRDs.serviceAccount.name }}
   namespace: '{{ .Release.Namespace }}'
   annotations:
     helm.sh/hook: pre-install,pre-upgrade
     helm.sh/hook-delete-policy: "hook-succeeded,before-hook-creation"
     helm.sh/hook-weight: "1"
+{{- end }}
 ---
 apiVersion: batch/v1
 kind: Job
@@ -61,35 +66,32 @@ metadata:
   name: gatekeeper-update-crds-hook
   namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ template "gatekeeper.name" . }}
-    chart: {{ template "gatekeeper.name" . }}
-    gatekeeper.sh/system: "yes"
-    heritage: {{ .Release.Service }}
-    release: {{ .Release.Name }}
+    {{- include "gatekeeper.mandatoryLabels" . | nindent 4 }}
+    {{- include "gatekeeper.commonLabels" . | nindent 4 }}
   annotations:
     helm.sh/hook: pre-install,pre-upgrade
     helm.sh/hook-weight: "1"
     helm.sh/hook-delete-policy: "hook-succeeded,before-hook-creation"
 spec:
-  backoffLimit: 0
+  backoffLimit: 3
   template:
     metadata:
       name: gatekeeper-update-crds-hook
       annotations:
         {{- toYaml .Values.podAnnotations | trim | nindent 8 }}
       labels:
-        {{- include "gatekeeper.podLabels" . }}
-        app: '{{ template "gatekeeper.name" . }}'
-        chart: '{{ template "gatekeeper.name" . }}'
-        gatekeeper.sh/system: "yes"
-        heritage: '{{ .Release.Service }}'
-        release: '{{ .Release.Name }}'
+        {{- include "gatekeeper.podLabels" . | nindent 8 }}
+        {{- include "gatekeeper.mandatoryLabels" . | nindent 8 }}
+        {{- include "gatekeeper.commonLabels" . | nindent 8 }}
     spec:
-      serviceAccountName: gatekeeper-admin-upgrade-crds
+      serviceAccountName: {{ .Values.upgradeCRDs.serviceAccount.name }}
       restartPolicy: Never
       {{- if .Values.image.pullSecrets }}
       imagePullSecrets:
         {{- toYaml .Values.image.pullSecrets | nindent 8 }}
+      {{- end }}
+      {{- if .Values.upgradeCRDs.priorityClassName }}
+      priorityClassName: {{ .Values.upgradeCRDs.priorityClassName }}
       {{- end }}
       containers:
       - name: crds-upgrade

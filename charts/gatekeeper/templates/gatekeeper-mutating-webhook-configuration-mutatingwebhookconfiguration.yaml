@@ -1,3 +1,4 @@
+---
 {{- if not .Values.disableMutation }}
 apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingWebhookConfiguration
@@ -15,11 +16,20 @@ webhooks:
   - v1
   - v1beta1
   clientConfig:
+    {{- if .Values.mutatingWebhookURL }}
+    url: https://{{ .Values.mutatingWebhookURL }}/v1/mutate
+    {{- else }}
     service:
       name: gatekeeper-webhook-service
       namespace: '{{ .Release.Namespace }}'
       path: /v1/mutate
+    {{- end }}
   failurePolicy: {{ .Values.mutatingWebhookFailurePolicy }}
+  {{- if .Values.mutatingWebhookMatchConditions }}
+  {{- if ge (int .Capabilities.KubeVersion.Minor) 28 }}
+  matchConditions: {{ toYaml .Values.mutatingWebhookMatchConditions | nindent 4 }}
+  {{- end }}
+  {{- end }}
   matchPolicy: Exact
   name: mutation.gatekeeper.sh
   namespaceSelector:
@@ -39,7 +49,7 @@ webhooks:
       - {{ . }}
       {{- end }}
     {{- end }}
-  objectSelector: {{ toYaml .Values.mutatingWebhookObjectSelector }}
+  objectSelector: {{ toYaml .Values.mutatingWebhookObjectSelector | nindent 4 }}
   reinvocationPolicy: {{ .Values.mutatingWebhookReinvocationPolicy }}
   rules:
   {{- if .Values.mutatingWebhookCustomRules }}
@@ -54,6 +64,21 @@ webhooks:
     - UPDATE
     resources:
     - '*'
+    - pods/ephemeralcontainers
+    - pods/exec
+    - pods/log
+    - pods/eviction
+    - pods/portforward
+    - pods/proxy
+    - pods/attach
+    - pods/binding
+    - deployments/scale
+    - replicasets/scale
+    - statefulsets/scale
+    - replicationcontrollers/scale
+    - services/proxy
+    - nodes/proxy
+    - services/status
   {{- end }}
   sideEffects: None
   timeoutSeconds: {{ .Values.mutatingWebhookTimeoutSeconds }}

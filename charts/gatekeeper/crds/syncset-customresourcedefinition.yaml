@@ -6,21 +6,21 @@ metadata:
     controller-gen.kubebuilder.io/version: v0.14.0
   labels:
     gatekeeper.sh/system: "yes"
-  name: constraintpodstatuses.status.gatekeeper.sh
+  name: syncsets.syncset.gatekeeper.sh
 spec:
-  group: status.gatekeeper.sh
+  group: syncset.gatekeeper.sh
   names:
-    kind: ConstraintPodStatus
-    listKind: ConstraintPodStatusList
-    plural: constraintpodstatuses
-    singular: constraintpodstatus
+    kind: SyncSet
+    listKind: SyncSetList
+    plural: syncsets
+    singular: syncset
   preserveUnknownFields: false
-  scope: Namespaced
+  scope: Cluster
   versions:
-  - name: v1beta1
+  - name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: ConstraintPodStatus is the Schema for the constraintpodstatuses API.
+        description: SyncSet defines which resources Gatekeeper will cache. The union of all SyncSets plus the syncOnly field of Gatekeeper's Config resource defines the sets of resources that will be synced.
         properties:
           apiVersion:
             description: |-
@@ -38,41 +38,23 @@ spec:
               More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
             type: string
           metadata:
-            type: object
-          status:
-            description: ConstraintPodStatusStatus defines the observed state of ConstraintPodStatus.
             properties:
-              constraintUID:
-                description: |-
-                  Storing the constraint UID allows us to detect drift, such as
-                  when a constraint has been recreated after its CRD was deleted
-                  out from under it, interrupting the watch
+              name:
+                maxLength: 63
                 type: string
-              enforced:
-                type: boolean
-              errors:
+            type: object
+          spec:
+            properties:
+              gvks:
                 items:
-                  description: Error represents a single error caught while adding a constraint to engine.
                   properties:
-                    code:
+                    group:
                       type: string
-                    location:
+                    kind:
                       type: string
-                    message:
+                    version:
                       type: string
-                  required:
-                  - code
-                  - message
                   type: object
-                type: array
-              id:
-                type: string
-              observedGeneration:
-                format: int64
-                type: integer
-              operations:
-                items:
-                  type: string
                 type: array
             type: object
         type: object
