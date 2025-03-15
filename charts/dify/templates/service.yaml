@@ -55,3 +55,21 @@ spec:
   selector:
     {{- include "dify.selectorLabels" . | nindent 4 }}
     app.kubernetes.io/component: sandbox
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "dify.fullname" . }}-plugin-daemon
+  labels:
+    {{- include "dify.labels" . | nindent 4 }}
+    app.kubernetes.io/component: plugin-daemon
+spec:
+  type: {{ .Values.pluginDaemon.service.type }}
+  ports:
+    - port: {{ .Values.pluginDaemon.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "dify.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: plugin-daemon

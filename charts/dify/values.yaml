@@ -17,7 +17,7 @@ global:
   port: ""
   enableTLS: false
   image:
-    tag: ""
+    tag: "1.0.1"
   edition: "SELF_HOSTED"
   storageType: "s3"
   # the following extra configs would be injected into:
@@ -296,7 +296,7 @@ sandbox:
     repository: langgenius/dify-sandbox
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "0.2.0"
+    tag: "0.2.10"
   config:
     # python_requirements: |
     #   numpy==1.20.3
@@ -373,6 +373,78 @@ sandbox:
     successThreshold: 1
     failureThreshold: 2
 
+# 新增plugin_daemon服务
+pluginDaemon:
+  replicaCount: 1
+  image:
+    repository: langgenius/dify-plugin-daemon
+    pullPolicy: IfNotPresent
+    tag: "0.0.4-local"
+
+  envs:
+  - name: SERVER_PORT
+    value: "5002"
+  - name: SERVER_KEY
+    value: "lYkiYYT6owG+71oLerGzA7GXCgOT++6ovaezWAjpCjf+Sjc3ZtU+qUEi"
+  - name: MAX_PLUGIN_PACKAGE_SIZE
+    value: "52428800"
+  - name: PPROF_ENABLED
+    value: "false"
+  - name: DIFY_INNER_API_URL
+    value: "http://dify-api-svc:80"
+  - name: DIFY_INNER_API_KEY
+    value: "QaHbTe77CtuXmsfyhR7+vRjI/+XbV1AaFy691iy+kGDv2Jvy0/eAh8Y1"
+  - name: PLUGIN_WORKING_PATH
+    value: "/app/storage/cwd"
+  - name: FORCE_VERIFYING_SIGNATURE
+    value: "true"
+  - name: DB_DATABASE
+    value: "dify_plugin"
+  - name: DB_HOST
+    value: "postgresql.postgresql.svc.cluster.local"
+  - name: DB_PORT
+    value: "5432"
+  - name: DB_USERNAME
+    value: "dify"
+  # it is adviced to use secret to manage you sensitive info including password
+  - name: DB_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: dify-secrets
+        key: dify-pg-pass
+  - name: REDIS_HOST
+    value: "dify-redis-master"
+  - name: REDIS_PORT
+    value: "6379"
+  - name: REDIS_DB
+    value: "1"
+  - name: REDIS_PASSWORD
+    value: "REDIS_PASSWORD"
+  - name: PLUGIN_REMOTE_INSTALLING_HOST
+    value: "0.0.0.0"
+  - name: PLUGIN_REMOTE_INSTALLING_PORT
+    value: "5003"
+
+  service:
+    type: ClusterIP
+    port: 5002
+
+  containerPort: 5002
+
+  resources: {}
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+  persistence:
+    enabled: true
+    # 使用默认的 storageClass，如果需要指定其他 storageClass，取消下面的注释并修改值
+    #storageClass: "rook-ceph-block"
+    accessMode: ReadWriteOnce
+    size: 20Gi
 ##### dependencies #####
 
 redis:

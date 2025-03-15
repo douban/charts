@@ -356,3 +356,82 @@ spec:
         - name: config-volume
           configMap:
             name: {{ include "dify.fullname" . }}-sandbox-config
+
+# pluginDaemon
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "dify.fullname" . }}-plugin-daemon
+  labels:
+    {{- include "dify.labels" . | nindent 4 }}
+    app.kubernetes.io/component: plugin-daemon
+    {{- include "dify.global.labels" . | nindent 4 }}
+spec:
+  {{- if hasKey .Values.pluginDaemon "autoscaling" }}
+  {{- if not .Values.pluginDaemon.autoscaling.enabled }}
+  replicas: {{ .Values.pluginDaemon.replicaCount | default 1 }}
+  {{- end }}
+  {{- else }}
+  replicas: 1
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "dify.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: plugin-daemon
+  template:
+    metadata:
+      {{- with .Values.pluginDaemon.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "dify.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: plugin-daemon
+        {{- include "dify.global.labels" . | nindent 8 }}
+    spec:
+      {{- with .Values.pluginDaemon.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "dify.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.pluginDaemon.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}-plugin-daemon
+          securityContext:
+            {{- toYaml .Values.pluginDaemon.securityContext | nindent 12 }}
+          image: "{{ .Values.pluginDaemon.image.repository }}:{{ .Values.pluginDaemon.image.tag | default "latest" }}"
+          imagePullPolicy: {{ .Values.pluginDaemon.image.pullPolicy }}
+          env:
+            {{- include "dify.commonBackendEnvs" . | nindent 12 }}
+            {{- with .Values.pluginDaemon.envs }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          volumeMounts:
+            - name: plugin-daemon-storage
+              mountPath: /app/storage
+          ports:
+            - name: http
+              containerPort: {{ .Values.pluginDaemon.containerPort }}
+              protocol: TCP
+      volumes:
+        - name: plugin-daemon-storage
+          {{- if .Values.pluginDaemon.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ include "dify.fullname" . }}-plugin-daemon-pvc
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+      {{- with .Values.pluginDaemon.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.pluginDaemon.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.pluginDaemon.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
