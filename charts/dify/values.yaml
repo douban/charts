@@ -24,23 +24,32 @@ global:
   # * frontend
   # * api
   # * worker
+  # * plugin_daemon
   extraEnvs: []
 
   # the following extra configs would be injected into:
   # * api
   # * worker
+  # * plugin_daemon
   extraBackendEnvs:
   # SECRET_KEY is a must, check https://docs.dify.ai/getting-started/install-self-hosted/environments#secret_key for detail
   # read more on the readme page for secret ref
   - name: SECRET_KEY
     value: "PleaseReplaceThisToYourSecretOrUse"
+  - name: SERVER_KEY
+    value: "lYkiYYT6owG+71oLerGzA7GXCgOT++6ovaezWAjpCjf+Sjc3ZtU+qUEi"
+  - name: PLUGIN_DAEMON_KEY
+    value: "lYkiYYT6owG+71oLerGzA7GXCgOT++6ovaezWAjpCjf+Sjc3ZtU+qUEi"
+  - name: DIFY_INNER_API_KEY
+    value: "QaHbTe77CtuXmsfyhR7+vRjI/+XbV1AaFy691iy+kGDv2Jvy0/eAh8Y1"
+  - name: MARKETPLACE_API_URL
+    value: 'https://marketplace.dify.ai'
   # use secretRef to protect your secret
   # - name: SECRET_KEY
   #   valueFrom:
   #     secretKeyRef:
   #       name: dify
   #       key: SECRET_KEY
-
   # Provide extra labels for all deployments and related pods of this chart
   labels: {}
 
@@ -70,7 +79,11 @@ frontend:
     # Overrides the image tag whose default is the chart appVersion.
     tag: ""
 
-  envs: []
+  envs:
+    - name: MARKETPLACE_API_URL
+      value: 'https://marketplace.dify.ai'
+    - name: MARKETPLACE_URL
+      value: 'https://marketplace.dify.ai'
   imagePullSecrets: []
 
   podAnnotations: {}
@@ -375,6 +388,7 @@ sandbox:
 
 # 新增plugin_daemon服务
 pluginDaemon:
+  embedded: true
   replicaCount: 1
   image:
     repository: langgenius/dify-plugin-daemon
@@ -384,42 +398,14 @@ pluginDaemon:
   envs:
   - name: SERVER_PORT
     value: "5002"
-  - name: SERVER_KEY
-    value: "lYkiYYT6owG+71oLerGzA7GXCgOT++6ovaezWAjpCjf+Sjc3ZtU+qUEi"
   - name: MAX_PLUGIN_PACKAGE_SIZE
     value: "52428800"
   - name: PPROF_ENABLED
     value: "false"
-  - name: DIFY_INNER_API_URL
-    value: "http://dify-api-svc:80"
-  - name: DIFY_INNER_API_KEY
-    value: "QaHbTe77CtuXmsfyhR7+vRjI/+XbV1AaFy691iy+kGDv2Jvy0/eAh8Y1"
-  - name: PLUGIN_WORKING_PATH
-    value: "/app/storage/cwd"
   - name: FORCE_VERIFYING_SIGNATURE
     value: "true"
   - name: DB_DATABASE
     value: "dify_plugin"
-  - name: DB_HOST
-    value: "postgresql.postgresql.svc.cluster.local"
-  - name: DB_PORT
-    value: "5432"
-  - name: DB_USERNAME
-    value: "dify"
-  # it is adviced to use secret to manage you sensitive info including password
-  - name: DB_PASSWORD
-    valueFrom:
-      secretKeyRef:
-        name: dify-secrets
-        key: dify-pg-pass
-  - name: REDIS_HOST
-    value: "dify-redis-master"
-  - name: REDIS_PORT
-    value: "6379"
-  - name: REDIS_DB
-    value: "1"
-  - name: REDIS_PASSWORD
-    value: "REDIS_PASSWORD"
   - name: PLUGIN_REMOTE_INSTALLING_HOST
     value: "0.0.0.0"
   - name: PLUGIN_REMOTE_INSTALLING_PORT

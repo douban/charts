@@ -1,3 +1,4 @@
+{{- if .Values.pluginDaemon.embedded }}
 {{- if .Values.pluginDaemon.persistence.enabled }}
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -15,4 +16,5 @@ spec:
   {{- if .Values.pluginDaemon.persistence.storageClass }}
   storageClassName: {{ .Values.pluginDaemon.persistence.storageClass }}
   {{- end }}
+{{- end }}
 {{- end }}

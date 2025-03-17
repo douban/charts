@@ -358,6 +358,7 @@ spec:
             name: {{ include "dify.fullname" . }}-sandbox-config
 
 # pluginDaemon
+{{- if .Values.pluginDaemon.embedded }}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -369,7 +370,7 @@ metadata:
     {{- include "dify.global.labels" . | nindent 4 }}
 spec:
   {{- if hasKey .Values.pluginDaemon "autoscaling" }}
-  {{- if not .Values.pluginDaemon.autoscaling.enabled }}
+  {{- if and (hasKey .Values.pluginDaemon "autoscaling") (not .Values.pluginDaemon.autoscaling.enabled) }}
   replicas: {{ .Values.pluginDaemon.replicaCount | default 1 }}
   {{- end }}
   {{- else }}
@@ -404,7 +405,18 @@ spec:
           image: "{{ .Values.pluginDaemon.image.repository }}:{{ .Values.pluginDaemon.image.tag | default "latest" }}"
           imagePullPolicy: {{ .Values.pluginDaemon.image.pullPolicy }}
           env:
+            - name: DIFY_INNER_API_URL
+              value: "http://{{ include "dify.fullname" . }}-api-svc:{{ .Values.api.service.port }}"
+            - name: PLUGIN_WORKING_PATH
+              value: "/app/storage/cwd"
+            {{- include "dify.commonEnvs" . | nindent 12 }}
             {{- include "dify.commonBackendEnvs" . | nindent 12 }}
+            {{- with .Values.global.extraEnvs }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+            {{- with .Values.global.extraBackendEnvs }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
             {{- with .Values.pluginDaemon.envs }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
@@ -435,3 +447,4 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+{{- end }}
