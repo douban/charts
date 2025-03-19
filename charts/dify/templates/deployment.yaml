@@ -66,16 +66,6 @@ spec:
               value: {{ .Values.sandbox.apiKey | quote }}
             {{- else }}
             {{- end }}
-            - name: PLUGIN_DAEMON_KEY
-            {{- if .Values.pluginDaemon.apiKeySecret }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.pluginDaemon.apiKeySecret }}
-                  key: plugin-daemon-key
-            {{- else if .Values.pluginDaemon.apiKey }}
-              value: {{ .Values.pluginDaemon.apiKey | quote }}
-            {{- else }}
-            {{- end }}
           {{- with .Values.volumeMounts }}
           volumeMounts:
           {{- toYaml . | nindent 12 }}
@@ -158,16 +148,6 @@ spec:
           env:
             - name: MODE
               value: "worker"
-            - name: PLUGIN_DAEMON_KEY
-            {{- if .Values.pluginDaemon.apiKeySecret }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.pluginDaemon.apiKeySecret }}
-                  key: plugin-daemon-key
-            {{- else if .Values.pluginDaemon.apiKey }}
-              value: {{ .Values.pluginDaemon.apiKey | quote }}
-            {{- else }}
-            {{- end }}
             {{- include "dify.commonEnvs" . | nindent 12 }}
             {{- include "dify.commonBackendEnvs" . | nindent 12 }}
             {{- with .Values.global.extraEnvs }}
@@ -431,13 +411,23 @@ spec:
             - name: PLUGIN_WORKING_PATH
               value: "/app/storage/cwd"
             - name: SERVER_KEY
-            {{- if .Values.pluginDaemon.apiKeySecret }}
+            {{- if .Values.pluginDaemon.serverKeySecret }}
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.pluginDaemon.apiKeySecret }}
+                  name: {{ .Values.pluginDaemon.serverKeySecret }}
                   key: plugin-daemon-key
-            {{- else if .Values.pluginDaemon.apiKey }}
-              value: {{ .Values.pluginDaemon.apiKey | quote }}
+            {{- else if .Values.pluginDaemon.serverKey }}
+              value: {{ .Values.pluginDaemon.serverKey | quote }}
+            {{- else }}
+            {{- end }}
+            - name: DIFY_INNER_API_KEY
+            {{- if .Values.pluginDaemon.difyInnerApiKeySecret }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.pluginDaemon.difyInnerApiKeySecret }}
+                  key: plugin-daemon-key
+            {{- else if .Values.pluginDaemon.difyInnerApiKey }}
+              value: {{ .Values.pluginDaemon.difyInnerApiKey | quote }}
             {{- else }}
             {{- end }}
             {{- include "dify.commonEnvs" . | nindent 12 }}

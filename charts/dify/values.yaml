@@ -17,7 +17,7 @@ global:
   port: ""
   enableTLS: false
   image:
-    tag: "1.0.1"
+    tag: "1.1.0"
   edition: "SELF_HOSTED"
   storageType: "s3"
   # the following extra configs would be injected into:
@@ -36,10 +36,6 @@ global:
   # read more on the readme page for secret ref
   - name: SECRET_KEY
     value: "PleaseReplaceThisToYourSecretOrUse"
-  - name: DIFY_INNER_API_KEY
-    value: "QaHbTe77CtuXmsfyhR7+vRjI/+XbV1AaFy691iy+kGDv2Jvy0/eAh8Y1"
-  - name: MARKETPLACE_API_URL
-    value: 'https://marketplace.dify.ai'
   # use secretRef to protect your secret
   # - name: SECRET_KEY
   #   valueFrom:
@@ -386,14 +382,18 @@ sandbox:
 pluginDaemon:
   enabled: true
   replicaCount: 1
-  # please change to avoid abuse 对应官方配置 SERVER_KEY PLUGIN_DAEMON_KEY
-  apiKey: "lYkiYYT6owG+71oLerGzA7GXCgOT++6ovaezWAjpCjf+Sjc3ZtU+qUEi"
+  # please change to avoid abuse
+  serverKey: "lYkiYYT6owG+71oLerGzA7GXCgOT++6ovaezWAjpCjf+Sjc3ZtU+qUEi"
   # prefer to use secret
-  apiKeySecret: ""
+  serverKeySecret: ""
+  # please change to avoid abuse
+  difyInnerApiKey: "QaHbTe77CtuXmsfyhR7+vRjI/+XbV1AaFy691iy+kGDv2Jvy0/eAh8Y1"
+  # prefer to use secret
+  difyInnerApiKeySecret: ""
   image:
     repository: langgenius/dify-plugin-daemon
     pullPolicy: IfNotPresent
-    tag: "0.0.4-local"
+    tag: "0.0.5-local"
 
   envs:
   - name: SERVER_PORT
