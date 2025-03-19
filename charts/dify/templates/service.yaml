@@ -56,7 +56,7 @@ spec:
     {{- include "dify.selectorLabels" . | nindent 4 }}
     app.kubernetes.io/component: sandbox
 
-{{- if .Values.pluginDaemon.embedded }}
+{{- if .Values.pluginDaemon.enabled }}
 ---
 apiVersion: v1
 kind: Service

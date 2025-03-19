@@ -66,6 +66,16 @@ spec:
               value: {{ .Values.sandbox.apiKey | quote }}
             {{- else }}
             {{- end }}
+            - name: PLUGIN_DAEMON_KEY
+            {{- if .Values.pluginDaemon.apiKeySecret }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.pluginDaemon.apiKeySecret }}
+                  key: plugin-daemon-key
+            {{- else if .Values.pluginDaemon.apiKey }}
+              value: {{ .Values.pluginDaemon.apiKey | quote }}
+            {{- else }}
+            {{- end }}
           {{- with .Values.volumeMounts }}
           volumeMounts:
           {{- toYaml . | nindent 12 }}
@@ -148,6 +158,16 @@ spec:
           env:
             - name: MODE
               value: "worker"
+            - name: PLUGIN_DAEMON_KEY
+            {{- if .Values.pluginDaemon.apiKeySecret }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.pluginDaemon.apiKeySecret }}
+                  key: plugin-daemon-key
+            {{- else if .Values.pluginDaemon.apiKey }}
+              value: {{ .Values.pluginDaemon.apiKey | quote }}
+            {{- else }}
+            {{- end }}
             {{- include "dify.commonEnvs" . | nindent 12 }}
             {{- include "dify.commonBackendEnvs" . | nindent 12 }}
             {{- with .Values.global.extraEnvs }}
@@ -357,8 +377,9 @@ spec:
           configMap:
             name: {{ include "dify.fullname" . }}-sandbox-config
 
+
+{{- if .Values.pluginDaemon.enabled }}
 # pluginDaemon
-{{- if .Values.pluginDaemon.embedded }}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -409,6 +430,16 @@ spec:
               value: "http://{{ include "dify.fullname" . }}-api-svc:{{ .Values.api.service.port }}"
             - name: PLUGIN_WORKING_PATH
               value: "/app/storage/cwd"
+            - name: SERVER_KEY
+            {{- if .Values.pluginDaemon.apiKeySecret }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.pluginDaemon.apiKeySecret }}
+                  key: plugin-daemon-key
+            {{- else if .Values.pluginDaemon.apiKey }}
+              value: {{ .Values.pluginDaemon.apiKey | quote }}
+            {{- else }}
+            {{- end }}
             {{- include "dify.commonEnvs" . | nindent 12 }}
             {{- include "dify.commonBackendEnvs" . | nindent 12 }}
             {{- with .Values.global.extraEnvs }}
