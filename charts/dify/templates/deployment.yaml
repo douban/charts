@@ -425,7 +425,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.pluginDaemon.difyInnerApiKeySecret }}
-                  key: plugin-daemon-key
+                  key: plugin-dify-inner-api-key
             {{- else if .Values.pluginDaemon.difyInnerApiKey }}
               value: {{ .Values.pluginDaemon.difyInnerApiKey | quote }}
             {{- else }}
