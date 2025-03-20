@@ -17,18 +17,20 @@ global:
   port: ""
   enableTLS: false
   image:
-    tag: ""
+    tag: "1.1.0"
   edition: "SELF_HOSTED"
   storageType: "s3"
   # the following extra configs would be injected into:
   # * frontend
   # * api
   # * worker
+  # * plugin_daemon
   extraEnvs: []
 
   # the following extra configs would be injected into:
   # * api
   # * worker
+  # * plugin_daemon
   extraBackendEnvs:
   # SECRET_KEY is a must, check https://docs.dify.ai/getting-started/install-self-hosted/environments#secret_key for detail
   # read more on the readme page for secret ref
@@ -40,7 +42,6 @@ global:
   #     secretKeyRef:
   #       name: dify
   #       key: SECRET_KEY
-
   # Provide extra labels for all deployments and related pods of this chart
   labels: {}
 
@@ -70,7 +71,11 @@ frontend:
     # Overrides the image tag whose default is the chart appVersion.
     tag: ""
 
-  envs: []
+  envs:
+    - name: MARKETPLACE_API_URL
+      value: 'https://marketplace.dify.ai'
+    - name: MARKETPLACE_URL
+      value: 'https://marketplace.dify.ai'
   imagePullSecrets: []
 
   podAnnotations: {}
@@ -296,7 +301,7 @@ sandbox:
     repository: langgenius/dify-sandbox
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "0.2.0"
+    tag: "0.2.10"
   config:
     # python_requirements: |
     #   numpy==1.20.3
@@ -373,6 +378,59 @@ sandbox:
     successThreshold: 1
     failureThreshold: 2
 
+# 新增plugin_daemon服务
+pluginDaemon:
+  enabled: true
+  replicaCount: 1
+  # please change to avoid abuse
+  serverKey: "lYkiYYT6owG+71oLerGzA7GXCgOT++6ovaezWAjpCjf+Sjc3ZtU+qUEi"
+  # prefer to use secret
+  serverKeySecret: ""
+  # please change to avoid abuse
+  difyInnerApiKey: "QaHbTe77CtuXmsfyhR7+vRjI/+XbV1AaFy691iy+kGDv2Jvy0/eAh8Y1"
+  # prefer to use secret
+  difyInnerApiKeySecret: ""
+  image:
+    repository: langgenius/dify-plugin-daemon
+    pullPolicy: IfNotPresent
+    tag: "0.0.5-local"
+
+  envs:
+  - name: SERVER_PORT
+    value: "5002"
+  - name: MAX_PLUGIN_PACKAGE_SIZE
+    value: "52428800"
+  - name: PPROF_ENABLED
+    value: "false"
+  - name: FORCE_VERIFYING_SIGNATURE
+    value: "true"
+  - name: DB_DATABASE
+    value: "dify_plugin"
+  - name: PLUGIN_REMOTE_INSTALLING_HOST
+    value: "0.0.0.0"
+  - name: PLUGIN_REMOTE_INSTALLING_PORT
+    value: "5003"
+
+  service:
+    type: ClusterIP
+    port: 5002
+
+  containerPort: 5002
+
+  resources: {}
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+  persistence:
+    enabled: true
+    # 使用默认的 storageClass，如果需要指定其他 storageClass，取消下面的注释并修改值
+    # storageClass: "rook-ceph-block"
+    accessMode: ReadWriteOnce
+    size: 20Gi
 ##### dependencies #####
 
 redis:

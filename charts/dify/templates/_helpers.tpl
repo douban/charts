@@ -95,6 +95,8 @@ commonBackendEnvs are for api and worker containers
 {{- if .Values.redis.embedded }}
 - name: CELERY_BROKER_URL
   value: redis://:{{ .Values.redis.auth.password }}@{{ include "dify.fullname" . }}-redis-master:6379/1
+- name: REDIS_PORT
+  value: "6379"
 - name: REDIS_HOST
   value: {{ include "dify.fullname" . }}-redis-master
 - name: REDIS_DB
@@ -124,5 +126,33 @@ commonBackendEnvs are for api and worker containers
   value: {{ .Values.minio.auth.rootUser }}
 - name: S3_SECRET_KEY
   value: {{ .Values.minio.auth.rootPassword }}
+{{- end }}
+
+{{- if .Values.pluginDaemon.enabled }}
+- name: PLUGIN_DAEMON_URL
+  value: "http://{{ include "dify.fullname" . }}-plugin-daemon:{{ .Values.pluginDaemon.service.port }}"
+- name: MARKETPLACE_API_URL
+  value: 'https://marketplace.dify.ai'
+- name: PLUGIN_DAEMON_KEY
+{{- if .Values.pluginDaemon.serverKeySecret }}
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.pluginDaemon.serverKeySecret }}
+      key: plugin-daemon-key
+{{- else if .Values.pluginDaemon.serverKey }}
+  value: {{ .Values.pluginDaemon.serverKey | quote }}
+{{- else }}
+{{- end }}
+- name: PLUGIN_DIFY_INNER_API_KEY
+{{- if .Values.pluginDaemon.difyInnerApiKeySecret }}
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.pluginDaemon.difyInnerApiKeySecret }}
+      key: plugin-dify-inner-api-key
+{{- else if .Values.pluginDaemon.difyInnerApiKey }}
+  value: {{ .Values.pluginDaemon.difyInnerApiKey | quote }}
+{{- else }}
+{{- end }}
+
 {{- end }}
 {{- end }}

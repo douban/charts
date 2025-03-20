@@ -356,3 +356,116 @@ spec:
         - name: config-volume
           configMap:
             name: {{ include "dify.fullname" . }}-sandbox-config
+
+
+{{- if .Values.pluginDaemon.enabled }}
+# pluginDaemon
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "dify.fullname" . }}-plugin-daemon
+  labels:
+    {{- include "dify.labels" . | nindent 4 }}
+    app.kubernetes.io/component: plugin-daemon
+    {{- include "dify.global.labels" . | nindent 4 }}
+spec:
+  {{- if hasKey .Values.pluginDaemon "autoscaling" }}
+  {{- if and (hasKey .Values.pluginDaemon "autoscaling") (not .Values.pluginDaemon.autoscaling.enabled) }}
+  replicas: {{ .Values.pluginDaemon.replicaCount | default 1 }}
+  {{- end }}
+  {{- else }}
+  replicas: 1
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "dify.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: plugin-daemon
+  template:
+    metadata:
+      {{- with .Values.pluginDaemon.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "dify.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: plugin-daemon
+        {{- include "dify.global.labels" . | nindent 8 }}
+    spec:
+      {{- with .Values.pluginDaemon.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "dify.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.pluginDaemon.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}-plugin-daemon
+          securityContext:
+            {{- toYaml .Values.pluginDaemon.securityContext | nindent 12 }}
+          image: "{{ .Values.pluginDaemon.image.repository }}:{{ .Values.pluginDaemon.image.tag | default "latest" }}"
+          imagePullPolicy: {{ .Values.pluginDaemon.image.pullPolicy }}
+          env:
+            - name: DIFY_INNER_API_URL
+              value: "http://{{ include "dify.fullname" . }}-api-svc:{{ .Values.api.service.port }}"
+            - name: PLUGIN_WORKING_PATH
+              value: "/app/storage/cwd"
+            - name: SERVER_KEY
+            {{- if .Values.pluginDaemon.serverKeySecret }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.pluginDaemon.serverKeySecret }}
+                  key: plugin-daemon-key
+            {{- else if .Values.pluginDaemon.serverKey }}
+              value: {{ .Values.pluginDaemon.serverKey | quote }}
+            {{- else }}
+            {{- end }}
+            - name: DIFY_INNER_API_KEY
+            {{- if .Values.pluginDaemon.difyInnerApiKeySecret }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.pluginDaemon.difyInnerApiKeySecret }}
+                  key: plugin-dify-inner-api-key
+            {{- else if .Values.pluginDaemon.difyInnerApiKey }}
+              value: {{ .Values.pluginDaemon.difyInnerApiKey | quote }}
+            {{- else }}
+            {{- end }}
+            {{- include "dify.commonEnvs" . | nindent 12 }}
+            {{- include "dify.commonBackendEnvs" . | nindent 12 }}
+            {{- with .Values.global.extraEnvs }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+            {{- with .Values.global.extraBackendEnvs }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+            {{- with .Values.pluginDaemon.envs }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          volumeMounts:
+            - name: plugin-daemon-storage
+              mountPath: /app/storage
+          ports:
+            - name: http
+              containerPort: {{ .Values.pluginDaemon.containerPort }}
+              protocol: TCP
+      volumes:
+        - name: plugin-daemon-storage
+          {{- if .Values.pluginDaemon.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ include "dify.fullname" . }}-plugin-daemon-pvc
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+      {{- with .Values.pluginDaemon.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.pluginDaemon.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.pluginDaemon.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}
