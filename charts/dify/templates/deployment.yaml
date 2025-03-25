@@ -377,6 +377,7 @@ spec:
   {{- else }}
   replicas: 1
   {{- end }}
+  strategy: {{- toYaml .Values.pluginDaemon.updateStrategy | nindent 4 }}
   selector:
     matchLabels:
       {{- include "dify.selectorLabels" . | nindent 6 }}

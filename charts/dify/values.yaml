@@ -382,6 +382,12 @@ sandbox:
 pluginDaemon:
   enabled: true
   replicaCount: 1
+  updateStrategy:
+    type: RollingUpdate
+    # for rolling update with persistent read-write-once volume, maxSurge and maxUnavailable should be set like this:
+    # rollingUpdate:
+    #   maxSurge: 0
+    #   maxUnavailable: 1
   # please change to avoid abuse
   serverKey: "lYkiYYT6owG+71oLerGzA7GXCgOT++6ovaezWAjpCjf+Sjc3ZtU+qUEi"
   # prefer to use secret
