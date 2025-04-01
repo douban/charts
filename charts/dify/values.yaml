@@ -382,6 +382,10 @@ sandbox:
 pluginDaemon:
   enabled: true
   replicaCount: 1
+  # plugin daemon depends on persistence volume
+  # setting updateStrategy to recreate would make it possible to restart it.
+  updateStrategy:
+    type: Recreate
   # please change to avoid abuse
   serverKey: "lYkiYYT6owG+71oLerGzA7GXCgOT++6ovaezWAjpCjf+Sjc3ZtU+qUEi"
   # prefer to use secret
