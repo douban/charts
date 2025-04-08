@@ -449,6 +449,8 @@ spec:
             - name: http
               containerPort: {{ .Values.pluginDaemon.containerPort }}
               protocol: TCP
+          resources:
+            {{- toYaml .Values.pluginDaemon.resources | nindent 12 }}
       volumes:
         - name: plugin-daemon-storage
           {{- if .Values.pluginDaemon.persistence.enabled }}
