@@ -1,9 +1,9 @@
 annotations:
   artifacthub.io/changes: |
-    - kind: changed
-      description: Upgrade CoreDNS to 1.11.3
+    - kind: fixed
+      description: improve default readiness probe config for shutdown
 apiVersion: v2
-appVersion: 1.11.3
+appVersion: 1.12.0
 description: CoreDNS is a DNS server that chains plugins and provides Kubernetes DNS
   Services
 home: https://coredns.io
@@ -21,4 +21,4 @@ name: coredns
 sources:
 - https://github.com/coredns/coredns
 type: application
-version: 1.34.0
+version: 1.39.2

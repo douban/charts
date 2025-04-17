@@ -34,6 +34,16 @@ The command deploys CoreDNS on the Kubernetes cluster in the default configurati
 
 > **Tip**: List all releases using `helm list --all-namespaces`
 
+## OCI installing
+
+The chart can also be installed using the following:
+
+```console
+$ helm --namespace=kube-system install coredns oci://ghcr.io/coredns/charts/coredns --version 1.38.0
+```
+
+The command deploys the `1.38.0` version of CoreDNS on the Kubernetes cluster in the default configuration.
+
 ## Uninstalling the Chart
 
 To uninstall/delete the `coredns` deployment:
@@ -74,6 +84,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | `service.ipFamilyPolicy`                       | Service dual-stack policy                                                                                                                 | `""`                                                         |
 | `service.annotations`                          | Annotations to add to service                                                                                                             | {}                                                           |
 | `service.selector`                             | Pod selector                                                                                                                              | `{}`                                                         |
+| `service.trafficDistribution`                  | Service traffic routing strategy                                                                                                          |                                                              |
 | `serviceAccount.create`                        | If true, create & use serviceAccount                                                                                                      | false                                                        |
 | `serviceAccount.name`                          | If not set & create is true, use template fullname                                                                                        |                                                              |
 | `rbac.create`                                  | If true, create & use RBAC resources                                                                                                      | true                                                         |
@@ -102,6 +113,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | `extraVolumes`                                 | Optional array of volumes to create                                                                                                       | []                                                           |
 | `extraVolumeMounts`                            | Optional array of volumes to mount inside the CoreDNS container                                                                           | []                                                           |
 | `extraSecrets`                                 | Optional array of secrets to mount inside the CoreDNS container                                                                           | []                                                           |
+| `env`                                          | Optional array of environment variables for CoreDNS container                                                                           | []                                                           |
 | `customLabels`                                 | Optional labels for Deployment(s), Pod, Service, ServiceMonitor objects                                                                   | {}                                                           |
 | `customAnnotations`                            | Optional annotations for Deployment(s), Pod, Service, ServiceMonitor objects                                                              |
 | `rollingUpdate.maxUnavailable`                 | Maximum number of unavailable replicas during rolling update                                                                              | `1`                                                          |
@@ -205,7 +217,7 @@ You will also need to annotate and label your existing resources to allow Helm t
 annotations:
   meta.helm.sh/release-name: your-release-name
   meta.helm.sh/release-namespace: your-release-namespace
-label:
+labels:
   app.kubernetes.io/managed-by: Helm
 ```
 
