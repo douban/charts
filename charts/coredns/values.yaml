@@ -54,10 +54,12 @@ service:
 # clusterIP: ""
 # clusterIPs: []
 # loadBalancerIP: ""
+# loadBalancerClass: ""
 # externalIPs: []
 # externalTrafficPolicy: ""
 # internalTrafficPolicy: ""
 # ipFamilyPolicy: ""
+# trafficDistribution: PreferClose
   # The name of the Service
   # If not set, a name is generated using the fullname template
   name: ""
@@ -75,11 +77,11 @@ serviceAccount:
 rbac:
   # If true, create & use RBAC resources
   create: true
-  # If true, create and use PodSecurityPolicy
-  pspEnable: false
-  # The name of the ServiceAccount to use.
-  # If not set and create is true, a name is generated using the fullname template
-  # name:
+
+clusterRole:
+  # By default a name is generated using the fullname template.
+  # Override here if desired:
+  nameOverride: ""
 
 # isClusterService specifies whether chart should be deployed as cluster-service or normal k8s app.
 isClusterService: true
@@ -93,9 +95,13 @@ podSecurityContext: {}
 # Configure SecurityContext for Pod.
 # Ensure that required linux capability to bind port number below 1024 is assigned (`CAP_NET_BIND_SERVICE`).
 securityContext:
+  allowPrivilegeEscalation: false
   capabilities:
     add:
       - NET_BIND_SERVICE
+    drop:
+      - ALL
+  readOnlyRootFilesystem: true
 
 # Default zone is what Kubernetes recommends:
 # https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#coredns-configmap-options
@@ -103,6 +109,8 @@ servers:
 - zones:
   - zone: .
   port: 53
+  # -- expose the service on a different port
+  # servicePort: 5353
   # If serviceType is nodePort you can specify nodePort here
   # nodePort: 30053
   # hostPort: 53
@@ -111,7 +119,7 @@ servers:
   # Serves a /health endpoint on :8080, required for livenessProbe
   - name: health
     configBlock: |-
-      lameduck 5s
+      lameduck 10s
   # Serves a /ready endpoint on :8181, required for readinessProbe
   - name: ready
   # Required to query kubernetes API for data
@@ -167,9 +175,9 @@ livenessProbe:
 readinessProbe:
   enabled: true
   initialDelaySeconds: 30
-  periodSeconds: 10
+  periodSeconds: 5
   timeoutSeconds: 5
-  failureThreshold: 5
+  failureThreshold: 1
   successThreshold: 1
 
 # expects input structure as per specification https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#affinity-v1-core
@@ -255,6 +263,17 @@ extraSecrets: []
 # - name: some-fancy-secret
 #   mountPath: /etc/wherever
 #   defaultMode: 440
+
+# optional array of environment variables for coredns container
+# possible usecase: provides username and password for etcd user authentications
+env: []
+# - name: WHATEVER_ENV
+#   value: whatever
+# - name: SOME_SECRET_ENV
+#   valueFrom:
+#     secretKeyRef:
+#       name: some-secret-name
+#       key: secret-key
 
 # To support legacy deployments using CoreDNS with the "k8s-app: kube-dns" label selectors.
 # See https://github.com/coredns/helm/blob/master/charts/coredns/README.md#adopting-existing-coredns-resources
