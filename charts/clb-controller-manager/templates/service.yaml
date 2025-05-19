@@ -1,0 +1,50 @@
+{{ if .Values.service.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.service.name }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- if .Values.service.annotations.healthCheck }}
+    service.beta.kubernetes.io/cvm-loadbalancer-healthcheck: {{ .Values.service.annotations.healthCheck | quote }}
+    {{- end }}
+    service.beta.kubernetes.io/cvm-loadbalancer-name: {{ .Values.service.annotations.loadBalancerName | quote }}
+    service.beta.kubernetes.io/cvm-loadbalancer-subnet-id: {{ .Values.service.annotations.subnetId | quote }}
+    service.beta.kubernetes.io/cvm-loadbalancer-type: {{ .Values.service.annotations.loadBalancerType | quote }}
+    {{- if .Values.service.annotations.vip }}
+    service.beta.kubernetes.io/cvm-loadbalancer-vip: {{ .Values.service.annotations.vip | quote }}
+    {{- end }}
+    {{- if .Values.service.annotations.bandwidth }}
+    service.beta.kubernetes.io/cvm-loadbalancer-clb-bandwidth: {{ .Values.service.annotations.bandwidth | quote }}
+    {{- end }}
+  labels:
+    {{- if .Values.service.labels }}
+    {{- toYaml .Values.service.labels | nindent 4 }}
+    {{- end }}
+    app.kubernetes.io/component: {{ .Values.service.component | quote }}
+    app.kubernetes.io/instance: {{ .Values.service.instance | quote }}
+    app.kubernetes.io/name: {{ .Values.service.selector.name | quote }}
+spec:
+  type: {{ .Values.service.type }}
+  externalTrafficPolicy: {{ .Values.service.externalTrafficPolicy }}
+  sessionAffinity: {{ .Values.service.sessionAffinity }}
+  selector:
+    app.kubernetes.io/component: {{ .Values.service.component | quote }}
+    app.kubernetes.io/instance: {{ .Values.service.instance | quote }}
+    app.kubernetes.io/name: {{ .Values.service.selector.name | quote }}
+  ports:
+    - name: http
+      port: {{ .Values.service.ports.http.port }}
+      {{- if .Values.service.ports.http.nodePort }}
+      nodePort: {{ .Values.service.ports.http.nodePort }}
+      {{- end }}
+      protocol: TCP
+      targetPort: http
+    - name: https
+      port: {{ .Values.service.ports.https.port }}
+      {{- if .Values.service.ports.https.nodePort }}
+      nodePort: {{ .Values.service.ports.https.nodePort }}
+      {{- end }}
+      protocol: TCP
+      targetPort: https
+{{- end }}
