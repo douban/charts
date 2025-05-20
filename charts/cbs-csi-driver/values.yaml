@@ -1,0 +1,155 @@
+storageClasses:
+  enabled: true
+  # change tags to what you want to use
+  disktags: "cluster:default,department:sa"
+  premiumHourly:
+    name: cbs-premium-hourly
+    isDefault: true
+  premiumMonthly:
+    name: cbs-premium-monthly
+  ssdHourly:
+    name: cbs-ssd-hourly
+  ssdMonthly:
+    name: cbs-ssd-monthly
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+node:
+  nameOverride: ""
+  image:
+    repository: ccr.ccs.tencentyun.com/tkeimages/csi-tencentcloud-cbs
+    tag: v2.3.3
+    pullPolicy: Always
+  annotations: {}
+  driverRegistrarImage:
+    repository: ccr.ccs.tencentyun.com/tkeimages/csi-node-driver-registrar
+    tag: v2.0.1
+    pullPolicy: Always
+  tolerations:
+    - operator: Exists
+  nodeSelector: {}
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: node.kubernetes.io/instance-type
+                operator: NotIn
+                values:
+                  - CHC
+                  - external
+  hostAliases:
+    - ip: "169.254.0.23"
+      hostnames:
+        - "metadata.tencentyun.com"
+    - ip: "169.254.0.95"
+      hostnames:
+        - "cbs.internal.tencentcloudapi.com"
+        - "cbs.test.tencentcloudapi.com"
+  resources: {}
+  priorityClassName: system-cluster-critical
+  csi:
+    socketDir: /var/lib/kubelet/plugins/com.tencent.cloud.csi.cbs
+    registrationDir: /var/lib/kubelet/plugins_registry/
+    kubeletPluginsDir: /var/lib/kubelet/plugins
+    kubeletPodsDir: /var/lib/kubelet/pods
+
+controller:
+  replicaCount: 1
+  image:
+    repository: ccr.ccs.tencentyun.com/tkeimages/csi-tencentcloud-cbs
+    tag: v2.3.3
+    pullPolicy: Always
+  annotations: {}
+  sidecars:
+    provisioner:
+      repository: ccr.ccs.tencentyun.com/tkeimages/csi-provisioner
+      tag: v2.0.4
+    attacher:
+      repository: ccr.ccs.tencentyun.com/tkeimages/csi-attacher
+      tag: v3.0.2
+    snapshotter:
+      repository: ccr.ccs.tencentyun.com/tkeimages/csi-snapshotter
+      tag: v3.0.2
+    snapshotController:
+      repository: ccr.ccs.tencentyun.com/tkeimages/snapshot-controller
+      tag: v3.0.2
+    resizer:
+      repository: ccr.ccs.tencentyun.com/tkeimages/csi-resizer
+      tag: v1.0.1
+  resources:
+    limits:
+      cpu: 1
+      memory: 2Gi
+    requests:
+      cpu: 100m
+      memory: 100Mi
+  nodeSelector: {}
+  hostAliases:
+    - ip: "169.254.0.23"
+      hostnames:
+        - "metadata.tencentyun.com"
+    - ip: "169.254.0.95"
+      hostnames:
+        - "cbs.internal.tencentcloudapi.com"
+        - "cvm.internal.tencentcloudapi.com"
+        - "tag.internal.tencentcloudapi.com"
+        - "cbs.test.tencentcloudapi.com"
+        - "cvm.test.tencentcloudapi.com"
+        - "tag.test.tencentcloudapi.com"
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: node.kubernetes.io/instance-type
+                operator: NotIn
+                values:
+                  - CHC
+                  - external
+  priorityClassName: system-cluster-critical
+
+serviceAccount:
+  controller:
+    # The name of the cbs-csi-controller service account to be created
+    nameOverride: ""
+    annotations: {}
+  node:
+    # The name of the cbs-csi-node service account to be created
+    nameOverride: ""
+    annotations: {}
+
+clusterRole:
+  controller:
+    # The name of the cbs-csi-controller cluster role to be created
+    nameOverride: ""
+    annotations: {}
+  node:
+    # The name of the cbs-csi-node cluster role to be created
+    nameOverride: ""
+    annotations: {}
+
+clusterRoleBinding:
+  controller:
+    # The name of the cbs-csi-controller cluster role binding to be created
+    nameOverride: ""
+    annotations: {}
+  node:
+    # The name of the cbs-csi-node cluster role binding to be created
+    nameOverride: ""
+    annotations: {}
+
+secret:
+  # Set to false if you want to use existing secret
+  create: true
+  # The name of the secret to be created
+  # WARNING: If using existing secret, you must ensure:
+  # 1. The secret exists in the same namespace
+  # 2. Contains exactly the same keys (secretId and secretKey)
+  # 3. Values are properly base64 encoded
+  nameOverride: ""
+  # the values will be automatically base64 encoded
+  secretId: ""
+  secretKey: ""

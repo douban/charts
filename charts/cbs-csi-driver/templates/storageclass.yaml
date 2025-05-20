@@ -1,0 +1,60 @@
+{{- if .Values.storageClasses.enabled }}
+---
+allowVolumeExpansion: true
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "{{ .Values.storageClasses.premiumHourly.isDefault }}"
+  name: {{ .Values.storageClasses.premiumHourly.name }}
+parameters:
+  diskChargeType: POSTPAID_BY_HOUR
+  diskType: CLOUD_PREMIUM
+  disktags: "{{ .Values.storageClasses.disktags }}"
+provisioner: com.tencent.cloud.csi.cbs
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
+---
+allowVolumeExpansion: true
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: {{ .Values.storageClasses.premiumMonthly.name }}
+parameters:
+  diskChargePrepaidRenewFlag: NOTIFY_AND_AUTO_RENEW
+  diskChargeType: PREPAID
+  diskChargeTypePrepaidPeriod: "1"
+  diskType: CLOUD_PREMIUM
+  disktags: "{{ .Values.storageClasses.disktags }}"
+provisioner: com.tencent.cloud.csi.cbs
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
+---
+allowVolumeExpansion: true
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: {{ .Values.storageClasses.ssdHourly.name }}
+parameters:
+  diskChargeType: POSTPAID_BY_HOUR
+  diskType: CLOUD_SSD
+  disktags: "{{ .Values.storageClasses.disktags }}"
+provisioner: com.tencent.cloud.csi.cbs
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
+---
+allowVolumeExpansion: true
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: {{ .Values.storageClasses.ssdMonthly.name }}
+parameters:
+  diskChargePrepaidRenewFlag: NOTIFY_AND_AUTO_RENEW
+  diskChargeType: PREPAID
+  diskChargeTypePrepaidPeriod: "1"
+  diskType: CLOUD_SSD
+  disktags: "{{ .Values.storageClasses.disktags }}"
+provisioner: com.tencent.cloud.csi.cbs
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
+{{- end }}

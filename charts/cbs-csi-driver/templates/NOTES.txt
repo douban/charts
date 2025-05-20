@@ -1,0 +1,56 @@
+You can quickly test the CSI driver by creating a sample PVC and pod using these commands:
+
+1. First, create a test manifest file:
+```bash
+cat <<EOF > csi-test.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: csi-test-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: cbs-premium-hourly
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: csi-test-app
+spec:
+  containers:
+    - name: app
+      image: busybox
+      command: ["/bin/sh", "-c", "while true; do echo \$(date) >> /data/test.log; sleep 5; done"]
+      volumeMounts:
+      - mountPath: "/data"
+        name: csi-volume
+  volumes:
+    - name: csi-volume
+      persistentVolumeClaim:
+        claimName: csi-test-pvc
+EOF
+```
+
+2. Apply the configuration:
+```bash
+kubectl apply -f csi-test.yaml
+```
+
+3. Verify the resources were created:
+```bash
+kubectl get pvc csi-test-pvc
+kubectl get pod csi-test-app
+```
+
+4. Check if data is being written (wait 30 seconds first):
+```bash
+kubectl exec csi-test-app -- cat /data/test.log
+```
+
+5. Clean up when done:
+```bash
+kubectl delete -f csi-test.yaml
+```

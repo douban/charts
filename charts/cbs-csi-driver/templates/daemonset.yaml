@@ -1,0 +1,153 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ .Values.node.name | default "csi-cbs-node" }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cbs-csi-driver.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "cbs-csi-driver.selectorLabels" . | nindent 6 }}
+  updateStrategy:
+    rollingUpdate:
+      maxUnavailable: 100%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        {{- include "cbs-csi-driver.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.node.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.node.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccount: {{ include "cbs-csi-node.serviceAccountName" . }}
+      hostNetwork: true
+      hostPID: true
+      dnsPolicy: ClusterFirstWithHostNet
+      priorityClassName: {{ .Values.node.priorityClassName }}
+      {{- with .Values.node.hostAliases }}
+      hostAliases:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.controller.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: driver-registrar
+          image: "{{ .Values.node.driverRegistrarImage.repository }}:{{ .Values.node.driverRegistrarImage.tag }}"
+          imagePullPolicy: {{ .Values.node.driverRegistrarImage.pullPolicy }}
+          args:
+            - "--v=5"
+            - "--csi-address=/csi/csi.sock"
+            - "--kubelet-registration-path=/var/lib/kubelet/plugins/com.tencent.cloud.csi.cbs/csi.sock"
+          lifecycle:
+            preStop:
+              exec:
+                command: [
+                  "/bin/sh", "-c",
+                  "rm -rf /registration/com.tencent.cloud.csi.cbs \
+                  /registration/com.tencent.cloud.csi.cbs-reg.sock"
+                ]
+          env:
+            - name: KUBE_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          volumeMounts:
+            - name: plugin-dir
+              mountPath: /csi
+            - name: registration-dir
+              mountPath: /registration
+          {{- with .Values.node.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+        - name: cbs-csi
+          securityContext:
+            privileged: true
+            capabilities:
+              add: ["SYS_ADMIN"]
+            allowPrivilegeEscalation: true
+          image: "{{ .Values.node.image.repository }}:{{ .Values.node.image.tag }}"
+          command:
+            - "/csi-tencentcloud-cbs"
+          args:
+            - "--v=5"
+            - "--logtostderr=true"
+            - "--endpoint=unix:///csi/csi.sock"
+            - "--component_type=node"
+          env:
+            - name: TENCENTCLOUD_API_SECRET_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "cbs-csi-driver.secretName" . }}
+                  key: TENCENTCLOUD_CBS_API_SECRET_ID
+                  optional: true
+            - name: TENCENTCLOUD_API_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "cbs-csi-driver.secretName" . }}
+                  key: TENCENTCLOUD_CBS_API_SECRET_KEY
+                  optional: true
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          imagePullPolicy: {{ .Values.node.image.pullPolicy }}
+          volumeMounts:
+            - name: plugin-dir
+              mountPath: /csi
+            - name: plugins-mount-dir
+              mountPath: /var/lib/kubelet/plugins
+              mountPropagation: "Bidirectional"
+            - name: pods-mount-dir
+              mountPath: /var/lib/kubelet/pods
+              mountPropagation: "Bidirectional"
+            - name: host-dev
+              mountPath: /dev
+            - name: host-sys
+              mountPath: /sys
+            - name: lib-modules
+              mountPath: /lib/modules
+              readOnly: true
+          {{- with .Values.node.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      volumes:
+        - name: plugin-dir
+          hostPath:
+            path: {{ .Values.node.csi.socketDir }}
+            type: DirectoryOrCreate
+        - name: registration-dir
+          hostPath:
+            path: {{ .Values.node.csi.registrationDir }}
+            type: Directory
+        - name: plugins-mount-dir
+          hostPath:
+            path: {{ .Values.node.csi.kubeletPluginsDir }}
+            type: Directory
+        - name: pods-mount-dir
+          hostPath:
+            path: {{ .Values.node.csi.kubeletPodsDir }}
+            type: Directory
+        - name: host-dev
+          hostPath:
+            path: /dev
+        - name: host-sys
+          hostPath:
+            path: /sys
+        - name: lib-modules
+          hostPath:
+            path: /lib/modules

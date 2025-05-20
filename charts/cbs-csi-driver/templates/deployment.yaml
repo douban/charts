@@ -1,0 +1,173 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.controller.name | default "csi-cbs-controller" }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cbs-csi-driver.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.controller.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "cbs-csi-driver.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "cbs-csi-driver.selectorLabels" . | nindent 8 }}
+      {{- if .Values.controller.annotations }}
+      annotations:
+        {{- toYaml .Values.controller.annotations | nindent 8 }}
+      {{- end }}
+    spec:
+      {{- with .Values.controller.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ .Values.serviceAccount.name | default "cbs-csi-controller-sa" }}
+      priorityClassName: {{ .Values.controller.priorityClassName }}
+      {{- with .Values.controller.hostAliases }}
+      hostAliases:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.controller.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: csi-provisioner
+          image: "{{ .Values.controller.sidecars.provisioner.repository }}:{{ .Values.controller.sidecars.provisioner.tag }}"
+          imagePullPolicy: {{ .Values.controller.sidecars.provisioner.pullPolicy | default .Values.controller.image.pullPolicy }}
+          args:
+            - "--feature-gates=Topology=true"
+            - "--csi-address=$(ADDRESS)"
+            - "--v=5"
+            - "--timeout=120s"
+            - "--metrics-address=:9090"
+            - "--leader-election=true"
+            - "--default-fstype=ext4"
+          env:
+            - name: ADDRESS
+              value: /csi/csi.sock
+          volumeMounts:
+            - mountPath: /csi
+              name: socket-dir
+          {{- with .Values.controller.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+
+        - name: csi-attacher
+          image: "{{ .Values.controller.sidecars.attacher.repository }}:{{ .Values.controller.sidecars.attacher.tag }}"
+          imagePullPolicy: {{ .Values.controller.sidecars.attacher.pullPolicy | default .Values.controller.image.pullPolicy }}
+          args:
+            - "--csi-address=$(ADDRESS)"
+            - "--v=5"
+            - "--leader-election=true"
+            - "--metrics-address=:9091"
+            - "--worker-threads=50"
+          env:
+            - name: ADDRESS
+              value: /csi/csi.sock
+          volumeMounts:
+            - mountPath: /csi
+              name: socket-dir
+          {{- with .Values.controller.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+
+        - name: csi-snapshotter
+          image: "{{ .Values.controller.sidecars.snapshotter.repository }}:{{ .Values.controller.sidecars.snapshotter.tag }}"
+          imagePullPolicy: {{ .Values.controller.sidecars.snapshotter.pullPolicy | default .Values.controller.image.pullPolicy }}
+          args:
+            - "--csi-address=$(ADDRESS)"
+            - "--leader-election=true"
+            - "--v=5"
+          env:
+            - name: ADDRESS
+              value: /csi/csi.sock
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+          {{- with .Values.controller.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+
+        - name: snapshot-controller
+          image: "{{ .Values.controller.sidecars.snapshotController.repository }}:{{ .Values.controller.sidecars.snapshotController.tag }}"
+          imagePullPolicy: {{ .Values.controller.sidecars.snapshotController.pullPolicy | default .Values.controller.image.pullPolicy }}
+          args:
+            - "--v=5"
+            - "--leader-election=true"
+          {{- with .Values.controller.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+
+        - name: csi-resizer
+          image: "{{ .Values.controller.sidecars.resizer.repository }}:{{ .Values.controller.sidecars.resizer.tag }}"
+          imagePullPolicy: {{ .Values.controller.sidecars.resizer.pullPolicy | default .Values.controller.image.pullPolicy }}
+          args:
+            - "--csi-address=$(ADDRESS)"
+            - "--v=5"
+            - "--leader-election=true"
+          env:
+            - name: ADDRESS
+              value: /csi/csi.sock
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+          {{- with .Values.controller.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+
+        - name: cbs-csi
+          image: "{{ .Values.controller.image.repository }}:{{ .Values.controller.image.tag }}"
+          imagePullPolicy: {{ .Values.controller.image.pullPolicy }}
+          command:
+            - "/csi-tencentcloud-cbs"
+          args:
+            - "--v=5"
+            - "--logtostderr=true"
+            - "--endpoint=$(ADDRESS)"
+            - "--component_type=controller"
+          env:
+            - name: ADDRESS
+              value: unix:///csi/csi.sock
+            - name: TENCENTCLOUD_API_SECRET_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secret.name | default "cbs-csi-api-key" }}
+                  key: TENCENTCLOUD_CBS_API_SECRET_ID
+                  optional: true
+            - name: TENCENTCLOUD_API_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secret.name | default "cbs-csi-api-key" }}
+                  key: TENCENTCLOUD_CBS_API_SECRET_KEY
+                  optional: true
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            {{- if .Values.controller.clusterId }}
+            # for deleting cbs disks in cluster while deleting cluster
+            - name: CLUSTER_ID
+              value: {{ .Values.controller.clusterId | quote }}
+            {{- end }}
+          volumeMounts:
+            - mountPath: /csi
+              name: socket-dir
+          {{- with .Values.controller.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      volumes:
+        - name: socket-dir
+          emptyDir: {}
