@@ -52,11 +52,11 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Create the name of the secret to use
 */}}
 {{- define "clb-controller-manager.secretName" -}}
-{{- if .Values.secret.nameOverride }}
-{{- .Values.secret.nameOverride }}
-{{- else }}
-{{- include "clb-controller-manager.fullname" . }}
-{{- end }}
+{{- if .Values.secret.create -}}
+    {{- default "clb-controller-manager-config" .Values.secret.name -}}
+{{- else -}}
+    {{- .Values.secret.existingSecret -}}
+{{- end -}}
 {{- end }}
 
 {{- define "clb-controller-manager.cloudConfig" -}}
@@ -82,19 +82,19 @@ Environment variables for CLB configuration
 Create the name of the service account to use
 */}}
 {{- define "clb-controller-manager.serviceAccountName" -}}
-{{- default "cloud-controller-manager" .Values.serviceAccount.nameOverride }}
+{{- default "cloud-controller-manager" .Values.serviceAccount.name }}
 {{- end }}
 
 {{/*
 Create the name of the cluster role to use
 */}}
 {{- define "clb-controller-manager.clusterRoleName" -}}
-{{- default "system:cloud-controller-manager" .Values.clusterRole.nameOverride | trunc 63 | trimSuffix "-" -}}
+{{- default "system:cloud-controller-manager" .Values.clusterRole.name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
 Create the name of the cluster role binding to use
 */}}
 {{- define "clb-controller-manager.clusterRoleBindingName" -}}
-{{- default "system:cloud-controller-manager" .Values.clusterRoleBinding.nameOverride | trunc 63 | trimSuffix "-" -}}
+{{- default "system:cloud-controller-manager" .Values.clusterRoleBinding.name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}

@@ -54,7 +54,11 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Create the name of the secret to use
 */}}
 {{- define "cbs-csi-driver.secretName" -}}
-{{- default "cbs-csi-api-key" .Values.secret.nameOverride }}
+{{- if .Values.secret.create -}}
+    {{- default "cbs-csi-api-key" .Values.secret.name -}}
+{{- else -}}
+    {{- .Values.secret.existingSecret -}}
+{{- end -}}
 {{- end -}}
 
 {{/*

@@ -68,15 +68,9 @@ spec:
             - name: cvm-config
               mountPath: /etc/cvm/
               readOnly: true
-            {{- with .Values.volumeMounts }}
-            {{- toYaml . | nindent 12 }}
-            {{- end }}
       volumes:
         - name: cvm-config
           secret:
             secretName: {{ include "clb-controller-manager.secretName" . }}
-        {{- with .Values.volumes }}
-        {{- toYaml . | nindent 8 }}
-        {{- end }}
       tolerations:
         {{- toYaml .Values.tolerations | nindent 8 }}

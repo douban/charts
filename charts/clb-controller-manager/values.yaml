@@ -1,16 +1,24 @@
-# Default values for clb-controller-manager
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
-# Cloud provider configuration
 secret:
-  # Set to false if you want to use existing secret
+  # Controls whether to create a new secret
+  # If true (default), a new secret will be created with the specified name
+  # If false, you must provide an existing secret name in existingSecret
   create: true
-  nameOverride: "clb-controller-manager-config"
+  # Configuration when create=true:
+  # Name of the new secret to be created
+  name: ""
+  # Secret content (will be automatically base64 encoded)
   region: ""
   vpc_id: ""
   secret_id: ""
   secret_key: ""
+
+  # Configuration when create=false:
+  # Name of an existing secret to use
+  # WARNING: When using existing secret:
+  # 1. The secret must exist in the same namespace
+  # 2. Must contain exactly the right keys and values
+  # 3. Values must be properly base64 encoded
+  existingSecret: ""
 
 env:
   # Tencent Cloud resource ID prefix configuration. When sending tag binding/unbinding requests to Tencent Cloud, the resource ID needs to be specified. Docs: https://cloud.tencent.com/document/product/598/10606
@@ -26,9 +34,15 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: v1.30.1-v2.4
 
+annotations: {}
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
+
+podAnnotations: {}
+topologySpreadConstraints: []
+podSecurityContext: {}
+securityContext: {}
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -55,9 +69,6 @@ tolerations:
   # cloud controller manages should be able to run on masters
   - key: "node-role.kubernetes.io/master"
     effect: "NoSchedule"
-  - key: "douban.com/reserved"
-    effect: "NoExecute"
-    value: "sa"
 
 affinity: {}
 
@@ -67,54 +78,16 @@ priorityClassName: system-cluster-critical
 
 serviceAccount:
   # The name of the service account to use.
-  nameOverride: ""
+  name: ""
   annotations: {}
 
 clusterRole:
   # The name of the cluster role to use.
-  nameOverride: ""
+  name: ""
   annotations:
     rbac.authorization.kubernetes.io/autoupdate: "true"
 
 clusterRoleBinding:
   # The name of the cluster role binding to use.
-  nameOverride: ""
-  annotations: {}
-
-service:
-  # Set to true if you want to create a loadbalancerservice
-  enabled: false
   name: ""
-  type: LoadBalancer
-  instance: ""
-  externalTrafficPolicy: Cluster
-  sessionAffinity: None
-  component: "controller"
-  selector:
-    name: "ingress-nginx"
-
-  annotations:
-    # optional if you wanna enable health check to the backend, default: yes
-    healthCheck: "yes"
-    # load balancer name
-    loadBalancerName: ""
-    # subnet id
-    subnetId: ""
-    # option: open/internal
-    loadBalancerType: ""
-    # optional, only needed to set when you already created lb mannually and don't wanna controller req lb for you.
-    vip: ""
-    # optional default: 10Mbps
-    bandwidth: ""
-
-  ports:
-    http:
-      port: 80
-      nodePort: ""
-    https:
-      port: 443
-      nodePort: ""
-
-  labels:
-    app.kubernetes.io/managed-by: "SA"
-    app.kubernetes.io/part-of: "ingress-nginx"
+  annotations: {}

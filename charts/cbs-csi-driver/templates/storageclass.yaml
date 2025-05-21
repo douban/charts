@@ -1,60 +1,44 @@
 {{- if .Values.storageClasses.enabled }}
+{{- $labels := include "cbs-csi-driver.labels" . | fromYaml | default dict }}
+{{- $common := .Values.storageClasses.common | default dict }}
+{{- range $class := .Values.storageClasses.classes }}
 ---
-allowVolumeExpansion: true
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
+  name: {{ $class.name }}
+  {{- $commonMetadata := $common.metadata | default dict }}
+  {{- $commonLabels := $commonMetadata.labels | default dict }}
+  {{- $classMetadata := $class.metadata | default dict }}
+  {{- $classLabels := $classMetadata.labels | default dict }}
+  {{- $allLabels := merge $labels $commonLabels $classLabels }}
+  {{- if $allLabels }}
+  labels:
+    {{- toYaml $allLabels | nindent 4 }}
+  {{- end }}
+  {{- $commonAnnotations := $commonMetadata.annotations | default dict }}
+  {{- $classAnnotations := $classMetadata.annotations | default dict }}
+  {{- $allAnnotations := merge $commonAnnotations $classAnnotations }}
+  {{- if $class.isDefault }}
   annotations:
-    storageclass.kubernetes.io/is-default-class: "{{ .Values.storageClasses.premiumHourly.isDefault }}"
-  name: {{ .Values.storageClasses.premiumHourly.name }}
-parameters:
-  diskChargeType: POSTPAID_BY_HOUR
-  diskType: CLOUD_PREMIUM
-  disktags: "{{ .Values.storageClasses.disktags }}"
+    {{- if $allAnnotations }}
+    {{- toYaml $allAnnotations | nindent 4 }}
+    {{- end }}
+    storageclass.kubernetes.io/is-default-class: "true"
+  {{- else if $allAnnotations }}
+  annotations:
+    {{- toYaml $allAnnotations | nindent 4 }}
+  {{- end }}
+allowVolumeExpansion: {{ coalesce $class.allowVolumeExpansion $common.allowVolumeExpansion false }}
 provisioner: com.tencent.cloud.csi.cbs
-reclaimPolicy: Delete
-volumeBindingMode: Immediate
----
-allowVolumeExpansion: true
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: {{ .Values.storageClasses.premiumMonthly.name }}
+reclaimPolicy: {{ $class.reclaimPolicy | default $common.reclaimPolicy | default "Delete" }}
+volumeBindingMode: {{ $class.volumeBindingMode | default $common.volumeBindingMode | default "Immediate" }}
 parameters:
-  diskChargePrepaidRenewFlag: NOTIFY_AND_AUTO_RENEW
-  diskChargeType: PREPAID
-  diskChargeTypePrepaidPeriod: "1"
-  diskType: CLOUD_PREMIUM
-  disktags: "{{ .Values.storageClasses.disktags }}"
-provisioner: com.tencent.cloud.csi.cbs
-reclaimPolicy: Delete
-volumeBindingMode: Immediate
----
-allowVolumeExpansion: true
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: {{ .Values.storageClasses.ssdHourly.name }}
-parameters:
-  diskChargeType: POSTPAID_BY_HOUR
-  diskType: CLOUD_SSD
-  disktags: "{{ .Values.storageClasses.disktags }}"
-provisioner: com.tencent.cloud.csi.cbs
-reclaimPolicy: Delete
-volumeBindingMode: Immediate
----
-allowVolumeExpansion: true
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: {{ .Values.storageClasses.ssdMonthly.name }}
-parameters:
-  diskChargePrepaidRenewFlag: NOTIFY_AND_AUTO_RENEW
-  diskChargeType: PREPAID
-  diskChargeTypePrepaidPeriod: "1"
-  diskType: CLOUD_SSD
-  disktags: "{{ .Values.storageClasses.disktags }}"
-provisioner: com.tencent.cloud.csi.cbs
-reclaimPolicy: Delete
-volumeBindingMode: Immediate
+  {{- with $class.parameters | default dict }}
+  {{- toYaml . | nindent 2 }}
+  {{- end }}
+  {{- if $common.disktags }}
+  disktags: {{ $common.disktags }}
+  {{- end }}
+{{- end }}
 {{- end }}

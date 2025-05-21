@@ -1,16 +1,42 @@
 storageClasses:
   enabled: true
-  # change tags to what you want to use
-  disktags: "cluster:default,department:sa"
-  premiumHourly:
-    name: cbs-premium-hourly
-    isDefault: true
-  premiumMonthly:
-    name: cbs-premium-monthly
-  ssdHourly:
-    name: cbs-ssd-hourly
-  ssdMonthly:
-    name: cbs-ssd-monthly
+  common:
+    allowVolumeExpansion: "true"
+    reclaimPolicy: "Delete"
+    volumeBindingMode: "Immediate"
+    # add tags to cbs volume. e.g. a:b,c:d
+    disktags: ""
+    metadata:
+      labels: {}
+      annotations: {}
+
+  classes:
+    # Below are four predefined storage classes. You can override these configurations to customize your desired storage classes
+    - name: cbs-premium-hourly
+      isDefault: true
+      # If you want to set special configuration for classes instead of common configuration, please set it here.
+      # for example:
+      # allowVolumeExpansion: "false"
+      # reclaimPolicy: "Retain"
+      parameters:
+        diskChargeType: POSTPAID_BY_HOUR
+        diskType: CLOUD_PREMIUM
+    - name: cbs-premium-monthly
+      parameters:
+        diskChargePrepaidRenewFlag: NOTIFY_AND_AUTO_RENEW
+        diskChargeType: PREPAID
+        diskChargeTypePrepaidPeriod: "1"
+        diskType: CLOUD_PREMIUM
+    - name: cbs-ssd-hourly
+      parameters:
+        diskChargeType: POSTPAID_BY_HOUR
+        diskType: CLOUD_SSD
+    - name: cbs-ssd-monthly
+      parameters:
+        diskChargePrepaidRenewFlag: NOTIFY_AND_AUTO_RENEW
+        diskChargeType: PREPAID
+        diskChargeTypePrepaidPeriod: "1"
+        diskType: CLOUD_SSD
 
 imagePullSecrets: []
 nameOverride: ""
@@ -142,14 +168,21 @@ clusterRoleBinding:
     annotations: {}
 
 secret:
-  # Set to false if you want to use existing secret
+  # Controls whether to create a new secret
+  # If true (default), a new secret will be created with the specified name
+  # If false, you must provide an existing secret name in existingSecret
   create: true
-  # The name of the secret to be created
-  # WARNING: If using existing secret, you must ensure:
-  # 1. The secret exists in the same namespace
-  # 2. Contains exactly the same keys (secretId and secretKey)
-  # 3. Values are properly base64 encoded
-  nameOverride: ""
-  # the values will be automatically base64 encoded
+  # Configuration when create=true:
+  # Name of the new secret to be created
+  name: ""
+  # Secret content (will be automatically base64 encoded)
   secretId: ""
   secretKey: ""
+
+  # Configuration when create=false:
+  # Name of an existing secret to use
+  # WARNING: When using existing secret:
+  # 1. The secret must exist in the same namespace
+  # 2. Must contain exactly the right keys and values
+  # 3. Values must be properly base64 encoded
+  existingSecret: ""
