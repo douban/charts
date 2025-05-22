@@ -1,44 +1,38 @@
 {{- if .Values.storageClasses.enabled }}
-{{- $labels := include "cbs-csi-driver.labels" . | fromYaml | default dict }}
-{{- $common := .Values.storageClasses.common | default dict }}
-{{- range $class := .Values.storageClasses.classes }}
+{{- range $classConfig := .Values.storageClasses.classes }}
 ---
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: {{ $class.name }}
-  {{- $commonMetadata := $common.metadata | default dict }}
-  {{- $commonLabels := $commonMetadata.labels | default dict }}
-  {{- $classMetadata := $class.metadata | default dict }}
-  {{- $classLabels := $classMetadata.labels | default dict }}
-  {{- $allLabels := merge $labels $commonLabels $classLabels }}
-  {{- if $allLabels }}
+  name: {{ $classConfig.name }}
   labels:
-    {{- toYaml $allLabels | nindent 4 }}
-  {{- end }}
-  {{- $commonAnnotations := $commonMetadata.annotations | default dict }}
-  {{- $classAnnotations := $classMetadata.annotations | default dict }}
-  {{- $allAnnotations := merge $commonAnnotations $classAnnotations }}
-  {{- if $class.isDefault }}
-  annotations:
-    {{- if $allAnnotations }}
-    {{- toYaml $allAnnotations | nindent 4 }}
+    {{- include "cbs-csi-driver.labels" $ | nindent 4 }}
+    {{- with $.Values.storageClasses.common.metadata.labels }}
+    {{- toYaml . | nindent 4 }}
     {{- end }}
-    storageclass.kubernetes.io/is-default-class: "true"
-  {{- else if $allAnnotations }}
+    {{- with (default dict $classConfig.metadata).labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   annotations:
-    {{- toYaml $allAnnotations | nindent 4 }}
-  {{- end }}
-allowVolumeExpansion: {{ coalesce $class.allowVolumeExpansion $common.allowVolumeExpansion false }}
+    {{- with $.Values.storageClasses.common.metadata.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with (default dict $classConfig.metadata).annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- if $classConfig.isDefault }}
+    storageclass.kubernetes.io/is-default-class: "true"
+    {{- end }}
+allowVolumeExpansion: {{ coalesce $classConfig.allowVolumeExpansion $.Values.storageClasses.common.allowVolumeExpansion "false" }}
 provisioner: com.tencent.cloud.csi.cbs
-reclaimPolicy: {{ $class.reclaimPolicy | default $common.reclaimPolicy | default "Delete" }}
-volumeBindingMode: {{ $class.volumeBindingMode | default $common.volumeBindingMode | default "Immediate" }}
+reclaimPolicy: {{ $classConfig.reclaimPolicy | default $.Values.storageClasses.common.reclaimPolicy | default "Delete" }}
+volumeBindingMode: {{ $classConfig.volumeBindingMode | default $.Values.storageClasses.common.volumeBindingMode | default "Immediate" }}
 parameters:
-  {{- with $class.parameters | default dict }}
+  {{- with $classConfig.parameters }}
   {{- toYaml . | nindent 2 }}
   {{- end }}
-  {{- if $common.disktags }}
-  disktags: {{ $common.disktags }}
+  {{- if $.Values.storageClasses.common.disktags }}
+  disktags: {{ $.Values.storageClasses.common.disktags }}
   {{- end }}
 {{- end }}
 {{- end }}

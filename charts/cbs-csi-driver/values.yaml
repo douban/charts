@@ -168,18 +168,15 @@ clusterRoleBinding:
     annotations: {}
 
 secret:
-  # Controls whether to create a new secret
-  # If true (default), a new secret will be created with an auto-generated name
-  # If false, you must provide an existing secret name in existingSecret
-  create: true
-  # Secret content (will be automatically base64 encoded)
-  secretId: ""
-  secretKey: ""
-
-  # Configuration when create=false:
-  # Name of an existing secret to use
-  # WARNING: When using existing secret:
+  # Name of an existing secret to use (leave empty to auto-create a new secret)
+  # If provided, the chart will use this existing secret instead of creating one
+  # When using existing secret:
   # 1. The secret must exist in the same namespace
   # 2. Must contain exactly the right keys and values
   # 3. Values must be properly base64 encoded
   existingSecret: ""
+
+  # API credentials (required when not using existingSecret)
+  # Secret content (will be automatically base64 encoded)
+  secretId: ""
+  secretKey: ""

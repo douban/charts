@@ -52,10 +52,11 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Create the name of the secret to use
 */}}
 {{- define "clb-controller-manager.secretName" -}}
-{{- if .Values.secret.create -}}
-    {{- "clb-controller-manager-config" -}}
+{{- if .Values.secret.existingSecret -}}
+    {{- .Values.secret.existingSecret -}}
 {{- else -}}
     {{- .Values.secret.existingSecret -}}
+    {{- include "clb-controller-manager.fullname" . -}}
 {{- end -}}
 {{- end }}
 
