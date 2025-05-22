@@ -143,13 +143,13 @@ spec:
             - name: TENCENTCLOUD_API_SECRET_ID
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secret.name | default "cbs-csi-api-key" }}
+                  name: {{ include "cbs-csi-driver.secretName" . }}
                   key: TENCENTCLOUD_CBS_API_SECRET_ID
                   optional: true
             - name: TENCENTCLOUD_API_SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secret.name | default "cbs-csi-api-key" }}
+                  name: {{ include "cbs-csi-driver.secretName" . }}
                   key: TENCENTCLOUD_CBS_API_SECRET_KEY
                   optional: true
             - name: POD_NAMESPACE
