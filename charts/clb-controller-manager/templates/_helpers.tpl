@@ -55,7 +55,6 @@ Create the name of the secret to use
 {{- if .Values.secret.existingSecret -}}
     {{- .Values.secret.existingSecret -}}
 {{- else -}}
-    {{- .Values.secret.existingSecret -}}
     {{- include "clb-controller-manager.fullname" . -}}
 {{- end -}}
 {{- end }}
