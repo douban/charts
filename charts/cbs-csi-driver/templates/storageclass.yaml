@@ -1,0 +1,38 @@
+{{- if .Values.storageClasses.enabled }}
+{{- range $classConfig := .Values.storageClasses.classes }}
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: {{ $classConfig.name }}
+  labels:
+    {{- include "cbs-csi-driver.labels" $ | nindent 4 }}
+    {{- with $.Values.storageClasses.common.metadata.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with (default dict $classConfig.metadata).labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  annotations:
+    {{- with $.Values.storageClasses.common.metadata.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with (default dict $classConfig.metadata).annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- if $classConfig.isDefault }}
+    storageclass.kubernetes.io/is-default-class: "true"
+    {{- end }}
+allowVolumeExpansion: {{ coalesce $classConfig.allowVolumeExpansion $.Values.storageClasses.common.allowVolumeExpansion "false" }}
+provisioner: com.tencent.cloud.csi.cbs
+reclaimPolicy: {{ $classConfig.reclaimPolicy | default $.Values.storageClasses.common.reclaimPolicy | default "Delete" }}
+volumeBindingMode: {{ $classConfig.volumeBindingMode | default $.Values.storageClasses.common.volumeBindingMode | default "Immediate" }}
+parameters:
+  {{- with $classConfig.parameters }}
+  {{- toYaml . | nindent 2 }}
+  {{- end }}
+  {{- if $.Values.storageClasses.common.disktags }}
+  disktags: {{ $.Values.storageClasses.common.disktags }}
+  {{- end }}
+{{- end }}
+{{- end }}
