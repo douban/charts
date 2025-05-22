@@ -55,7 +55,7 @@ Create the name of the secret to use
 */}}
 {{- define "cbs-csi-driver.secretName" -}}
 {{- if .Values.secret.create -}}
-    {{- default "cbs-csi-api-key" .Values.secret.name -}}
+    {{- "cbs-csi-api-key" -}}
 {{- else -}}
     {{- .Values.secret.existingSecret -}}
 {{- end -}}

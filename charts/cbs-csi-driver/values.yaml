@@ -169,12 +169,9 @@ clusterRoleBinding:
 
 secret:
   # Controls whether to create a new secret
-  # If true (default), a new secret will be created with the specified name
+  # If true (default), a new secret will be created with an auto-generated name
   # If false, you must provide an existing secret name in existingSecret
   create: true
-  # Configuration when create=true:
-  # Name of the new secret to be created
-  name: ""
   # Secret content (will be automatically base64 encoded)
   secretId: ""
   secretKey: ""

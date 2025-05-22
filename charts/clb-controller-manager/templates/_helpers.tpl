@@ -53,7 +53,7 @@ Create the name of the secret to use
 */}}
 {{- define "clb-controller-manager.secretName" -}}
 {{- if .Values.secret.create -}}
-    {{- default "clb-controller-manager-config" .Values.secret.name -}}
+    {{- "clb-controller-manager-config" -}}
 {{- else -}}
     {{- .Values.secret.existingSecret -}}
 {{- end -}}
