@@ -320,6 +320,18 @@ entries:
   cbs-csi-driver:
   - apiVersion: v2
     appVersion: 2.3.3
+    created: "2025-05-23T03:43:30.014584895Z"
+    description: A Helm chart for Kubernetes
+    digest: aee952e1129867eaabf090641120946619be34bb95636d9b98109c621bf661d6
+    maintainers:
+    - name: DDDFiish
+    name: cbs-csi-driver
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/cbs-csi-driver-0.1.1/cbs-csi-driver-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 2.3.3
     created: "2025-05-22T09:22:34.593787582Z"
     description: A Helm chart for Kubernetes
     digest: c557e8d7aca688b5dc12cc5fee99012e9c20020a02fe3dca8d783418fe5f88f9
