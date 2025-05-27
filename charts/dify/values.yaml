@@ -17,7 +17,7 @@ global:
   port: ""
   enableTLS: false
   image:
-    tag: "1.4.0"
+    tag: "1.4.1"
   edition: "SELF_HOSTED"
   storageType: "s3"
   # the following extra configs would be injected into:
@@ -397,7 +397,7 @@ pluginDaemon:
   image:
     repository: langgenius/dify-plugin-daemon
     pullPolicy: IfNotPresent
-    tag: "0.0.10-local"
+    tag: "0.1.1-local"
 
   envs:
   - name: SERVER_PORT
