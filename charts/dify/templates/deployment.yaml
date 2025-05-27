@@ -156,6 +156,9 @@ spec:
             {{- with .Values.global.extraBackendEnvs }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
+            {{- with .Values.worker.envs }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
           {{- with .Values.volumeMounts }}
           volumeMounts:
           {{- toYaml . | nindent 10 }}

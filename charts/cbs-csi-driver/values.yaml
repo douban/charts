@@ -1,0 +1,182 @@
+storageClasses:
+  enabled: true
+  common:
+    allowVolumeExpansion: "true"
+    reclaimPolicy: "Delete"
+    volumeBindingMode: "Immediate"
+    # add tags to cbs volume. e.g. a:b,c:d
+    disktags: ""
+    metadata:
+      labels: {}
+      annotations: {}
+
+  classes:
+    # Below are four predefined storage classes. You can override these configurations to customize your desired storage classes
+    - name: cbs-premium-hourly
+      isDefault: true
+      # If you want to set special configuration for classes instead of common configuration, please set it here.
+      # for example:
+      # allowVolumeExpansion: "false"
+      # reclaimPolicy: "Retain"
+      parameters:
+        diskChargeType: POSTPAID_BY_HOUR
+        diskType: CLOUD_PREMIUM
+    - name: cbs-premium-monthly
+      parameters:
+        diskChargePrepaidRenewFlag: NOTIFY_AND_AUTO_RENEW
+        diskChargeType: PREPAID
+        diskChargeTypePrepaidPeriod: "1"
+        diskType: CLOUD_PREMIUM
+    - name: cbs-ssd-hourly
+      parameters:
+        diskChargeType: POSTPAID_BY_HOUR
+        diskType: CLOUD_SSD
+    - name: cbs-ssd-monthly
+      parameters:
+        diskChargePrepaidRenewFlag: NOTIFY_AND_AUTO_RENEW
+        diskChargeType: PREPAID
+        diskChargeTypePrepaidPeriod: "1"
+        diskType: CLOUD_SSD
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+node:
+  nameOverride: ""
+  image:
+    repository: ccr.ccs.tencentyun.com/tkeimages/csi-tencentcloud-cbs
+    tag: v2.3.3
+    pullPolicy: Always
+  annotations: {}
+  driverRegistrarImage:
+    repository: ccr.ccs.tencentyun.com/tkeimages/csi-node-driver-registrar
+    tag: v2.0.1
+    pullPolicy: Always
+  tolerations:
+    - operator: Exists
+  nodeSelector: {}
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: node.kubernetes.io/instance-type
+                operator: NotIn
+                values:
+                  - CHC
+                  - external
+  hostAliases:
+    - ip: "169.254.0.23"
+      hostnames:
+        - "metadata.tencentyun.com"
+    - ip: "169.254.0.95"
+      hostnames:
+        - "cbs.internal.tencentcloudapi.com"
+        - "cbs.test.tencentcloudapi.com"
+  resources: {}
+  priorityClassName: system-cluster-critical
+  csi:
+    socketDir: /var/lib/kubelet/plugins/com.tencent.cloud.csi.cbs
+    registrationDir: /var/lib/kubelet/plugins_registry/
+    kubeletPluginsDir: /var/lib/kubelet/plugins
+    kubeletPodsDir: /var/lib/kubelet/pods
+
+controller:
+  replicaCount: 1
+  image:
+    repository: ccr.ccs.tencentyun.com/tkeimages/csi-tencentcloud-cbs
+    tag: v2.3.3
+    pullPolicy: Always
+  annotations: {}
+  sidecars:
+    provisioner:
+      repository: ccr.ccs.tencentyun.com/tkeimages/csi-provisioner
+      tag: v2.0.4
+    attacher:
+      repository: ccr.ccs.tencentyun.com/tkeimages/csi-attacher
+      tag: v3.0.2
+    snapshotter:
+      repository: ccr.ccs.tencentyun.com/tkeimages/csi-snapshotter
+      tag: v3.0.2
+    snapshotController:
+      repository: ccr.ccs.tencentyun.com/tkeimages/snapshot-controller
+      tag: v3.0.2
+    resizer:
+      repository: ccr.ccs.tencentyun.com/tkeimages/csi-resizer
+      tag: v1.0.1
+  resources:
+    limits:
+      cpu: 1
+      memory: 2Gi
+    requests:
+      cpu: 100m
+      memory: 100Mi
+  nodeSelector: {}
+  hostAliases:
+    - ip: "169.254.0.23"
+      hostnames:
+        - "metadata.tencentyun.com"
+    - ip: "169.254.0.95"
+      hostnames:
+        - "cbs.internal.tencentcloudapi.com"
+        - "cvm.internal.tencentcloudapi.com"
+        - "tag.internal.tencentcloudapi.com"
+        - "cbs.test.tencentcloudapi.com"
+        - "cvm.test.tencentcloudapi.com"
+        - "tag.test.tencentcloudapi.com"
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: node.kubernetes.io/instance-type
+                operator: NotIn
+                values:
+                  - CHC
+                  - external
+  priorityClassName: system-cluster-critical
+
+serviceAccount:
+  controller:
+    # The name of the cbs-csi-controller service account to be created
+    nameOverride: ""
+    annotations: {}
+  node:
+    # The name of the cbs-csi-node service account to be created
+    nameOverride: ""
+    annotations: {}
+
+clusterRole:
+  controller:
+    # The name of the cbs-csi-controller cluster role to be created
+    nameOverride: ""
+    annotations: {}
+  node:
+    # The name of the cbs-csi-node cluster role to be created
+    nameOverride: ""
+    annotations: {}
+
+clusterRoleBinding:
+  controller:
+    # The name of the cbs-csi-controller cluster role binding to be created
+    nameOverride: ""
+    annotations: {}
+  node:
+    # The name of the cbs-csi-node cluster role binding to be created
+    nameOverride: ""
+    annotations: {}
+
+secret:
+  # Name of an existing secret to use (leave empty to auto-create a new secret)
+  # If provided, the chart will use this existing secret instead of creating one
+  # When using existing secret:
+  # 1. The secret must exist in the same namespace
+  # 2. Must contain exactly the right keys and values
+  # 3. Values must be properly base64 encoded
+  existingSecret: ""
+
+  # API credentials (required when not using existingSecret)
+  # Secret content (will be automatically base64 encoded)
+  secretId: ""
+  secretKey: ""

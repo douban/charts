@@ -1,0 +1,14 @@
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ include "cbs-csi-node.clusterRoleName" . }}
+  labels:
+    {{- include "cbs-csi-driver.labels" . | nindent 4 }}
+  {{- with .Values.clusterRole.node.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+rules:
+  - apiGroups: [""]
+    resources: ["nodes"]
+    verbs: ["get", "list"]

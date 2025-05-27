@@ -1,0 +1,3 @@
+This chart's quick test guide has been moved to README.md.
+
+Run `helm show readme douban/cbs-csi-driver` to view full documentation.

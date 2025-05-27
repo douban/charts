@@ -261,6 +261,8 @@ worker:
     # runAsNonRoot: true
     # runAsUser: 1000
 
+  # Add envs here for worker specific environment variables
+  envs: []
 
   resources: {}
     # We usually recommend not to specify default resources and to leave this as a conscious
