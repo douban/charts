@@ -153,6 +153,18 @@ commonBackendEnvs are for api and worker containers
   value: {{ .Values.pluginDaemon.difyInnerApiKey | quote }}
 {{- else }}
 {{- end }}
+- name: INNER_API_KEY_FOR_PLUGIN
+{{- if .Values.pluginDaemon.difyInnerApiKeySecret }}
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.pluginDaemon.difyInnerApiKeySecret }}
+      key: plugin-dify-inner-api-key
+{{- else if .Values.pluginDaemon.difyInnerApiKey }}
+  value: {{ .Values.pluginDaemon.difyInnerApiKey | quote }}
+{{- else }}
+{{- end }}
+- name: PLUGIN_DIFY_INNER_API_URL
+  value: http://{{ include "dify.fullname" . }}-api-svc:{{ .Values.api.service.port }}
 
 {{- end }}
 {{- end }}
