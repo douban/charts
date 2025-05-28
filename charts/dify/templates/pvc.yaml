@@ -4,6 +4,8 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: {{ include "dify.fullname" . }}-plugin-daemon-pvc
+  annotations:
+    "helm.sh/resource-policy": keep
   labels:
     {{- include "dify.labels" . | nindent 4 }}
     app.kubernetes.io/component: plugin-daemon
