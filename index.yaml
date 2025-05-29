@@ -359,6 +359,18 @@ entries:
   clb-controller-manager:
   - apiVersion: v2
     appVersion: v1.30.1-v2.4
+    created: "2025-05-29T08:58:35.361551668Z"
+    description: A Helm chart for managing Tencent Cloud CLB.
+    digest: 297c9881e039041638ec2eeea7cebb126f620e31951a0503075f7fa9051d8979
+    maintainers:
+    - name: DDDFiish
+    name: clb-controller-manager
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/clb-controller-manager-0.1.1/clb-controller-manager-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: v1.30.1-v2.4
     created: "2025-05-22T09:22:34.702067459Z"
     description: A Helm chart for managing Tencent Cloud CLB.
     digest: 1c5c541866e6fc15eac02298d5ecfbca269f025df8294c63a6a8da691e2f7f67
