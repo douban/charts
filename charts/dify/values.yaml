@@ -423,6 +423,18 @@ pluginDaemon:
 
   containerPort: 5002
 
+  persistence:
+    enabled: true
+    # 使用默认的 storageClass，如果需要指定其他 storageClass，取消下面的注释并修改值
+    # storageClass: "rook-ceph-block"
+    accessMode: ReadWriteOnce
+    size: 20Gi
+    # annotations: {}
+    # resourcePolicy defines the helm.sh/resource-policy for the PVC.
+    # Set to "keep" to retain the PVC when the Helm release is deleted or upgraded.
+    # Defaults to "" (no policy).
+    resourcePolicy: ""
+
   resources: {}
 
   nodeSelector: {}
@@ -431,12 +443,6 @@ pluginDaemon:
 
   affinity: {}
 
-  persistence:
-    enabled: true
-    # 使用默认的 storageClass，如果需要指定其他 storageClass，取消下面的注释并修改值
-    # storageClass: "rook-ceph-block"
-    accessMode: ReadWriteOnce
-    size: 20Gi
 ##### dependencies #####
 
 redis:
