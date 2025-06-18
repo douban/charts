@@ -1397,6 +1397,20 @@ entries:
     urls:
     - https://github.com/douban/charts/releases/download/k8s-cron-0.1.0/k8s-cron-0.1.0.tgz
     version: 0.1.0
+  kafka-ui:
+  - apiVersion: v2
+    appVersion: v1.2.0
+    created: "2025-06-18T07:28:39.113566558Z"
+    description: A Helm chart for kafka-UI
+    digest: 32390e129f9164d3de74482a5ea0791ebfcda1fa296471736cd20296ed506729
+    icon: https://raw.githubusercontent.com/kafbat/kafka-ui/main/documentation/images/logo_new.png
+    maintainers:
+    - name: DDDFiish
+    name: kafka-ui
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/kafka-ui-1.5.0/kafka-ui-1.5.0.tgz
+    version: 1.5.0
   karma:
   - apiVersion: v2
     appVersion: "0.85"
