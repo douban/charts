@@ -70,12 +70,12 @@ envs:
   config: {}
   ## @param envs.secretMappings The mapping of existing secret to env variable.
   secretMappings: {}
-    #ENV_NAME:
+    # ENV_NAME:
     #  name: kubernetes-secret-name
     #  keyName: kubernetes-secret-key
   ## @param envs.configMappings  The mapping of configmap and keyName to get env variable.
   configMappings: {}
-    #ENV_NAME:
+    # ENV_NAME:
     #  name: kubernetes-configmap-name
     #  keyName: kubernetes-configmap-key
 ## @param env [object] Envs to be added to the Kafka-UI container
@@ -187,7 +187,7 @@ securityContext:
 ##
 service:
   ##  @param service.labels [object] Labels for the Service
-  labels: { }
+  labels: {}
   ## @param service.type Kafka-UI service type
   type: ClusterIP
   ## @param service.port Kafka-UI pod port number
