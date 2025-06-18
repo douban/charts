@@ -1,0 +1,285 @@
+## @section Common
+## @param replicaCount Number of Kafka-UI replicas to deploy
+replicaCount: 1
+
+## @param image.registry [string] image registry
+## @param image.repository [string] image repository
+## @param image.pullPolicy [string] image pull policy
+## @param image.tag [string] image tag (immutable tags are recommended)
+image:
+  registry: ghcr.io
+  repository: kafbat/kafka-ui
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+## @param imagePullSecrets Docker registry secret names as an array
+imagePullSecrets: []
+## @param nameOverride String to partially override chart name
+nameOverride: ""
+## @param fullnameOverride String to fully override app name
+fullnameOverride: ""
+
+## @section ServiceAccount configuration
+serviceAccount:
+  ## @param serviceAccount.name The name of the ServiceAccount to use.
+  name: ""
+  ## @param serviceAccount.create Specifies whether a ServiceAccount should be created
+  create: true
+  ## @param serviceAccount.annotations Additional Service Account annotations
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+
+## @section Application configuration
+## @param existingConfigMap [string] Name of the existing ConfigMap with kafbat-ui environment variables
+existingConfigMap: ""
+## @param yamlApplicationConfig Kafbat-UI config in Yaml format
+yamlApplicationConfig:
+  {}
+  # kafka:
+  #   clusters:
+  #     - name: yaml
+  #       bootstrapServers: kafka-service:9092
+  # spring:
+  #   security:
+  #     oauth2:
+  # auth:
+  #   type: disabled
+  # management:
+  #   health:
+  #     ldap:
+  #       enabled: false
+## @param yamlApplicationConfigConfigMap Map with name and keyName keys, name refers to the existing ConfigMap, keyName refers to the ConfigMap key with Kafbat-UI config in Yaml format
+yamlApplicationConfigConfigMap:
+  {}
+  # keyName: config.yml
+  # name: configMapName
+## @param yamlApplicationConfigSecret Secret with name and keyName keys, name refers to the existing ConfigMap, keyName refers to the ConfigMap key with Kafbat-UI config in Yaml format
+yamlApplicationConfigSecret:
+  {}
+  # keyName: config.yml
+  # name: secretName
+## @param existingSecret Name of the existing Secret with Kafbat-UI environment variables
+existingSecret: ""
+### @section Environment variables from
+envs:
+  ## @param envs.secret Set of the sensitive environment variables to pass to Kafbat-UI
+  secret: {}
+  ## @param envs.config Set of the environment variables to pass to Kafbat-UI
+  config: {}
+  ## @param envs.secretMappings The mapping of existing secret to env variable.
+  secretMappings: {}
+    # ENV_NAME:
+    #  name: kubernetes-secret-name
+    #  keyName: kubernetes-secret-key
+  ## @param envs.configMappings  The mapping of configmap and keyName to get env variable.
+  configMappings: {}
+    # ENV_NAME:
+    #  name: kubernetes-configmap-name
+    #  keyName: kubernetes-configmap-key
+## @param env [object] Envs to be added to the Kafka-UI container
+env: {}
+
+## @param resources Set Kafka-UI container requests and limits for different resources like CPU or memory (essential for production workloads)
+resources:
+  {}
+  # limits:
+  #   cpu: 200m
+  #   memory: 512Mi
+  # requests:
+  #   cpu: 200m
+  #   memory: 256Mi
+
+## @param initContainers Add additional init containers to the Kafka-UI pods
+## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
+## e.g:
+initContainers: {}
+
+## @param volumeMounts [object] Optionally specify additional volumeMounts for the kafka-UI container
+volumeMounts: {}
+## @param volumes [object] Optionally specify additional volumes for the Kafka-UI pods
+volumes: {}
+## @param hostAliases [object] Kafka-UI pods host aliases
+## https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/
+##
+hostAliases: {}
+
+## @param extraContainers Specify additional containers in extraContainers.
+## For example, to add an authentication proxy to a kafka-ui pod.
+extraContainers: |
+# - name: proxy
+#   image: quay.io/gambol99/keycloak-proxy:latest
+#   args:
+#   - -provider=github
+#   - -client-id=
+#   - -client-secret=
+#   - -github-org=<ORG_NAME>
+#   - -email-domain=*
+#   - -cookie-secret=
+#   - -http-address=http://0.0.0.0:4181
+#   - -upstream-url=http://127.0.0.1:3000
+#   ports:
+#     - name: proxy-web
+#       containerPort: 4181
+
+## @section Network Policies
+## Ref: https://kubernetes.io/docs/concepts/services-networking/network-policies/
+##
+networkPolicy:
+  ## @param networkPolicy.enabled Specifies whether a NetworkPolicy should be created
+  enabled: false
+  ## @skip networkPolicy.egressRules
+  egressRules:
+    ## Additional custom egress rules
+    ## e.g:
+    ## customRules:
+    ##   - to:
+    ##       - namespaceSelector:
+    ##           matchLabels:
+    ##             label: example
+    customRules: []
+  ## @skip networkPolicy.ingressRules
+  ingressRules:
+    ## Additional custom ingress rules
+    ## e.g:
+    ## customRules:
+    ##   - from:
+    ##       - namespaceSelector:
+    ##           matchLabels:
+    ##             label: example
+    customRules: []
+
+## @param podAnnotations Annotations for Kafka-UI pods
+podAnnotations: {}
+## @param podLabels Extra labels for Kafka-UI pods
+podLabels: {}
+
+## @param annotations [object] Annotations to be added to kafka-ui Deployment
+annotations: {}
+
+## @param labels [object] Labels to be added to kafka-ui Deployment
+labels: {}
+
+## @param probes.useHttpsScheme Set field schema as HTTPS for readines and liveness probe
+##
+probes:
+  useHttpsScheme: false
+
+## @section Security Context
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
+## @param podSecurityContext [object] The security settings that you specify for a Pod apply to all Containers in the Pod
+podSecurityContext:
+  {}
+  # fsGroup: 2000
+## @param securityContext [object] The security settings that you specify for a Kafka-UI container
+securityContext:
+  {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+## @section Traffic Exposure Parameters
+## Kafka-UI service parameters
+##
+service:
+  ##  @param service.labels [object] Labels for the Service
+  labels: {}
+  ## @param service.type Kafka-UI service type
+  type: ClusterIP
+  ## @param service.port Kafka-UI pod port number
+  port: 80
+  # In case of service type LoadBalancer, you can specify reserved static IP
+  # loadBalancerIP: 10.11.12.13
+  # if you want to force a specific nodePort. Must be use with service.type=NodePort
+  # nodePort:
+
+## Kafka-UI Ingress configuration
+## ref: http://kubernetes.io/docs/concepts/services-networking/ingress/
+##
+ingress:
+  ## @param ingress.enabled [string] Enable ingress record generation for Kafka-UI
+  enabled: false
+  ## @param ingress.annotations [object] Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations.
+  annotations: {}
+
+  ##  @param ingress.labels [object] Labels for the Ingress
+  labels: {}
+
+  ## @param ingress.ingressClassName IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)
+  ## This is supported in Kubernetes 1.18+ and required if you have more than one IngressClass marked as the default for your cluster .
+  ## ref: https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/
+  ##
+  ingressClassName: ""
+
+  ## @param ingress.path Default path for the ingress record
+  ## NOTE: You may need to set this to '/*' in order to use this with ALB ingress controllers
+  ##
+  path: "/"
+
+
+  ## @param ingress.pathType Ingress path type
+  pathType: "Prefix"
+
+  ## @param ingress.host Default hostname for the ingress record
+  host: ""
+
+  # configs for Ingress TLS
+  tls:
+    # Enable TLS termination for the Ingress
+    ## @param ingress.tls.enabled Enable TLS configuration for the host defined at `ingress.host` parameter
+    enabled: false
+    ## @param ingress.tls.secretName [string] The name of a pre-created Secret containing a TLS private key and certificate
+    secretName: ""
+
+  ## @param ingress.precedingPaths [array] HTTP paths to add to the Ingress before the default path
+  precedingPaths: []
+
+  ## @param ingress.succeedingPaths [array] Http paths to add to the Ingress after the default path
+  succeedingPaths: []
+## @param resources [object] Set Kafka-UI pod requests and limits for different resources like CPU or memory (essential for production workloads)
+
+## @section Scheduling
+
+## Autoscaling configuration
+## ref: https://kubernetes.io/docs/concepts/workloads/autoscaling/
+## @skip autoscaling
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  # targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+## @param nodeSelector Node labels for Kafka-UI pods assignment
+## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
+##
+nodeSelector: {}
+
+## @param tolerations Tolerations for Kafka-UI pods assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+##
+tolerations: []
+## @param affinity Affinity for Kafka-UI pods assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+## NOTE: `podAffinityPreset`, `podAntiAffinityPreset`, and `nodeAffinityPreset` will be ignored when it's set
+##
+affinity: {}
+
+## @param revisionHistoryLimit [nullable] Specify how many old ReplicaSets for this Deployment you want to retain
+revisionHistoryLimit: null
+
+# extraObjects -- Create extra manifests via values. Would be passed through `tpl` for templating.
+extraObjects: []
+  # - apiVersion: v1
+  #   kind: ConfigMap
+  #   metadata:
+  #     name: vector-dashboards
+  #     labels:
+  #       grafana_dashboard: "1"
+  #   data:
+  #     vector.json: |
+  #       {{ .Files.Get "dashboards/vector.json" | fromJson | toJson }}
