@@ -1,0 +1,7 @@
+apiVersion: v2
+name: kafka-ui
+description: A Helm chart for kafka-UI
+type: application
+version: 1.5.0
+appVersion: v1.2.0
+icon: https://raw.githubusercontent.com/kafbat/kafka-ui/main/documentation/images/logo_new.png
