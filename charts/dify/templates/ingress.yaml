@@ -77,6 +77,20 @@ spec:
               serviceName: {{ $fullName }}-api-svc
               servicePort: {{ .Values.api.service.port }}
               {{- end }}
+          - path: /e/
+            {{- if semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion }}
+            pathType: Prefix
+            {{- end }}
+            backend:
+              {{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion }}
+              service:
+                name: {{ $fullName }}-plugin-daemon
+                port:
+                  number: {{ .Values.pluginDaemon.service.port }}
+              {{- else }}
+              serviceName: {{ $fullName }}-plugin-daemon
+              servicePort: {{ .Values.pluginDaemon.service.port }}
+              {{- end }}
           - path: /files
             {{- if semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion }}
             pathType: Prefix
