@@ -27,7 +27,7 @@ script: |
   done
 
 command: [
-  "/bin/sh"
+  "/bin/bash"
 ]
 
 args:
