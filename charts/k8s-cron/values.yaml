@@ -26,6 +26,13 @@ script: |
     kubectl -n ${namespace} get pod -o=json | jq '[.items[] | select(.status.reason=="Evicted")] | sort_by(.status.startTime) | .[0:-3]' | jq -r '.[] .metadata.name' | xargs --no-run-if-empty kubectl -n ${namespace} delete pod
   done
 
+command: [
+  "/bin/bash"
+]
+
+args:
+- "/scripts/run.sh"
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
