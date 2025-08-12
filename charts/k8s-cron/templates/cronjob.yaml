@@ -30,15 +30,15 @@ spec:
               imagePullPolicy: {{ .Values.image.pullPolicy }}
               {{- with .Values.command }}
               command:
-                {{- toYaml . | nindent 12 }}
+                {{- toYaml . | nindent 16 }}
               {{- end }}
               {{- with .Values.args }}
               args:
-                {{- toYaml . | nindent 12 }}
+                {{- toYaml . | nindent 16 }}
               {{- end }}
               {{- with .Values.env }}
               env:
-                {{- toYaml . | nindent 12 }}
+                {{- toYaml . | nindent 16 }}
               {{- end }}
               volumeMounts:
                 - name: scripts
