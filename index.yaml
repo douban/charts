@@ -1412,6 +1412,19 @@ entries:
   k8s-cron:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-08-12T09:40:34.394825286Z"
+    description: A Helm chart to install cronjob on k8s cluster
+    digest: 84d0a570e5fdeec0ef553d5bbdaadc6662b13f51a67dc3315a418c817d915383
+    home: https://github.com/alpine-docker/k8s
+    maintainers:
+    - name: douban
+    name: k8s-cron
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/k8s-cron-0.2.0/k8s-cron-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2023-09-27T09:17:23.976316288Z"
     description: A Helm chart to install cronjob on k8s cluster
     digest: c67f11c4858821d5d7354cc06dcc7dffea32037f2715390402adbb65667209ac
