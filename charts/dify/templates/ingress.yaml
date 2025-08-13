@@ -91,6 +91,20 @@ spec:
               serviceName: {{ $fullName }}-api-svc
               servicePort: {{ .Values.api.service.port }}
               {{- end }}
+          - path: /mcp
+            {{- if semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion }}
+            pathType: Prefix
+            {{- end }}
+            backend:
+              {{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion }}
+              service:
+                name: {{ $fullName }}-api-svc
+                port:
+                  number: {{ .Values.api.service.port }}
+              {{- else }}
+              serviceName: {{ $fullName }}-api-svc
+              servicePort: {{ .Values.api.service.port }}
+              {{- end }}
           - path: /e/
             {{- if semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion }}
             pathType: Prefix
