@@ -31,13 +31,13 @@ appVersion: "1.7.0"
 dependencies:
   - name: redis
     version: ~19.1.1
-    repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+    repository: oci://registry-1.docker.io/bitnamicharts
     condition: redis.embedded
   - name: postgresql
     version: ~15.2.5
-    repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+    repository: oci://registry-1.docker.io/bitnamicharts
     condition: postgresql.embedded
   - name: minio
     version: ~14.1.7
-    repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+    repository: oci://registry-1.docker.io/bitnamicharts
     condition: minio.embedded
