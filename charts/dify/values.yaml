@@ -17,7 +17,7 @@ global:
   port: ""
   enableTLS: false
   image:
-    tag: "1.7.0"
+    tag: "1.9.1"
   edition: "SELF_HOSTED"
   storageType: "s3"
   # the following extra configs would be injected into:
@@ -399,7 +399,7 @@ pluginDaemon:
   image:
     repository: langgenius/dify-plugin-daemon
     pullPolicy: IfNotPresent
-    tag: "0.2.0-local"
+    tag: "0.3.0-local"
 
   envs:
   - name: SERVER_PORT
@@ -456,6 +456,9 @@ redis:
   # urlSecretKey: "CACHE_URL"
   # please consult to chart manual if you want to change it.
   # https://artifacthub.io/packages/helm/bitnami/redis
+  image:
+    # bitnami is deprecating previously published image and rename them to bitnamilegacy
+    repository: bitnamilegacy/redis
   architecture: standalone
   auth:
     password: "REDIS_PASSWORD"
@@ -472,6 +475,9 @@ postgresql:
   embedded: true
   # embedded: false
   # goto extraBackendEnvs to set pg url
+  image:
+    # bitnami is deprecating previously published image and rename them to bitnamilegacy
+    repository: bitnamilegacy/postgresql
   architecture: standalone
   auth:
     postgresPassword: "testpassword"
@@ -486,6 +492,9 @@ minio:
   # connection info would be set automatically
   # best to use external s3/minio if you have one
   # setting embedded to false and set minio/s3 url in envrionment variable
+  image:
+    # bitnami is deprecating previously published image and rename them to bitnamilegacy
+    repository: bitnamilegacy/minio
   auth:
     rootUser: minioadmin
     rootPassword: minioadmin

@@ -95,6 +95,7 @@ global:
 Read more: <https://kubernetes.io/docs/concepts/security/secrets-good-practices/>
 
 ### External postgresql
+In the default configuration, the built-in database **does not include any persistent** storage devices. As a result, **data will be lost upon container restart**. This is an intentional design because we believe that the built-in database is only suitable for small-scale testing and not for production deployment. The default configuration of the helm chart we use does not include backup capabilities nor high-availability configurations. If you indeed require these features, please use an external database or refer to the [chart documentation](https://artifacthub.io/packages/helm/bitnami/postgresql) for setup.
 
 1. set the `postgresql.embedded` to `false`
 2. inject connection info with `global.extraBackendEnvs`
@@ -119,6 +120,7 @@ global:
 ```
 
 ### External redis
+In the default configuration, the built-in database **does not include any persistent** storage devices. As a result, **data will be lost upon container restart**. This is an intentional design because we believe that the built-in database is only suitable for small-scale testing and not for production deployment. The default configuration of the helm chart we use does not include backup capabilities nor high-availability configurations. If you indeed require these features, please use an external database or refer to the [chart documentation](https://artifacthub.io/packages/helm/bitnami/redis) for setup.
 
 1. set the `redis.embedded` to `false`
 2. inject connection info with `global.extraBackendEnvs`
@@ -146,6 +148,7 @@ global:
 ```
 
 ### External bucket
+In the default configuration, the built-in object storage **does not include any persistent** storage devices. As a result, **data will be lost upon container restart**. This is an intentional design because we believe that the built-in database is only suitable for small-scale testing and not for production deployment. The default configuration of the helm chart we use does not include backup capabilities nor high-availability configurations. If you indeed require these features, please use an external database or refer to the [chart documentation](https://artifacthub.io/packages/helm/bitnami/minio) for setup.
 
 #### Amazon S3
 
