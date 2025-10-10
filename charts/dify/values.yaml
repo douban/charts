@@ -492,6 +492,9 @@ minio:
   # connection info would be set automatically
   # best to use external s3/minio if you have one
   # setting embedded to false and set minio/s3 url in envrionment variable
+  image:
+    # bitnami is deprecating previously published image and rename them to bitnamilegacy
+    repository: bitnamilegacy/minio
   auth:
     rootUser: minioadmin
     rootPassword: minioadmin
