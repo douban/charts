@@ -456,6 +456,9 @@ redis:
   # urlSecretKey: "CACHE_URL"
   # please consult to chart manual if you want to change it.
   # https://artifacthub.io/packages/helm/bitnami/redis
+  image:
+    # bitnami is deprecating previously published image and rename them to bitnamilegacy
+    repository: bitnamilegacy/redis
   architecture: standalone
   auth:
     password: "REDIS_PASSWORD"
@@ -472,6 +475,9 @@ postgresql:
   embedded: true
   # embedded: false
   # goto extraBackendEnvs to set pg url
+  image:
+    # bitnami is deprecating previously published image and rename them to bitnamilegacy
+    repository: bitnamilegacy/postgresql
   architecture: standalone
   auth:
     postgresPassword: "testpassword"
