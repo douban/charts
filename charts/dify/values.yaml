@@ -16,6 +16,9 @@ global:
   # Change this is your ingress is exposed with port other than 443, 80, like 8080 for instance
   port: ""
   enableTLS: false
+  # Override the protocol for baseURL (useful when TLS termination happens externally)
+  # Valid values: "http", "https", or "" (empty defaults to http/https based on enableTLS)
+  externalProtocol: ""
   image:
     tag: "1.9.1"
   edition: "SELF_HOSTED"

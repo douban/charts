@@ -12,6 +12,8 @@ create your own values file , save as `values.yaml`
 global:
   host: "mydify.example.com"
   enableTLS: false
+  # To use HTTPS in baseURL while TLS terminates externally (e.g., at load balancer):
+  # externalProtocol: "https"
 
   image:
     # Set to the latest version of dify
@@ -208,5 +210,23 @@ global:
 ```
 
 this is not a complete configuration for vector db, please consult to [dify 文档](https://docs.dify.ai/v/zh-hans/getting-started/install-self-hosted/environments) [document](https://docs.dify.ai/getting-started/install-self-hosted/environments) for more info.
+
+### External TLS termination
+
+If you have TLS termination happening externally (e.g., at a load balancer, API gateway, or reverse proxy), you can configure the application to use HTTPS in its base URLs while keeping `enableTLS` set to `false`:
+
+```yaml
+global:
+  host: "mydify.example.com"
+  enableTLS: false  # No TLS at Kubernetes service level
+  externalProtocol: "https"  # But use HTTPS in application URLs
+```
+
+This is useful when:
+- Your load balancer handles TLS termination
+- You're behind a reverse proxy with HTTPS
+- You want to avoid TLS overhead within the cluster
+
+Leave `externalProtocol` empty (default) to automatically use `http://` or `https://` based on the `enableTLS` setting.
 
 Please consult to dify document if you have difficult to get dify running.

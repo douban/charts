@@ -71,7 +71,15 @@ Create the name of the service account to use
 {{- end }}
 
 {{- define "dify.baseUrl" -}}
-{{ if .Values.global.enableTLS }}https://{{ else }}http://{{ end }}{{.Values.global.host}}{{ if .Values.global.port }}:{{.Values.global.port}}{{ end }}
+{{- $protocol := "" -}}
+{{- if .Values.global.externalProtocol -}}
+  {{- $protocol = .Values.global.externalProtocol -}}
+{{- else if .Values.global.enableTLS -}}
+  {{- $protocol = "https" -}}
+{{- else -}}
+  {{- $protocol = "http" -}}
+{{- end -}}
+{{ $protocol }}://{{.Values.global.host}}{{ if .Values.global.port }}:{{.Values.global.port}}{{ end }}
 {{- end }}
 
 {{/*
