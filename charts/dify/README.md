@@ -209,4 +209,18 @@ global:
 
 this is not a complete configuration for vector db, please consult to [dify 文档](https://docs.dify.ai/v/zh-hans/getting-started/install-self-hosted/environments) [document](https://docs.dify.ai/getting-started/install-self-hosted/environments) for more info.
 
+### Override Base URL
+
+Set this if you need to override common environment variables (`CONSOLE_API_URL`, `CONSOLE_WEB_URL`, `SERVICE_API_URL`, `APP_API_URL`, `APP_WEB_URL`, and `ENDPOINT_URL_TEMPLATE`) that are by default generated from `host`, `port` and `enableTLS`.
+
+```yaml
+global:
+  # Override with a custom URL
+  baseUrlOverride: "https://example.com"
+```
+
+This is useful when:
+- You have external TLS termination and need HTTPS URLs
+- The external URL differs from the internal k8s ingress domain
+
 Please consult to dify document if you have difficult to get dify running.
