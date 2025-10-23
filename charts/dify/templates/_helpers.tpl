@@ -71,7 +71,11 @@ Create the name of the service account to use
 {{- end }}
 
 {{- define "dify.baseUrl" -}}
-{{ if .Values.global.enableTLS }}https://{{ else }}http://{{ end }}{{.Values.global.host}}{{ if .Values.global.port }}:{{.Values.global.port}}{{ end }}
+{{- if .Values.global.baseUrlOverride -}}
+  {{- .Values.global.baseUrlOverride -}}
+{{- else -}}
+  {{ if .Values.global.enableTLS }}https://{{ else }}http://{{ end }}{{.Values.global.host}}{{ if .Values.global.port }}:{{.Values.global.port}}{{ end }}
+{{- end -}}
 {{- end }}
 
 {{/*
