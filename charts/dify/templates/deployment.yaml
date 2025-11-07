@@ -202,7 +202,7 @@ metadata:
     {{- include "dify.global.labels" . | nindent 4 }}
 spec:
   # worker_beat must run as a single replica to avoid duplicate scheduled tasks
-  replicas: 1
+  replicas: {{ .Values.workerBeat.replicaCount }}
   selector:
     matchLabels:
       {{- include "dify.selectorLabels" . | nindent 6 }}
@@ -249,7 +249,7 @@ spec:
             {{- end }}
           {{- with .Values.volumeMounts }}
           volumeMounts:
-          {{- toYaml . | nindent 10 }}
+          {{- toYaml . | nindent 12 }}
           {{- end }}
           {{- with .Values.workerBeat.livenessProbe }}
           livenessProbe:
