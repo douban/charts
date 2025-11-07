@@ -100,6 +100,39 @@ spec:
           averageUtilization: {{ .Values.worker.autoscaling.targetMemoryUtilizationPercentage }}
     {{- end }}
 {{- end }}
+{{- if .Values.workerBeat.autoscaling.enabled }}
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "dify.fullname" . }}-worker-beat
+  labels:
+    {{- include "dify.labels" . | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "dify.fullname" . }}-worker-beat
+  minReplicas: {{ .Values.workerBeat.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.workerBeat.autoscaling.maxReplicas }}
+  metrics:
+    {{- if .Values.workerBeat.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.workerBeat.autoscaling.targetCPUUtilizationPercentage }}
+    {{- end }}
+    {{- if .Values.workerBeat.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.workerBeat.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- end }}
+{{- end }}
 {{- if .Values.sandbox.autoscaling.enabled }}
 ---
 apiVersion: autoscaling/v2
