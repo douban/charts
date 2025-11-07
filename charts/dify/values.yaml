@@ -297,6 +297,8 @@ worker:
   readinessProbe: {}
 
 workerBeat:
+  # worker_beat is a Celery beat scheduler for periodic tasks.
+  # It MUST run as a single replica (no scaling) to avoid duplicate scheduled tasks.
   replicaCount: 1
 
   image:
@@ -335,20 +337,13 @@ workerBeat:
     #   cpu: 100m
     #   memory: 128Mi
 
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 100
-    targetCPUUtilizationPercentage: 80
-    # targetMemoryUtilizationPercentage: 80
-
   nodeSelector: {}
 
   tolerations: []
 
   affinity: {}
 
-  # livenessprobe for worker_beat, default no probe
+  # livenessProbe for worker_beat, default no probe
   livenessProbe: {}
   readinessProbe: {}
 

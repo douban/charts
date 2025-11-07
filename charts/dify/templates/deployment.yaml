@@ -201,9 +201,8 @@ metadata:
     app.kubernetes.io/component: worker-beat
     {{- include "dify.global.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.workerBeat.autoscaling.enabled }}
-  replicas: {{ .Values.workerBeat.replicaCount }}
-  {{- end }}
+  # worker_beat must run as a single replica to avoid duplicate scheduled tasks
+  replicas: 1
   selector:
     matchLabels:
       {{- include "dify.selectorLabels" . | nindent 6 }}
