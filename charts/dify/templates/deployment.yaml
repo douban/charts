@@ -161,7 +161,7 @@ spec:
             {{- end }}
           {{- with .Values.volumeMounts }}
           volumeMounts:
-          {{- toYaml . | nindent 10 }}
+          {{- toYaml . | nindent 12 }}
           {{- end }}
           {{- with .Values.worker.livenessProbe }}
           livenessProbe:
@@ -186,6 +186,94 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.worker.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+# worker_beat 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "dify.fullname" . }}-worker-beat
+  labels:
+    {{- include "dify.labels" . | nindent 4 }}
+    app.kubernetes.io/component: worker-beat
+    {{- include "dify.global.labels" . | nindent 4 }}
+spec:
+  # worker_beat must run as a single replica to avoid duplicate scheduled tasks
+  replicas: {{ .Values.workerBeat.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "dify.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: worker-beat
+  template:
+    metadata:
+      {{- with .Values.workerBeat.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "dify.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: worker-beat
+        {{- include "dify.global.labels" . | nindent 8 }}
+    spec:
+      {{- with .Values.workerBeat.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "dify.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.workerBeat.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.workerBeat.securityContext | nindent 12 }}
+          image: "{{ .Values.workerBeat.image.repository }}:{{ coalesce .Values.workerBeat.image.tag .Values.global.image.tag .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.workerBeat.image.pullPolicy }}
+          args:
+          - beat
+          env:
+            - name: MODE
+              value: "beat"
+            {{- include "dify.commonEnvs" . | nindent 12 }}
+            {{- include "dify.commonBackendEnvs" . | nindent 12 }}
+            {{- with .Values.global.extraEnvs }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+            {{- with .Values.global.extraBackendEnvs }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+            {{- with .Values.workerBeat.envs }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          {{- with .Values.volumeMounts }}
+          volumeMounts:
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.workerBeat.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.workerBeat.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.workerBeat.resources | nindent 12 }}
+      {{- with .Values.volumes }}
+      volumes:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.workerBeat.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.workerBeat.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.workerBeat.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}

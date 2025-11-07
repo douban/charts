@@ -20,7 +20,7 @@ global:
   # When set, environment variables like `CONSOLE_API_URL`, `CONSOLE_WEB_URL`, etc. will use this value instead of the generated value (see `dify.commonEnvs`)
   baseUrlOverride: ""
   image:
-    tag: "1.9.1"
+    tag: "1.9.2"
   edition: "SELF_HOSTED"
   storageType: "s3"
   # the following extra configs would be injected into:
@@ -293,6 +293,57 @@ worker:
   affinity: {}
 
   # livenessprobe for worker, default no probe
+  livenessProbe: {}
+  readinessProbe: {}
+
+workerBeat:
+  # worker_beat is a Celery beat scheduler for periodic tasks.
+  # It MUST run as a single replica (no scaling) to avoid duplicate scheduled tasks.
+  replicaCount: 1
+
+  image:
+    repository: langgenius/dify-api
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: ""
+
+  imagePullSecrets: []
+
+  podAnnotations: {}
+
+  podSecurityContext: {}
+    # fsGroup: 2000
+
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+
+  # Add envs here for worker_beat specific environment variables
+  envs: []
+
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+  # livenessProbe for worker_beat, default no probe
   livenessProbe: {}
   readinessProbe: {}
 
