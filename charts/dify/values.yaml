@@ -20,7 +20,7 @@ global:
   # When set, environment variables like `CONSOLE_API_URL`, `CONSOLE_WEB_URL`, etc. will use this value instead of the generated value (see `dify.commonEnvs`)
   baseUrlOverride: ""
   image:
-    tag: "1.9.2"
+    tag: "1.11.0"
   edition: "SELF_HOSTED"
   storageType: "s3"
   # the following extra configs would be injected into:
@@ -453,7 +453,7 @@ pluginDaemon:
   image:
     repository: langgenius/dify-plugin-daemon
     pullPolicy: IfNotPresent
-    tag: "0.3.0-local"
+    tag: "0.5.1-local"
 
   envs:
   - name: SERVER_PORT
