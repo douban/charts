@@ -63,7 +63,7 @@ httpRoute:
     name: envoy-gateway-bundle
     namespace: envoy-gateway-system
   hostnames:
-    - dify.sapps.douban
+    - chart-example.local
   extraPaths: []
     # - matches:
     #     - path:
