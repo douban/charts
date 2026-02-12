@@ -56,6 +56,36 @@ ingress:
     # kubernetes.io/tls-acme: "true"
   tlsSecretName: "dify-tls"
 
+
+httpRoute:
+  enabled: false
+  gatewayRef:
+    name: envoy-gateway-bundle
+    namespace: envoy-gateway-system
+  hostnames:
+    - chart-example.local
+  extraPaths: []
+    # - matches:
+    #     - path:
+    #         type: PathPrefix
+    #         value: /custom
+    #   backendRefs:
+    #     - name: my-service
+    #       port: 8080
+  globalRateLimit:
+    enabled: false
+    rules:
+      - clientSelectors:
+          - path:
+              type: PathPrefix
+              value: /v1/
+          - headers:
+              - name: Authorization
+                type: Distinct
+        limit:
+          requests: 120
+          unit: Minute
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true

@@ -1,0 +1,43 @@
+{{- if .Values.httpRoute.enabled }}
+{{- $root := . }}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ include "dify.fullname" . }}
+  labels:
+    {{- include "dify.labels" . | nindent 4 }}
+spec:
+  parentRefs:
+  - name: {{ .Values.httpRoute.gatewayRef.name }}
+    namespace: {{ .Values.httpRoute.gatewayRef.namespace }}
+  hostnames:
+  {{- range .Values.httpRoute.hostnames }}
+    - {{ . | quote }}
+  {{- end }}
+  rules:
+{{- range $rule := (default (list) $root.Values.httpRoute.extraPaths) }}
+  - {{ tpl (toYaml $rule) $root | nindent 4 }}
+{{- end }}
+  - matches:
+{{- range $path := (list "/console/api" "/api" "/v1" "/files" "/triggers" "/mcp") }}
+    - path:
+        value: {{ $path | quote }}
+        type: PathPrefix
+{{- end }}
+    backendRefs:
+    - name: {{ include "dify.fullname" $root }}-api-svc
+      port: {{ $root.Values.api.service.port }}
+  - matches:
+{{- range $path := (list "/e/") }}
+    - path:
+        value: {{ $path | quote }}
+        type: PathPrefix
+{{- end }}
+    backendRefs:
+    - name: {{ include "dify.fullname" $root }}-plugin-daemon
+      port: {{ $root.Values.pluginDaemon.service.port }}
+  - backendRefs:
+    - name: {{ include "dify.fullname" $root }}-frontend
+      port: {{ $root.Values.frontend.service.port }}
+{{- end }}
