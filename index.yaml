@@ -562,6 +562,32 @@ entries:
     version: 1.33.0
   dify:
   - apiVersion: v2
+    appVersion: 1.13.0
+    created: "2026-02-12T10:17:48.214983907Z"
+    dependencies:
+    - condition: redis.embedded
+      name: redis
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: ~19.1.1
+    - condition: postgresql.embedded
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: ~15.2.5
+    - condition: minio.embedded
+      name: minio
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: ~14.1.7
+    description: A Helm chart for Dify
+    digest: ad374ffcacd62aa3f65957789082b9fa230857ca731c30b33fbcf46f5106b3df
+    home: https://github.com/langgenius/dify
+    maintainers:
+    - name: douban
+    name: dify
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/dify-0.9.0/dify-0.9.0.tgz
+    version: 0.9.0
+  - apiVersion: v2
     appVersion: 1.10.1-fix.1
     created: "2026-01-13T10:35:31.12192903Z"
     dependencies:
