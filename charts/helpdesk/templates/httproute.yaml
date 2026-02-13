@@ -1,0 +1,47 @@
+{{- if .Values.httpRoute.enabled }}
+{{- $root := . }}
+{{- $hostnames := (list) }}
+{{- if .Values.httpRoute.ingressCompact }}
+  {{- range .Values.ingress.hosts }}
+    {{- if .host }}
+      {{- $hostnames = append $hostnames .host }}
+    {{- end }}
+  {{- end }}
+{{- else }}
+  {{- $hostnames = default (list) .Values.httpRoute.hostnames }}
+{{- end }}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ include "helpdesk.fullname" . }}
+  labels:
+    {{- include "helpdesk.labels" . | nindent 4 }}
+spec:
+  parentRefs:
+  - name: {{ .Values.httpRoute.gatewayRef.name }}
+    namespace: {{ .Values.httpRoute.gatewayRef.namespace }}
+  hostnames:
+  {{- range $hostnames }}
+    - {{ . | quote }}
+  {{- end }}
+  rules:
+{{- range $rule := (default (list) $root.Values.httpRoute.extraPaths) }}
+  - {{ tpl (toYaml $rule) $root | nindent 4 }}
+{{- end }}
+  - matches:
+    - type: PathPrefix
+      value: /api/
+    backendRefs:
+    - name: {{ include "helpdesk.fullname" $root }}
+      port: {{ $root.Values.service.port }}
+  - matches:
+    - type: PathPrefix
+      value: /auth/
+    backendRefs:
+    - name: {{ include "helpdesk.fullname" $root }}
+      port: {{ $root.Values.service.port }}
+  - backendRefs:
+    - name: {{ include "helpdesk.fullname" $root }}-frontend
+      port: {{ $root.Values.service.port }}
+{{- end }}
