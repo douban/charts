@@ -64,6 +64,26 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
+
+httpRoute:
+  enabled: false
+  gatewayRef:
+    name: envoy-gateway-bundle
+    namespace: envoy-gateway-system
+  # if set, the chart will create a httpRoute resource and route traffic to the service
+  # the route would respect most of the settings in the ingress section, such as hostnames and annotations
+  ingressCompact: true
+  # 如果不需要 ingress Compact, 可以在下方定义路由规则
+  hostnames: []
+  extraPaths: []
+  # - matches:
+  #     - path:
+  #         type: PathPrefix
+  #         value: /custom
+  #   backendRefs:
+  #     - name: my-service
+  #       port: 8080
+
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
