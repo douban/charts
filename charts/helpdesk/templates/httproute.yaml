@@ -30,14 +30,16 @@ spec:
   - {{ tpl (toYaml $rule) $root | nindent 4 }}
 {{- end }}
   - matches:
-    - type: PathPrefix
-      value: /api/
+    - path:
+        type: PathPrefix
+        value: /api/
     backendRefs:
     - name: {{ include "helpdesk.fullname" $root }}
       port: {{ $root.Values.service.port }}
   - matches:
-    - type: PathPrefix
-      value: /auth/
+    - path:
+        type: PathPrefix
+        value: /auth/
     backendRefs:
     - name: {{ include "helpdesk.fullname" $root }}
       port: {{ $root.Values.service.port }}
