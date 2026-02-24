@@ -31,5 +31,5 @@ spec:
 {{- end }}
   - backendRefs:
     - name: {{ include "codecov.fullname" $root }}-gateway
-      port: {{ $root.Values.service.port }}
+      port: {{ $root.Values.gateway.service.port }}
 {{- end }}
