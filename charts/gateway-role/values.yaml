@@ -1,0 +1,18 @@
+# Default values for gateway-role.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+appDeveloper:
+  enabled: false
+  viewOnly:
+    enabled: false
+    labels:
+      gateway.networking.io/role-instance: app-developer-view-only-role
+  edit:
+    enabled: false
+    labels:
+      gateway.networking.io/role-instance: app-developer-editor-role
+clusterAdmin:
+  enabled: false
+  labels:
+    gateway.networking.io/role-instance: cluster-admin-role
