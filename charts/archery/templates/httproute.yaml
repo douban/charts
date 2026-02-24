@@ -3,9 +3,7 @@
 {{- $hostnames := (list) }}
 {{- if .Values.httpRoute.ingressCompact }}
   {{- range .Values.ingress.hosts }}
-    {{- if .host }}
-      {{- $hostnames = append $hostnames .host }}
-    {{- end }}
+    {{- $hostnames = append $hostnames . }}
   {{- end }}
 {{- else }}
   {{- $hostnames = default (list) .Values.httpRoute.hostnames }}
