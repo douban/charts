@@ -464,6 +464,37 @@ entries:
   codecov:
   - apiVersion: v2
     appVersion: 24.4.1
+    created: "2026-02-24T10:26:21.882061324Z"
+    dependencies:
+    - condition: redis.embedded
+      name: redis
+      repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+      version: ~17.15.6
+    - condition: postgresql.embedded
+      name: postgresql
+      repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+      version: ~12.8.5
+    - alias: timescaledb
+      condition: timescaledb.enabled
+      name: timescaledb-single
+      repository: https://charts.timescale.com/
+      version: 0.33.*
+    - condition: minio.embedded
+      name: minio
+      repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+      version: ~12.7.0
+    description: A Helm chart for Kubernetes
+    digest: 5e3d56d3fe1577d532f62161149f48b9f705fa814ff09bf50882673b9ede8a6b
+    home: https://github.com/codecov/self-hosted
+    maintainers:
+    - name: douban
+    name: codecov
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/codecov-0.2.3/codecov-0.2.3.tgz
+    version: 0.2.3
+  - apiVersion: v2
+    appVersion: 24.4.1
     created: "2026-02-13T09:17:09.415441277Z"
     dependencies:
     - condition: redis.embedded
