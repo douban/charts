@@ -1513,6 +1513,19 @@ entries:
     urls:
     - https://github.com/douban/charts/releases/download/gatekeeper-3.12.0/gatekeeper-3.12.0.tgz
     version: 3.12.0
+  gateway-role:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2026-02-24T10:08:06.166340529Z"
+    description: A Helm chart for Kubernetes
+    digest: 424c87cfea085078f489bb54d30ffc2ee73816dbc9f874f14824d39bd9eec646
+    maintainers:
+    - name: Douban
+    name: gateway-role
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/gateway-role-0.1.0/gateway-role-0.1.0.tgz
+    version: 0.1.0
   goinception:
   - apiVersion: v2
     appVersion: "1.0"
