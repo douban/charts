@@ -150,8 +150,8 @@ httpRoute:
     name: envoy-gateway-bundle
     namespace: envoy-gateway-system
   # Reuse ingress host information if true; set to false to manage hostnames below
-  ingressCompact: true
-  # Explicit host overrides when ingressCompact is disabled
+  reuseIngressConfiguration: true
+  # Explicit host overrides when reuseIngressConfiguration is disabled
   hostnames: []
   # Extra HTTPRoute rules that will be appended before the default backend
   extraPaths: []

@@ -72,7 +72,7 @@ httpRoute:
     namespace: envoy-gateway-system
   # if set, the chart will create a httpRoute resource and route traffic to the service
   # the route would respect most of the settings in the ingress section, such as hostnames and annotations
-  ingressCompact: true
+  reuseIngressConfiguration: true
   # If you don't need ingress compact, you can define routing rules below
   hostnames: []
   extraPaths: []

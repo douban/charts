@@ -1,7 +1,7 @@
 {{- if .Values.httpRoute.enabled }}
 {{- $root := . }}
 {{- $hostnames := (list) }}
-{{- if .Values.httpRoute.ingressCompact }}
+{{- if .Values.httpRoute.reuseIngressConfiguration }}
   {{- range .Values.ingress.hosts }}
     {{- $hostnames = append $hostnames . }}
   {{- end }}
