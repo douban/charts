@@ -3,6 +3,19 @@ entries:
   aliyun-exporter:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2026-02-26T07:30:21.361380709Z"
+    description: A Helm chart for Kubernetes
+    digest: 832bef713a813a16e68b33273e223a931634976d3bce85b5047c9ddb01eb8f23
+    home: https://github.com/douban/aliyun-exporter
+    maintainers:
+    - name: douban
+    name: aliyun-exporter
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/aliyun-exporter-0.1.2/aliyun-exporter-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2026-02-13T09:17:08.772307596Z"
     description: A Helm chart for Kubernetes
     digest: c2a8090fade6749c728da00f39fbad46238a6f2954cf51584da43d1ab3cdb6e8
@@ -28,6 +41,33 @@ entries:
     - https://github.com/douban/charts/releases/download/aliyun-exporter-0.1.0/aliyun-exporter-0.1.0.tgz
     version: 0.1.0
   archery:
+  - apiVersion: v2
+    created: "2026-02-26T07:30:21.590312094Z"
+    dependencies:
+    - condition: redis.embedded
+      name: redis
+      repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+      version: ~15.7.1
+    - condition: mysql.embedded
+      name: mysql
+      repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+      version: ~8.8.20
+    - condition: goinception.embedded
+      name: goinception
+      repository: https://douban.github.io/charts/
+      version: ~0.3.1
+    description: Archery Helm chart for Kubernetes
+    digest: 0af7cbb54de9ac31a74c086f35f172a82cf34198c3a3df1b1566c144f38267fb
+    home: https://archerydms.com/
+    maintainers:
+    - name: AceAttorney
+    - name: LeoQuote
+    name: archery
+    sources:
+    - https://github.com/hhyo/Archery
+    urls:
+    - https://github.com/douban/charts/releases/download/archery-0.4.3/archery-0.4.3.tgz
+    version: 0.4.3
   - apiVersion: v2
     created: "2026-02-24T08:41:41.037560201Z"
     dependencies:
@@ -412,6 +452,19 @@ entries:
   channels:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2026-02-26T07:30:21.771420781Z"
+    description: A Helm chart for Kubernetes
+    digest: 26020f6e6cbd43753c2ea4d225a3cbea34b2a39e07a2fefc0ef434137d1e0f48
+    home: https://github.com/everpcpc/channels
+    maintainers:
+    - name: LeoQuote
+    name: channels
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/channels-1.1.2/channels-1.1.2.tgz
+    version: 1.1.2
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2026-02-13T09:17:09.212685309Z"
     description: A Helm chart for Kubernetes
     digest: 7b44436152e87b2277778e9c4999340c0307a8d379116409f31b68b3cde24e81
@@ -462,6 +515,37 @@ entries:
     - https://github.com/douban/charts/releases/download/clb-controller-manager-0.1.0/clb-controller-manager-0.1.0.tgz
     version: 0.1.0
   codecov:
+  - apiVersion: v2
+    appVersion: 24.4.1
+    created: "2026-02-26T07:30:21.981615336Z"
+    dependencies:
+    - condition: redis.embedded
+      name: redis
+      repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+      version: ~17.15.6
+    - condition: postgresql.embedded
+      name: postgresql
+      repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+      version: ~12.8.5
+    - alias: timescaledb
+      condition: timescaledb.enabled
+      name: timescaledb-single
+      repository: https://charts.timescale.com/
+      version: 0.33.*
+    - condition: minio.embedded
+      name: minio
+      repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+      version: ~12.7.0
+    description: A Helm chart for Kubernetes
+    digest: 367f6961ce0b188a621df1dcbedbad2d630f5ccba0f7c18780267cb1a98e0184
+    home: https://github.com/codecov/self-hosted
+    maintainers:
+    - name: douban
+    name: codecov
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/codecov-0.2.4/codecov-0.2.4.tgz
+    version: 0.2.4
   - apiVersion: v2
     appVersion: 24.4.1
     created: "2026-02-24T10:26:21.882061324Z"
@@ -1613,6 +1697,26 @@ entries:
   healthchecks:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2026-02-26T07:30:22.174881277Z"
+    dependencies:
+    - condition: postgresql.enabled,global.postgresql.enabled
+      name: postgresql
+      repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+      version: 10.14.3
+    description: A Helm chart for Kubernetes
+    digest: 260276ceb7d855f365d465a24bf88f7415965939c6df8669c80d01cf319df5bf
+    maintainers:
+    - email: rakshit@improwised.com
+      name: rakshit
+    name: healthchecks
+    sources:
+    - https://github.com/healthchecks/healthchecks
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/healthchecks-1.0.10/healthchecks-1.0.10.tgz
+    version: 1.0.10
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2026-02-13T09:17:09.629821775Z"
     dependencies:
     - condition: postgresql.enabled,global.postgresql.enabled
@@ -1692,6 +1796,31 @@ entries:
     - https://github.com/douban/charts/releases/download/healthchecks-1.0.6/healthchecks-1.0.6.tgz
     version: 1.0.6
   helpdesk:
+  - apiVersion: v2
+    appVersion: 0.2.0
+    created: "2026-02-26T07:30:22.352498749Z"
+    description: A Helm chart for Douban Helpdesk
+    digest: a9afa9a1b3b89aaeb02ff1900a9f22f3be767f4ecb8f6d37d5eb8877f67a8194
+    home: https://github.com/douban/helpdesk
+    keywords:
+    - douban
+    - helpdesk
+    - self-service
+    - stackstorm
+    - airflow
+    - spincyle
+    maintainers:
+    - email: sysadmin@douban.com
+      name: douban
+    - name: everpcpc
+    - name: LeoQuote
+    name: helpdesk
+    sources:
+    - https://github.com/douban/helpdesk
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/helpdesk-0.3.3/helpdesk-0.3.3.tgz
+    version: 0.3.3
   - apiVersion: v2
     appVersion: 0.2.0
     created: "2026-02-13T09:17:09.858936566Z"
@@ -1847,6 +1976,19 @@ entries:
   kafka-ui:
   - apiVersion: v2
     appVersion: v1.2.0
+    created: "2026-02-26T07:30:22.542754662Z"
+    description: A Helm chart for kafka-UI
+    digest: 374dc423e03e55a55cc37b31e9a68503c2d529680af8893ba370641e18d42452
+    icon: https://raw.githubusercontent.com/kafbat/kafka-ui/main/documentation/images/logo_new.png
+    maintainers:
+    - name: DDDFiish
+    name: kafka-ui
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/kafka-ui-1.5.2/kafka-ui-1.5.2.tgz
+    version: 1.5.2
+  - apiVersion: v2
+    appVersion: v1.2.0
     created: "2026-02-13T09:17:10.074995598Z"
     description: A Helm chart for kafka-UI
     digest: de3d18b106cc2c175be965164f9d23de89735101bd703c985a8480638f4b7283
@@ -1872,6 +2014,26 @@ entries:
     - https://github.com/douban/charts/releases/download/kafka-ui-1.5.0/kafka-ui-1.5.0.tgz
     version: 1.5.0
   karma:
+  - apiVersion: v2
+    appVersion: "0.85"
+    created: "2026-02-26T07:30:22.722665829Z"
+    description: A Helm chart for Karma - an UI for Prometheus Alertmanager
+    digest: ccd294279a844b20c66c7173b99628465b93bdb65d4327af620e7e0eb456a7dc
+    home: https://github.com/prymitive/karma
+    maintainers:
+    - email: cdesaintmartin@wiremind.io
+      name: desaintmartin
+    - email: amrini@wiremind.io
+      name: machine424
+    - email: fminaud@wiremind.io
+      name: francoisminaud
+    name: karma
+    sources:
+    - https://github.com/wiremind/wiremind-helm-charts/tree/main/charts/karma
+    - https://github.com/prymitive/karma
+    urls:
+    - https://github.com/douban/charts/releases/download/karma-1.9.2/karma-1.9.2.tgz
+    version: 1.9.2
   - apiVersion: v2
     appVersion: "0.85"
     created: "2026-02-13T09:17:10.308668315Z"
@@ -1935,6 +2097,19 @@ entries:
   mergeable:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2026-02-26T07:30:22.908833823Z"
+    description: A Helm chart for Kubernetes
+    digest: bea1cd2a84282735891bba71cfabf510a730538c269ab84792bd848f2703a76f
+    home: https://github.com/mergeability/mergeable
+    maintainers:
+    - name: LeoQuote
+    name: mergeable
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/mergeable-0.2.2/mergeable-0.2.2.tgz
+    version: 0.2.2
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2026-02-13T09:17:10.538512406Z"
     description: A Helm chart for Kubernetes
     digest: f1b3db501270f3ea4dd899cf0c13ceb8656cb25b08840135993bce5cc418600f
@@ -1973,6 +2148,19 @@ entries:
     - https://github.com/douban/charts/releases/download/mergeable-0.1.0/mergeable-0.1.0.tgz
     version: 0.1.0
   nginx:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2026-02-26T07:30:23.119867817Z"
+    description: A Helm chart for Kubernetes
+    digest: 9f07f9daff515c2704bb57bb632247225a97ab3234a9ba4909c9608cb5bccc4d
+    home: https://nginx.org/
+    maintainers:
+    - name: douban
+    name: nginx
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/nginx-0.4.1/nginx-0.4.1.tgz
+    version: 0.4.1
   - apiVersion: v2
     appVersion: 1.16.0
     created: "2026-02-13T09:17:10.754489646Z"
@@ -2038,6 +2226,18 @@ entries:
   nonebot:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2026-02-26T07:30:23.309664391Z"
+    description: A Helm chart for Kubernetes
+    digest: 6891c26d3946ff637ef4b8bbfe163b156d7534f78403905ae39294da8ce9f3dc
+    maintainers:
+    - name: douban
+    name: nonebot
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/nonebot-0.1.3/nonebot-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2026-02-13T09:17:10.928595038Z"
     description: A Helm chart for Kubernetes
     digest: dd759dd02b9d02a404f616d91cb0845b9d591873cde6fc2c6becbf33bbe56249
@@ -2073,6 +2273,21 @@ entries:
     - https://github.com/douban/charts/releases/download/nonebot-0.1.0/nonebot-0.1.0.tgz
     version: 0.1.0
   overlord:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2026-02-26T07:30:23.508506508Z"
+    description: A Helm chart for Kubernetes
+    digest: 7ba6d748f58282a7844da64dbbdbac48ea7882c48e2ec49d4452181bf42ac47a
+    home: https://github.com/bilibili/overlord
+    maintainers:
+    - email: sysadmin@douban.com
+      name: douban
+    - name: everpcpc
+    name: overlord
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/overlord-0.2.2/overlord-0.2.2.tgz
+    version: 0.2.2
   - apiVersion: v2
     appVersion: 1.16.0
     created: "2026-02-13T09:17:11.113247765Z"
@@ -2121,6 +2336,20 @@ entries:
   pint:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2026-02-26T07:30:23.691704422Z"
+    description: A Helm chart for Kubernetes
+    digest: 1c3e0e695e5dae1c4bfe3e60624fc3b3d32f9b4839772228ec8ff113689e2b84
+    maintainers:
+    - name: douban
+    name: pint
+    sources:
+    - https://github.com/cloudflare/pint
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/pint-0.1.3/pint-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2026-02-13T09:17:11.333449172Z"
     description: A Helm chart for Kubernetes
     digest: 491e85cecd8c0b578460f58ad6bf526f716ba088050793c831b9d8c207745e60
@@ -2164,6 +2393,19 @@ entries:
   probot:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2026-02-26T07:30:23.891588321Z"
+    description: A Helm chart for Kubernetes
+    digest: 5710e4ee53e3860bdc8106e5fb6a80bf512d130c95350471487d953ee2a035ad
+    home: https://github.com/douban/charts
+    maintainers:
+    - name: LeoQuote
+    name: probot
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/probot-0.1.2/probot-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2026-02-13T09:17:11.540629859Z"
     description: A Helm chart for Kubernetes
     digest: 058cdba0fc39eb0b0d4b2c86c61df0b9a521b1d571efeda7a22beaf44f54ae25
@@ -2191,6 +2433,19 @@ entries:
   prometheus-beanstalkd-exporter:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2026-02-26T07:30:24.07465621Z"
+    description: A Helm chart for Kubernetes
+    digest: 938c1ee9ec5d6f0ceb43f9cecab77a9a9dfc4636a21d35601d754c24d1e0a473
+    home: https://github.com/messagebird/beanstalkd_exporter
+    maintainers:
+    - name: LeoQuote
+    name: prometheus-beanstalkd-exporter
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/prometheus-beanstalkd-exporter-0.1.2/prometheus-beanstalkd-exporter-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2026-02-13T09:17:11.733241079Z"
     description: A Helm chart for Kubernetes
     digest: 34849f346ffd807091ac6127688ee4e063714b24cb5cf2c85944595b501f3d93
@@ -2216,6 +2471,24 @@ entries:
     - https://github.com/douban/charts/releases/download/prometheus-beanstalkd-exporter-0.1.0/prometheus-beanstalkd-exporter-0.1.0.tgz
     version: 0.1.0
   prometheus-memcached-exporter:
+  - apiVersion: v2
+    appVersion: 0.9.0
+    created: "2026-02-26T07:30:24.22704569Z"
+    description: A Helm chart for Kubernetes
+    digest: 181b1b3ff6fc5c4b66dea6a39b0d1cd8a2e676e78e49de48a254f20d8d3407b8
+    home: https://github.com/douban/charts
+    keywords:
+    - prometheus
+    - memcached
+    maintainers:
+    - name: LeoQuote
+    name: prometheus-memcached-exporter
+    sources:
+    - https://github.com/prometheus/memcached_exporter
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/prometheus-memcached-exporter-0.1.3/prometheus-memcached-exporter-0.1.3.tgz
+    version: 0.1.3
   - apiVersion: v2
     appVersion: 0.9.0
     created: "2026-02-13T09:17:11.937552647Z"
@@ -2266,6 +2539,19 @@ entries:
     - https://github.com/douban/charts/releases/download/prometheus-memcached-exporter-0.1.0/prometheus-memcached-exporter-0.1.0.tgz
     version: 0.1.0
   qiniu-exporter:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2026-02-26T07:30:24.371050025Z"
+    description: A Helm chart for Kubernetes
+    digest: b31f99847fa254e3fc536f48d4b22b7072eeb2e13af3a87a6a6ac9174a21f96c
+    home: https://github.com/douban/qiniu-exporter
+    maintainers:
+    - name: douban
+    name: qiniu-exporter
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/qiniu-exporter-0.1.2/qiniu-exporter-0.1.2.tgz
+    version: 0.1.2
   - apiVersion: v2
     appVersion: 1.16.0
     created: "2026-02-13T09:17:12.170513493Z"
@@ -2322,6 +2608,25 @@ entries:
   selenium:
   - apiVersion: v2
     appVersion: 3.141.59
+    created: "2026-02-26T07:30:24.567592317Z"
+    description: Chart for selenium grid
+    digest: 663a76a7e39a9a09a5171fc2acab1bf7ee3f71ea2f7cd3bb1d0847881ca5e0fd
+    home: http://www.seleniumhq.org/
+    icon: http://docs.seleniumhq.org/images/big-logo.png
+    keywords:
+    - qa
+    maintainers:
+    - name: LeoQuote
+    name: selenium
+    sources:
+    - https://github.com/SeleniumHQ/docker-selenium
+    - https://github.com/douban/charts
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/selenium-1.3.2/selenium-1.3.2.tgz
+    version: 1.3.2
+  - apiVersion: v2
+    appVersion: 3.141.59
     created: "2026-02-13T09:17:12.408624713Z"
     description: Chart for selenium grid
     digest: 76da2da2e615ef9d8aa9f469608d41f11eca52e691a6607ce994523dfea7fba3
@@ -2359,6 +2664,19 @@ entries:
     - https://github.com/douban/charts/releases/download/selenium-1.3.0/selenium-1.3.0.tgz
     version: 1.3.0
   tencentcloud-exporter:
+  - apiVersion: v2
+    appVersion: v2.8.0
+    created: "2026-02-26T07:30:24.754926221Z"
+    description: A Helm chart for Kubernetes
+    digest: c9467de1e378ad5c3730d3ccfe39526c139c55ba5d2d9e14c5da407514cacef6
+    home: https://github.com/douban/tencentcloud-exporter
+    maintainers:
+    - name: LeoQuote
+    name: tencentcloud-exporter
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/tencentcloud-exporter-0.2.2/tencentcloud-exporter-0.2.2.tgz
+    version: 0.2.2
   - apiVersion: v2
     appVersion: v2.8.0
     created: "2026-02-13T09:17:12.639783141Z"
@@ -2399,6 +2717,19 @@ entries:
     - https://github.com/douban/charts/releases/download/tencentcloud-exporter-0.1.0/tencentcloud-exporter-0.1.0.tgz
     version: 0.1.0
   tencentcloud-info-exporter:
+  - apiVersion: v2
+    appVersion: v2.8.0
+    created: "2026-02-26T07:30:24.938644191Z"
+    description: A Helm chart for Kubernetes
+    digest: 2976fe6b986a75819a891144a382907844a531a611efa6c137d4e1a9337fabf6
+    home: https://github.com/LeoQuote/tencentcloud-info-exporter
+    maintainers:
+    - name: LeoQuote
+    name: tencentcloud-info-exporter
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/tencentcloud-info-exporter-0.2.2/tencentcloud-info-exporter-0.2.2.tgz
+    version: 0.2.2
   - apiVersion: v2
     appVersion: v2.8.0
     created: "2026-02-13T09:17:12.842938873Z"
@@ -2467,6 +2798,19 @@ entries:
   tinyproxy-exporter:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2026-02-26T07:30:25.429250073Z"
+    description: A Helm chart for Kubernetes
+    digest: 4695e073eae114904f432a58109b228aa8317c7034912adb4626b66e9bc26b2e
+    home: https://github.com/igzivkov/tinyproxy_exporter
+    maintainers:
+    - name: LeoQuote
+    name: tinyproxy-exporter
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/tinyproxy-exporter-0.1.2/tinyproxy-exporter-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2026-02-13T09:17:13.049226268Z"
     description: A Helm chart for Kubernetes
     digest: 28bc3e6902628e7876f670ae8baf4716ad38662e5f1595d18d5d9937d3b8a628
@@ -2492,6 +2836,19 @@ entries:
     - https://github.com/douban/charts/releases/download/tinyproxy-exporter-0.1.0/tinyproxy-exporter-0.1.0.tgz
     version: 0.1.0
   ucloud-exporter:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2026-02-26T07:30:25.618013684Z"
+    description: A Helm chart for Kubernetes
+    digest: 43245ed35daf27c726cebf462309895700e261aa3fe116535bf25d6b9da9411f
+    home: https://github.com/douban/ucloud-exporter
+    maintainers:
+    - name: douban
+    name: ucloud-exporter
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/ucloud-exporter-0.1.3/ucloud-exporter-0.1.3.tgz
+    version: 0.1.3
   - apiVersion: v2
     appVersion: 1.16.0
     created: "2026-02-13T09:17:13.302580081Z"
@@ -2532,6 +2889,19 @@ entries:
     - https://github.com/douban/charts/releases/download/ucloud-exporter-0.1.0/ucloud-exporter-0.1.0.tgz
     version: 0.1.0
   upyun-exporter:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2026-02-26T07:30:25.806399958Z"
+    description: A Helm chart for Kubernetes
+    digest: 11c0a4fe91d6c8401d22f112587c714c8dda30c44740f41b62677c021bd27207
+    home: https://github.com/douban/upyun-exporter
+    maintainers:
+    - name: douban
+    name: upyun-exporter
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/upyun-exporter-0.1.2/upyun-exporter-0.1.2.tgz
+    version: 0.1.2
   - apiVersion: v2
     appVersion: 1.16.0
     created: "2026-02-13T09:17:13.55844448Z"
