@@ -159,6 +159,18 @@ spec:
             {{- with .Values.worker.envs }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
+            - name: CODE_EXECUTION_ENDPOINT
+              value: "http://{{ include "dify.fullname" . }}-sandbox"
+            - name: CODE_EXECUTION_API_KEY
+            {{- if .Values.sandbox.apiKeySecret }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.sandbox.apiKeySecret }}
+                  key: sandbox-api-key
+            {{- else if .Values.sandbox.apiKey }}
+              value: {{ .Values.sandbox.apiKey | quote }}
+            {{- else }}
+            {{- end }}
           {{- with .Values.volumeMounts }}
           volumeMounts:
           {{- toYaml . | nindent 12 }}
