@@ -2581,6 +2581,19 @@ entries:
   redirect:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2026-02-27T03:21:17.433188557Z"
+    description: Using ingress to redirect
+    digest: d603f77fb34b2846b92fca00716bfa08024ce9ae2b2b9e8085e93bef1d8c3485
+    home: https://github.com/douban/charts
+    maintainers:
+    - name: LeoQuote
+    name: redirect
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/redirect-1.0.0/redirect-1.0.0.tgz
+    version: 1.0.0
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2022-06-29T06:23:41.061599095Z"
     description: Using ingress to redirect
     digest: 048b852c9bb5f8162d0a6f422ca1f147104342d027e829026fbdbbc341e076ec
