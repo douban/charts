@@ -6,15 +6,25 @@ nameOverride: ""
 fullnameOverride: ""
 
 globalConfigs:
+  ingressEnabled: true
   ingressClassName: "nginx"
   ingressCommonLabels: {}
   ingressCommonAnnotations: {}
     # cert-manager.io/cluster-issuer: your-issuer
+  routeEnabled: false
+  routeCommonLabels: {}
+  routeCommonAnnotations: {}
+  routeParentRefs:
+    - name: your-gateway
+      namespace: your-gateway-namespace
 
 websites:
 - name: test
   source: foo.example.com
-  destination: https://bar.example.com
+  destination: bar.example.com
+  scheme: https
+  statusCode: 301
+  path: /test
 # if include_path is enabled , redirect with path in original url
 # foo.example.com/123 will be redirect to https://bar.example.com/123
 # - name: test

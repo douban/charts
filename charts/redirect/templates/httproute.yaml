@@ -1,0 +1,38 @@
+{{- $root := . }}
+{{- if $root.Values.globalConfigs.routeEnabled }}
+{{- range .Values.websites }}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ include "redirect.fullname" $root }}-{{ .name }}
+  labels:
+    {{- with $root.Values.globalConfigs.routeCommonLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end}}
+    {{- include "redirect.labels" $root | nindent 4 }}
+  {{- with $root.Values.globalConfigs.routeCommonAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+{{- with $root.Values.globalConfigs.routeParentRefs }}
+  parentRefs:
+  {{- toYaml . | nindent 4 }}
+{{- end }}
+  hostnames:
+  - {{ .source | quote }}
+  rules:
+  - filters:
+    - type: RequestRedirect
+      requestRedirect:
+        scheme: {{ .scheme | default "https" }}
+        statusCode: {{ .statusCode | default 301 }}
+        hostname: {{ .destination | quote }}
+        {{- if not .include_path }}
+        path:
+          type: ReplaceFullPath
+          replaceFullPath: {{ .path | default "/" | quote }}
+        {{- end }}
+{{- end }}
+{{- end }}
