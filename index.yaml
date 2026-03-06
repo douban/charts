@@ -424,6 +424,19 @@ entries:
     urls:
     - https://github.com/douban/charts/releases/download/archery-0.2.0/archery-0.2.0.tgz
     version: 0.2.0
+  arnor:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2026-03-06T04:28:55.177594487Z"
+    description: A Helm chart for standard web application
+    digest: e108e811dd9c24e44e208d96234ff30f76ae5c1d5bf3ce31dcb7007764dcf810
+    maintainers:
+    - name: douban
+    name: arnor
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/arnor-0.1.0/arnor-0.1.0.tgz
+    version: 0.1.0
   cbs-csi-driver:
   - apiVersion: v2
     appVersion: 2.3.3
