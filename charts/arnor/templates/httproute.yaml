@@ -7,7 +7,7 @@ metadata:
   labels:
     {{- include "arnor.labels" . | nindent 4 }}
 spec:
-{{- with .Values.globalConfigs.routeParentRefs }}
+{{- with .Values.httpRoute.parentRefs }}
   parentRefs:
   {{- toYaml . | nindent 4 }}
 {{- end }}
@@ -16,8 +16,8 @@ spec:
     - {{ . | quote }}
   {{- end }}
   rules:
-{{- if .Values.controller.httpRoute.extraRules }}
-{{- toYaml .Values.controller.httpRoute.extraRules | nindent 2 }}
+{{- if .Values.httpRoute.extraRules }}
+{{- toYaml .Values.httpRoute.extraRules | nindent 2 }}
 {{- end }}
   - backendRefs:
     - name: {{ include "arnor.fullname" . }}

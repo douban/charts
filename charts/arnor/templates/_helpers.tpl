@@ -66,7 +66,8 @@ VaultStaticSecret secretName
 */}}
 {{- define "arnor.vaultStaticSecretDestination" -}}
 {{- if .Values.vaultStaticSecret.secretNameOverride }}
-{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
+{{- .Values.vaultStaticSecret.secretNameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
 {{- include "arnor.fullname" . }}
+{{- end }}
 {{- end }}

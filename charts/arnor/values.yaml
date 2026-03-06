@@ -38,7 +38,7 @@ securityContext: {}
 
 vaultStaticSecret:
   enabled: false
-  # basePath is the base path in vault where the secrets are stored, the final path would be basePath + "/" + secretName
+  # if set, the secret created by VaultStaticSecret will use this name instead of the default fullname
   secretNameOverride: ""
   mount: "kv-v2"
   type: "kv-v2"

@@ -73,6 +73,18 @@ volumeMounts:
 
 启用 `vaultStaticSecret.enabled` 后, Chart 会负责拉取 Vault 中的静态密钥并注入到 Kubernetes Secret 中; 需要在 `volumes` 与 `volumeMounts` 手动引用该 Secret 才能在容器内使用。
 
+如果没有设置 `vaultStaticSecret.secretNameOverride`, secret 名字会与 fullname 完全相同, 也就是:
+
+```bash
+# release name 和 chart 同名时, 为 release name
+arnor
+# release name 和 chart 不同时, 为 release name - chart name
+my-app-arnor
+# 填写了 fullnameOverride 的情况下, 以 fullnameOverride 为准
+my-fullname
+# 详细逻辑请参考 _helpers.tpl 内的代码
+```
+
 ```yaml
 vaultStaticSecret:
   enabled: true
