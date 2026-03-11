@@ -1644,6 +1644,18 @@ entries:
   gateway-role:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2026-03-11T11:03:08.028161418Z"
+    description: A Helm chart for Kubernetes
+    digest: 8e59ab7e8887208b340f4b825b50366b7f1c09a14dd235acce8c451f18a0a3a7
+    maintainers:
+    - name: Douban
+    name: gateway-role
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/gateway-role-0.2.0/gateway-role-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2026-02-24T10:08:06.166340529Z"
     description: A Helm chart for Kubernetes
     digest: 424c87cfea085078f489bb54d30ffc2ee73816dbc9f874f14824d39bd9eec646
