@@ -31,10 +31,10 @@ rules:
   verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
 - apiGroups: ["gateway.envoyproxy.io"]
   resources:
-  - "Backend"
-  - "BackendTrafficPolicy"
-  - "HTTPRouteFilter"
-  - "ClientTrafficPolicy"
+  - "backends"
+  - "backendtrafficpolicies"
+  - "httproutefilters"
+  - "clienttrafficpolicies"
   verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
 {{- end }}
 {{- end }}
