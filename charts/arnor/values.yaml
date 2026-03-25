@@ -80,6 +80,7 @@ httpRoute:
   #   namespace: envoy-gateway-system
   # define routing rules below
   hostnames: []
+  requestTimeout: "15s"
   extraPaths: []
   # - matches:
   #     - path:
