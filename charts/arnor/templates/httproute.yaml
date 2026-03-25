@@ -22,4 +22,6 @@ spec:
   - backendRefs:
     - name: {{ include "arnor.fullname" . }}
       port: {{ .Values.service.port }}
+    timeouts:
+      request: {{ .Values.httpRoute.requestTimeout | quote }}
 {{- end }}
