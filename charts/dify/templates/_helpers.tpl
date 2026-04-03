@@ -134,6 +134,19 @@ commonBackendEnvs are for api and worker containers
   value: {{ .Values.minio.auth.rootPassword }}
 {{- end }}
 
+- name: CODE_EXECUTION_ENDPOINT
+  value: "http://{{ include "dify.fullname" . }}-sandbox"
+- name: CODE_EXECUTION_API_KEY
+{{- if .Values.sandbox.apiKeySecret }}
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.sandbox.apiKeySecret }}
+      key: sandbox-api-key
+{{- else if .Values.sandbox.apiKey }}
+  value: {{ .Values.sandbox.apiKey | quote }}
+{{- else }}
+{{- end }}
+
 {{- if .Values.pluginDaemon.enabled }}
 - name: PLUGIN_DAEMON_URL
   value: "http://{{ include "dify.fullname" . }}-plugin-daemon:{{ .Values.pluginDaemon.service.port }}"
