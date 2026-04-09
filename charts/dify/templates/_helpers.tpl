@@ -108,7 +108,7 @@ commonBackendEnvs are for api and worker containers
 - name: REDIS_DB
   value: "1"
 - name: REDIS_PASSWORD
-  value: {{ .Values.redis.auth.password }}
+  value: {{ .Values.redis.auth.password | quote }}
 {{- end }}
 {{- if .Values.postgresql.embedded }}
 - name: DB_USERNAME
