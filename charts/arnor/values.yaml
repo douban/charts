@@ -118,6 +118,10 @@ affinity: {}
 
 serviceMonitor:
   enabled: false
+  # authorization:
+  #   credentials:
+  #     name: arnor-service-monitor-auth
+  #     key: auth
 
 
 prometheusRule:
