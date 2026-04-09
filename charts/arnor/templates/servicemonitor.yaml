@@ -25,7 +25,7 @@ spec:
 {{- end }}
 {{- if .Values.serviceMonitor.authorization }}
     authorization:
-{{ toYaml .Values.serviceMonitor.authorization | indent 4 }}
+{{ toYaml .Values.serviceMonitor.authorization | indent 6 }}
 {{- end }}
 {{- if .Values.serviceMonitor.metricRelabelings }}
     metricRelabelings:
