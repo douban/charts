@@ -427,6 +427,18 @@ entries:
   arnor:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2026-04-09T04:15:42.012537947Z"
+    description: A Helm chart for standard web application
+    digest: fd42398deac488d37e88cc8185fe048f96e3b201c3e082fd8d4da291939c5543
+    maintainers:
+    - name: douban
+    name: arnor
+    type: application
+    urls:
+    - https://github.com/douban/charts/releases/download/arnor-0.2.0/arnor-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2026-03-25T09:49:43.022760254Z"
     description: A Helm chart for standard web application
     digest: 11645bac5fe0897cf6a89f3b70f3b9fe9d010c37c6721828fb8f8fa790d45ea4
