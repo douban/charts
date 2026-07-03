@@ -223,4 +223,31 @@ This is useful when:
 - You have external TLS termination and need HTTPS URLs
 - The external URL differs from the internal k8s ingress domain
 
+### Override individual public URLs
+
+`baseUrlOverride` (and the generated `dify.baseUrl`) sets every public URL to the
+same value. If you need to serve the console, the published WebApp, and the service
+API on **different hostnames**, override each one individually. Any value left unset
+falls back to `dify.baseUrl`, so the default single-domain behavior is unchanged.
+
+```yaml
+global:
+  consoleApiUrl: "https://console.example.com"   # CONSOLE_API_URL
+  consoleWebUrl: "https://console.example.com"   # CONSOLE_WEB_URL
+  serviceApiUrl: "https://api.example.com"       # SERVICE_API_URL
+  appApiUrl: "https://app.example.com"           # APP_API_URL
+  appWebUrl: "https://app.example.com"           # APP_WEB_URL
+  # ENDPOINT_URL_TEMPLATE, defaults to <baseUrl>/e/{hook_id}
+  endpointUrlTemplate: "https://api.example.com/e/{hook_id}"
+```
+
+The following are only emitted when set (and use the Dify default otherwise):
+
+```yaml
+global:
+  filesUrl: "https://files.example.com"          # FILES_URL
+  triggerUrl: "https://api.example.com"          # TRIGGER_URL
+  nextPublicSocketUrl: "https://app.example.com" # NEXT_PUBLIC_SOCKET_URL
+```
+
 Please consult to dify document if you have difficult to get dify running.

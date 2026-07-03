@@ -86,12 +86,32 @@ commonBackendEnvs are for api and worker containers
 {{- define "dify.commonEnvs" -}}
 - name: EDITION
   value: {{ .Values.global.edition }}
-{{- range tuple "CONSOLE_API_URL" "CONSOLE_WEB_URL" "SERVICE_API_URL" "APP_API_URL" "APP_WEB_URL" }}
-- name: {{ . }}
-  value: {{ include "dify.baseUrl" $ }}
+{{- /* Each public URL defaults to dify.baseUrl but can be overridden individually,
+       so the console, published WebApp, and service API can live on different hosts. */}}
+- name: CONSOLE_API_URL
+  value: {{ .Values.global.consoleApiUrl | default (include "dify.baseUrl" $) }}
+- name: CONSOLE_WEB_URL
+  value: {{ .Values.global.consoleWebUrl | default (include "dify.baseUrl" $) }}
+- name: SERVICE_API_URL
+  value: {{ .Values.global.serviceApiUrl | default (include "dify.baseUrl" $) }}
+- name: APP_API_URL
+  value: {{ .Values.global.appApiUrl | default (include "dify.baseUrl" $) }}
+- name: APP_WEB_URL
+  value: {{ .Values.global.appWebUrl | default (include "dify.baseUrl" $) }}
+{{- with .Values.global.filesUrl }}
+- name: FILES_URL
+  value: {{ . }}
 {{- end }}
 - name: ENDPOINT_URL_TEMPLATE
-  value: {{ include "dify.baseUrl" $ }}/e/{hook_id}
+  value: {{ .Values.global.endpointUrlTemplate | default (printf "%s/e/{hook_id}" (include "dify.baseUrl" $)) }}
+{{- with .Values.global.triggerUrl }}
+- name: TRIGGER_URL
+  value: {{ . }}
+{{- end }}
+{{- with .Values.global.nextPublicSocketUrl }}
+- name: NEXT_PUBLIC_SOCKET_URL
+  value: {{ . }}
+{{- end }}
 {{- end }}
 
 
