@@ -207,3 +207,46 @@ commonBackendEnvs are for api and worker containers
 
 {{- end }}
 {{- end }}
+
+{{/*
+Container env assembly.
+
+A container's `env` is a strategic-merge list keyed by `name`. Emitting the same
+name twice (e.g. a var already in api.envs also set via global.extraBackendEnvs)
+is tolerated by the container runtime — last value wins — but breaks the
+strategic-merge diff used by `kubectl apply`, `helm upgrade`, and ArgoCD. The
+helpers below assemble each container's env in the existing upstream order and
+then de-duplicate, keeping the last occurrence of each name (same last-wins rule
+the runtime already applied) so the effective environment is unchanged while the
+rendered list stays well-formed.
+*/}}
+{{- define "dify.dedupeEnv" -}}
+{{- $items := .items -}}
+{{- $last := dict -}}
+{{- range $items -}}{{- $_ := set $last .name . -}}{{- end -}}
+{{- $order := list -}}
+{{- range $items -}}{{- if not (has .name $order) -}}{{- $order = append $order .name -}}{{- end -}}{{- end -}}
+{{- $out := list -}}
+{{- range $order -}}{{- $out = append $out (index $last .) -}}{{- end -}}
+{{- toYaml $out -}}
+{{- end }}
+
+{{- define "dify.backendEnvs" -}}
+{{- $ctx := .ctx -}}
+{{- $items := concat
+    (include "dify.commonEnvs" $ctx | fromYamlArray)
+    (include "dify.commonBackendEnvs" $ctx | fromYamlArray)
+    ($ctx.Values.global.extraEnvs | default list)
+    ($ctx.Values.global.extraBackendEnvs | default list)
+    (.componentEnvs | default list) -}}
+{{- include "dify.dedupeEnv" (dict "items" $items) -}}
+{{- end }}
+
+{{- define "dify.frontendEnvs" -}}
+{{- $ctx := .ctx -}}
+{{- $items := concat
+    (include "dify.commonEnvs" $ctx | fromYamlArray)
+    ($ctx.Values.global.extraEnvs | default list)
+    (.componentEnvs | default list) -}}
+{{- include "dify.dedupeEnv" (dict "items" $items) -}}
+{{- end }}
