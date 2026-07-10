@@ -23,8 +23,12 @@ version: 0.1.0
 # It is recommended to use it with quotes.
 appVersion: "1.16.0"
 
+maintainers:
+- name: LeoQuote
+
 dependencies:
 - name: prometheus-blackbox-exporter
   version: "11.15.1"
   repository: "oci://ghcr.io/prometheus-community/charts"
   condition: prometheus-blackbox-exporter.enabled
+
