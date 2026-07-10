@@ -31,4 +31,3 @@ dependencies:
   version: "11.15.1"
   repository: "oci://ghcr.io/prometheus-community/charts"
   condition: prometheus-blackbox-exporter.enabled
-
