@@ -1,0 +1,33 @@
+# Default values for service-prober.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+
+# This is to override the chart name.
+nameOverride: ""
+serviceSelector: {}
+#  matchLabels:
+#    app: service-prober
+#    component: service-prober
+ports:
+- name: http
+probeConfig:
+  interval: 30s
+  module: tcp
+# if set, will use this url to probe the service
+# example: blackbox-exporter.monitoring.svc.cluster.local:9115
+existingBlackboxUrl: ""
+prometheus-blackbox-exporter:
+  enabled: true
+  config:
+    modules:
+      http_2xx:
+        prober: http
+        timeout: 5s
+        http:
+          valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
+          follow_redirects: true
+          preferred_ip_protocol: "ip4"
+      tcp:
+        prober: tcp
+        timeout: 5s

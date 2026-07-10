@@ -1,0 +1,22 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    {{- include "service-prober.labels" . | nindent 4 }}
+  name: {{ include "service-prober.fullname" . }}
+spec:
+  endpoints:
+  {{- range .Values.ports }}
+  - interval: {{ $.Values.probeConfig.interval }}
+    port: {{ .name }}
+    path: /probe
+    relabelings:
+    - sourceLabels: [__address__]
+      targetLabel: __param_target
+    - targetLabel: __address__
+      replacement: {{ include "service-prober.blackBoxUrl" $ }}
+    - targetLabel: __param_module
+      replacement: {{ $.Values.probeConfig.module }}
+  {{- end }}
+  selector:
+    {{- toYaml .Values.serviceSelector | nindent 4 }}

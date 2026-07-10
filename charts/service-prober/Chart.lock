@@ -1,0 +1,6 @@
+dependencies:
+- name: prometheus-blackbox-exporter
+  repository: oci://ghcr.io/prometheus-community/charts
+  version: 11.15.1
+digest: sha256:ab5dd7515ba1d607bed495dad8ee633d759221633bed008ec48f7f0720041c22
+generated: "2026-07-10T12:48:02.117708562+08:00"
